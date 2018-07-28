@@ -1,0 +1,77 @@
+[colors]
+background = #0A0606
+dim = #A0A5AC
+foreground = #DCD6D6
+active = #386CBB
+
+[bar/base]
+monitor = LVDS1
+width = 100%
+height = 28
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+font-0 = "Terminus:size=8;2"
+font-1 = "Siji:size=18;2"
+
+padding = 2 
+module-margin = 2
+
+modules-left = date
+modules-center = bspwm
+modules-right = volume
+
+[module/date]
+type = internal/date
+
+interval = 1.0
+
+date-alt = " %m-%d"
+date = " %H:%M"
+
+[module/bspwm]
+type = internal/bspwm
+
+ws-icon-default = 
+label-focused = 
+label-occupied = %icon%
+label-urgent = %icon%
+label-empty = %icon%
+label-separator = " "
+label-focused-foreground = ${colors.active}
+label-dimmed-foreground = ${colors.dim}
+label-occupied-foreground = ${colors.dim}
+label-urgent-foreground = ${colors.dim}
+label-empty-foreground = ${colors.dim}
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <toggle> <icon-next>
+format-playing = ${self.format-online}
+format-paused = ${self.format-online}
+format-stopped = ${self.format-online}
+
+label-song = %artist% - %title%
+
+icon-play = 
+icon-pause = 
+icon-prev = 
+icon-next = 
+
+[module/volume]
+type = internal/volume
+format-volume = <ramp-volume><label-volume>
+format-muted = <label-muted>
+label-volume = %percentage%
+label-muted =  muted
+label-muted-foreground = ${colors.dim}
+format-volume-padding = 1
+format-muted-padding = 1
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-headphones-0 = 
+
+
