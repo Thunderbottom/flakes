@@ -81,7 +81,11 @@
     ntfs3g
     sshfsFuse
     curl
+    termite
   ];
+
+  # Use sandbox
+  nix.useSandbox = true;
 
   # Allow non-free packages
   nixpkgs.config.allowUnfree = true;
@@ -109,7 +113,10 @@
   # started in user sessions.
   programs.bash.enableCompletion = true;
   programs.bash.shellAliases = {
+    ls = "ls --color=auto";
+    la = "ls -la";
     vim = "nvim";
+    weessh = "ssh pi@smolboye.nerdpol.ovh -p11532 -t screen -D -RR weechat weechat";
   };
   # programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
@@ -186,10 +193,10 @@
   services.xserver.displayManager.sddm.setupScript = ''
     ${pkgs.xorg.xrandr}/bin/xrandr --output LVDS1 --pos 640x1080 --rotate normal
   '';
-  services.xserver.displayManager.sddm.autoLogin = {
-    enable = true;
-    user = "smolboye";
-  };
+  #services.xserver.displayManager.sddm.autoLogin = {
+  #  enable = true;
+  #  user = "smolboye";
+  #};
   services.xserver.windowManager.bspwm.enable = true;
   services.xserver.windowManager.bspwm.configFile = "/etc/nixos/bspwmrc";
   services.xserver.windowManager.bspwm.sxhkd.configFile = "/etc/nixos/sxhkdrc";
@@ -209,9 +216,9 @@
   ];
 
   # Enable udev rule.
-  services.udev.extraRules = ''
-    KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/smolboye/.Xauthority", RUN+="/etc/nixos/bspwmrc"
-  '';
+  # services.udev.extraRules = ''
+  #   KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/smolboye/.Xauthority", RUN+="/etc/nixos/bspwmrc"
+  # '';
 
   # Enable sudo.
   security.sudo.enable = true;
