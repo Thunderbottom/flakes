@@ -78,13 +78,13 @@ XF86Audio{Raise,Lower}Volume
 XF86AudioMute
 	pactl set-sink-mute 0 toggle
 XF86MonBrightnessUp
-	xbacklight -inc 10
+	light -A 10
 XF86MonBrightnessDown
-	xbacklight -dec 10
+	light -U 10
 XF86KbdBrightnessUp
-	/etc/nixos/kbdbacklight up
+	kbdlight up 10
 XF86KbdBrightnessDown
-	/etc/nixos/kbdbacklight down
+	kbdlight down 10
 XF86AudioPlay
 	playerctl play-pause
 XF86AudioNext
