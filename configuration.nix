@@ -42,7 +42,7 @@
 
   networking = {
     hostName = "tuxbox";
-    wireless.enable = true;
+    networkmanager.enable = true;
     enableB43Firmware = true;
     extraHosts = ''
       127.0.0.1
@@ -51,7 +51,6 @@
     enableIPv6 = false;
 
     dhcpcd = {
-      persistent = true;
       extraConfig = ''
         noarp
         ipv4only
@@ -59,7 +58,6 @@
       '';
     };
   };
-
 
   # Select internationalisation properties.
   i18n = {
@@ -154,6 +152,7 @@
 
     light.enable = true;
     kbdlight.enable = true;
+    adb.enable = true;
   };
 
   powerManagement.enable = true;
@@ -238,6 +237,8 @@
       
   };
 
+  sound.enable = true;
+
   hardware = {
     cpu.intel.updateMicrocode = true;
     
@@ -267,7 +268,9 @@
     description = "Chinmay Pai";
     extraGroups = [
       "wheel"
+      "adbusers"
       "systemd-journal"
+      "networkmanager"
       "audio"
       "video"
     ];
