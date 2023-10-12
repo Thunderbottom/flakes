@@ -23,14 +23,19 @@
       ];
     };
 
+    commons = [
+      inputs.nh.nixosModules.default
+      inputs.nixvim.nixosModules.nixvim
+    ];
+
     # Laptop, X1 Carbon 9th Gen.
     hades = {
-      nixos-modules = [
-        ./machines/hades
-        inputs.nh.nixosModules.default
-        inputs.nixvim.nixosModules.nixvim
-        nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
-      ];
+      nixos-modules =
+        [
+          ./machines/hades
+          nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
+        ]
+        ++ commons;
       home-module = import ./home/desktop;
       specialArgs =
         {
@@ -43,9 +48,11 @@
 
     # Server, AMD A8 APU.
     trench = {
-      nixos-modules = [
-        ./machines/trench
-      ];
+      nixos-modules =
+        [
+          ./machines/trench
+        ]
+        ++ commons;
       home-module = import ./home/base;
       specialArgs =
         {
