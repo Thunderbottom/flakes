@@ -19,6 +19,7 @@
           inherit (inputs.devenv.packages.${prev.system}) devenv;
           inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;
           inherit (inputs.nil.packages.${prev.system}) nil;
+          intel-vaapi-driver = prev.intel-vaapi-driver.override {enableHybridCodec = true;};
         })
       ];
     };
@@ -69,9 +70,7 @@
   in {
     nixosConfigurations = let
       base = {
-        inherit home-manager pkgs;
-        nixpkgs = nixpkgs;
-        system = system;
+        inherit home-manager nixpkgs pkgs system;
       };
     in {
       hades = nixosSystem (hades // base);
@@ -97,8 +96,6 @@
   };
 
   nixConfig = {
-    # Use 4 cores to build, defaults to 1
-    cores = 4;
     max-jobs = "auto";
 
     # Add extra substituters for caching.

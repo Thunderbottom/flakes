@@ -4,7 +4,7 @@
   ...
 }: {
   home = {
-    username = username;
+    inherit username;
     homeDirectory = "/home/${username}";
     stateVersion = "23.05";
   };
@@ -28,8 +28,8 @@
       '';
       plugins = [
         {
+          inherit (pkgs.fishPlugins.autopair) src;
           name = "autopair";
-          src = pkgs.fishPlugins.autopair.src;
         }
       ];
       shellAliases = {

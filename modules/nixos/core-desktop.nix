@@ -8,8 +8,6 @@
     ../commons
   ];
 
-  nixpkgs.config.allowUnfree = lib.mkForce true;
-
   environment.shells = with pkgs; [
     bash
     fish
