@@ -13,6 +13,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    easyeffects
     editorconfig-core-c
     netbird-ui
     pulumi-bin
