@@ -2,6 +2,7 @@
   services = {
     nomad = {
       enable = true;
+      dropPrivileges = false;
       enableDocker = true;
       extraPackages = with pkgs; [cni-plugins];
       package = pkgs.nomad_1_6;
