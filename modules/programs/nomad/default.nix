@@ -43,6 +43,9 @@
         client = {
           enabled = true;
           cni_path = "${pkgs.cni-plugins}/bin";
+          artifact = {
+            disable_filesystem_isolation = true;
+          };
         };
 
         plugin."docker".config = {
