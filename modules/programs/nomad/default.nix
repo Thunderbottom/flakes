@@ -41,6 +41,7 @@
 
         client = {
           enabled = true;
+          cni_path = "${pkgs.cni-plugins}/bin";
         };
 
         plugin."docker".config = {
