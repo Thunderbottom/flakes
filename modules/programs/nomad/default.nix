@@ -4,7 +4,7 @@
       enable = true;
       dropPrivileges = false;
       enableDocker = true;
-      extraPackages = with pkgs; [cni-plugins];
+      extraPackages = with pkgs; [cni-plugins cacert];
       package = pkgs.nomad_1_6;
       settings = {
         datacenter = "trench";
