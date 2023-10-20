@@ -5,12 +5,10 @@
     ../../modules/nixos/core-server.nix
     ../../modules/nixos/user-group.nix
     ../../modules/programs/nixvim
+    ../../modules/programs/nomad
   ];
 
-  environment.systemPackages = with pkgs; [
-    nomad_1_6
-    tailscale
-  ];
+  environment.systemPackages = with pkgs; [tailscale];
 
   services = {
     unifi = {
