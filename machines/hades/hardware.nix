@@ -5,6 +5,7 @@
   config,
   lib,
   modulesPath,
+  pkgs,
   ...
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
@@ -17,6 +18,7 @@
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/312b4d84-64dc-4721-9be3-bb0148199b16";
     };
     kernelModules = ["kvm-intel" "iwlwifi"];
+    kernelPackages = pkgs.linuxPackages_zen;
     # Use the systemd-boot EFI boot loader.
     loader = {
       efi.canTouchEfiVariables = true;
