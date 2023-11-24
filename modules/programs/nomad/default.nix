@@ -4,7 +4,7 @@
       enable = true;
       dropPrivileges = false;
       enableDocker = true;
-      extraPackages = with pkgs; [cni-plugins cacert];
+      extraPackages = with pkgs; [cni-plugins] ++ stdenv.initialPath;
       package = pkgs.nomad_1_6;
       settings = {
         datacenter = "trench";
@@ -45,6 +45,14 @@
           cni_path = "${pkgs.cni-plugins}/bin";
           artifact = {
             disable_filesystem_isolation = true;
+          };
+          # Required for `exec` driver deployments
+          # bind-mounts the nix store to resolve symlinks
+          host_volume = {
+            "nix" = {
+              path = "/nix";
+              read_only = true;
+            };
           };
         };
 
