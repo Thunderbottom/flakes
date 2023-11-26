@@ -27,6 +27,7 @@ in {
     database = {
       type = "postgres";
       passwordFile = config.age.secrets.gitea.path;
+      user = config.services.gitea.user;
     };
 
     settings = {
