@@ -63,7 +63,10 @@ in {
     };
   };
 
-  security.acme.acceptTerms = true;
+  security.acme = {
+    acceptTerms = true;
+    email = "chinmaydpai@gmail.com";
+  };
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
