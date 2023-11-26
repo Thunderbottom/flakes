@@ -17,6 +17,7 @@
         inputs.emacs-overlay.overlay
         (_: prev: {
           inherit (inputs.devenv.packages.${prev.system}) devenv;
+          inherit (inputs.agenix.packages.${prev.system}) agenix;
           inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;
           inherit (inputs.nil.packages.${prev.system}) nil;
           intel-vaapi-driver = prev.intel-vaapi-driver.override {enableHybridCodec = true;};
