@@ -7,6 +7,7 @@
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 10;
 
   environment.systemPackages = with pkgs; [
+    agenix
     bottom
     busybox
     curl

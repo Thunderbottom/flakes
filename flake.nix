@@ -25,6 +25,7 @@
     };
 
     commons = [
+      inputs.agenix.nixosModules.default
       inputs.nh.nixosModules.default
       inputs.nixvim.nixosModules.nixvim
     ];
@@ -83,6 +84,9 @@
   };
 
   inputs = {
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.home-manager.follows = "nixpkgs";
     devenv.url = "github:cachix/devenv";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     firefox-nightly.url = "github:nix-community/flake-firefox-nightly";

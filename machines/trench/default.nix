@@ -6,6 +6,7 @@
     ../../modules/nixos/user-group.nix
     ../../modules/programs/nixvim
     ../../modules/programs/nomad
+    ../../modules/programs/gitea
   ];
 
   environment.systemPackages = with pkgs; [tailscale];
