@@ -1,21 +1,20 @@
-{config, ...}:
-let
+{config, ...}: let
   domain = "git.deku.moe";
   httpPort = 3001;
   sshPort = 22022;
 in {
   age.secrets.gitea = {
-    file = "../../../secrets/gitea.age";
+    file = ../../../secrets/gitea.age;
     owner = config.services.gitea.user;
     group = config.services.gitea.user;
   };
 
   services.postgresql = {
-    ensureDatabases = [ config.services.gitea.user ];
+    ensureDatabases = [config.services.gitea.user];
     ensureUsers = [
       {
         name = config.services.gitea.database.user;
-        ensurePermissions."DATABASE ${config.services.gitea.database.name}" = "ALL PRIVILEGES";
+        ensureDBOwnership = true;
       }
     ];
   };
