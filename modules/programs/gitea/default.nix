@@ -9,16 +9,6 @@ in {
     group = config.services.gitea.user;
   };
 
-  services.postgresql = {
-    ensureDatabases = [config.services.gitea.user];
-    ensureUsers = [
-      {
-        name = config.services.gitea.database.user;
-        ensureDBOwnership = true;
-      }
-    ];
-  };
-
   services.gitea = {
     enable = true;
     lfs.enable = true;
@@ -27,6 +17,7 @@ in {
     database = {
       type = "postgres";
       passwordFile = config.age.secrets.gitea.path;
+      name = config.services.gitea.user;
       user = config.services.gitea.user;
     };
 
@@ -63,6 +54,15 @@ in {
       };
     };
   };
+
+  users.users.git = {
+    description = "Gitea Service";
+    hme = config.services.gitea.stateDir;
+    useDefaultShell = true;
+    group = "git";
+    isSystemUser = true;
+  };
+  users.groups.git = {};
 
   security.acme = {
     acceptTerms = true;
