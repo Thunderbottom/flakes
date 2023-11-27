@@ -1,5 +1,6 @@
 {config, ...}: let
   domain = "git.deku.moe";
+  sshDomain = "git-ssh.deku.moe";
   httpPort = 3001;
   sshPort = 22022;
 in {
@@ -33,6 +34,7 @@ in {
         HTTP_ADDR = "127.0.0.1";
         HTTP_PORT = httpPort;
         ROOT_URL = "https://${domain}/";
+        SSH_DOMAIN = sshDomain;
         SSH_PORT = sshPort;
       };
       service = {
