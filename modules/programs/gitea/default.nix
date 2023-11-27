@@ -59,7 +59,7 @@ in {
 
   users.users.git = {
     description = "Gitea Service";
-    hme = config.services.gitea.stateDir;
+    home = config.services.gitea.stateDir;
     useDefaultShell = true;
     group = "git";
     isSystemUser = true;
