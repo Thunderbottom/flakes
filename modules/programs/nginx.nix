@@ -1,7 +1,7 @@
 {...}: {
   security.acme = {
     acceptTerms = true;
-    email = "chinmaydpai@gmail.com";
+    defaults.email = "chinmaydpai@gmail.com";
   };
 
   services.nginx = {
