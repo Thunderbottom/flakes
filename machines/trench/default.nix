@@ -4,9 +4,11 @@
     ../../modules/commons
     ../../modules/nixos/core-server.nix
     ../../modules/nixos/user-group.nix
+    ../../modules/programs/nginx.nix
     ../../modules/programs/nixvim
     ../../modules/programs/nomad
     ../../modules/programs/gitea
+    ../../modules/programs/vaultwarden
   ];
 
   environment.systemPackages = with pkgs; [tailscale];

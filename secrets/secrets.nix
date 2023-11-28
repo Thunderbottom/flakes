@@ -10,4 +10,5 @@ let
   users = thunderbottom ++ codingcoffee;
 in {
   "gitea.age".publicKeys = users ++ servers;
+  "vaultwarden.age".publicKeys = users ++ servers;
 }
