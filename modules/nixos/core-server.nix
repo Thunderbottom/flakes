@@ -83,4 +83,6 @@
     # Required for containers with `--restart=always`
     enableOnBoot = true;
   };
+
+  zramSwap.enable = true;
 }
