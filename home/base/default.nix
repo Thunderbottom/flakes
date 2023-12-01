@@ -23,6 +23,7 @@
       enable = true;
       interactiveShellInit = ''
         set fish_greeting
+        ${pkgs.nix-index}/etc/profile.d/command-not-found.sh | source
         ${pkgs.starship}/bin/starship init fish | source
         ${pkgs.zoxide}/bin/zoxide init fish | source
       '';
@@ -56,6 +57,11 @@
           true-color = "always";
         };
       };
+    };
+
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
     };
 
     # Shell Prompt

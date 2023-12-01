@@ -9,6 +9,7 @@
     ../../modules/programs/nomad
     ../../modules/programs/gitea
     ../../modules/programs/vaultwarden
+    ../../modules/sites/maych-in.nix
   ];
 
   environment.systemPackages = with pkgs; [tailscale];

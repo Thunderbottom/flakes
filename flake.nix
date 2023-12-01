@@ -19,6 +19,7 @@
           inherit (inputs.devenv.packages.${prev.system}) devenv;
           inherit (inputs.agenix.packages.${prev.system}) agenix;
           inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;
+          inherit (inputs.maych-in.packages.${prev.system}) maych-in;
           inherit (inputs.nil.packages.${prev.system}) nil;
           intel-vaapi-driver = prev.intel-vaapi-driver.override {enableHybridCodec = true;};
         })
@@ -93,6 +94,8 @@
     firefox-nightly.url = "github:nix-community/flake-firefox-nightly";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/main.tar.gz";
+    maych-in.inputs.nixpkgs.follows = "nixpkgs";
     nh.url = "github:viperML/nh";
     nil.url = "github:oxalica/nil";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
