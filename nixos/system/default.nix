@@ -32,7 +32,7 @@
     enableDefaultPackages = false;
     fontDir.enable = true;
     packages = with pkgs; [
-      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono" "SourceCodePro" "UbuntuMono"];})
+      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono" "NerdFontsSymbolsOnly" "SourceCodePro" "UbuntuMono"];})
       fira
       fira-go
       liberation_ttf
