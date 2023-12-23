@@ -35,6 +35,7 @@
         [
           ../nixos
           inputs.agenix.nixosModules.default
+          inputs.auto-cpufreq.nixosModules.default
           inputs.nixvim.nixosModules.nixvim
         ]
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);

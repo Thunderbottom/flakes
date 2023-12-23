@@ -46,6 +46,8 @@
     kernelModules = ["kvm-amd"];
   };
 
+  services.netdata.enable = true;
+
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/5cabc339-898c-4604-9bfc-0a2cf17e44ca";

@@ -37,6 +37,8 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
+    auto-cpufreq.url = "github:adnanhodzic/auto-cpufreq";
+    auto-cpufreq.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     firefox-nightly.url = "github:nix-community/flake-firefox-nightly";
     home-manager.url = "github:nix-community/home-manager";

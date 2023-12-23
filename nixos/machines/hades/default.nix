@@ -7,6 +7,7 @@
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
     ../../system/hardware/boot.nix
+    ../../system/hardware/yubico.nix
   ];
 
   networking = {
@@ -22,6 +23,7 @@
     firewall.enable = false;
   };
 
+  services.mullvad-vpn.enable = true;
   hardware.bluetooth.enable = true;
   virtualisation.docker.storageDriver = "btrfs";
 
@@ -32,6 +34,20 @@
     };
     kernelModules = ["kvm-intel" "iwlwifi"];
     kernelPackages = pkgs.linuxPackages_latest;
+  };
+
+  services.power-profiles-daemon.enable = false;
+  programs.auto-cpufreq.enable = true;
+  programs.auto-cpufreq.settings = {
+    charger = {
+      governor = "performance";
+      turbo = "auto";
+    };
+
+    battery = {
+      governor = "powersave";
+      turbo = "auto";
+    };
   };
 
   fileSystems = {
