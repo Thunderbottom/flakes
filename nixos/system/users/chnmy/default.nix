@@ -8,9 +8,7 @@
   ifExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
   imports =
-    [
-      ../../services/nixvim.nix
-    ]
+    []
     ++ lib.optionals (desktop != null) [
       ../../services/emacs.nix
     ];
@@ -30,8 +28,16 @@ in {
     ]
     ++ lib.optionals (desktop != null) [
       easyeffects
+      logseq
       netbird-ui
     ];
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   services = {
     netbird.enable = true;
