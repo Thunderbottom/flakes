@@ -17,13 +17,16 @@
       interactiveShellInit = ''
         set fish_greeting
         ${pkgs.nix-index}/etc/profile.d/command-not-found.sh | source
-        ${pkgs.starship}/bin/starship init fish | source
         ${pkgs.zoxide}/bin/zoxide init fish | source
       '';
       plugins = [
         {
           inherit (pkgs.fishPlugins.autopair) src;
           name = "autopair";
+        }
+        {
+          inherit (pkgs.fishPlugins.pure) src;
+          name = "pure";
         }
       ];
     };
@@ -53,24 +56,6 @@
       enable = true;
       enableFishIntegration = true;
     };
-    # TODO: replace?
-    # Shell Prompt
-    starship = {
-      enable = true;
-      settings = {
-        gcloud.disabled = true;
-        shlvl.disabled = false;
-        username.show_always = true;
-        nix_shell = {
-          format = "via [☃️ $state( \($name\))](bold blue) ";
-          impure_msg = "[impure shell](bold red)";
-          pure_msg = "[pure shell](bold green)";
-          symbol = "";
-          unknown_msg = "[unknown shell](bold yellow)";
-        };
-      };
-    };
-    # Terminal multiplexer
     tmux = {
       enable = true;
       shortcut = "a";
