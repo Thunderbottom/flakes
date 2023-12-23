@@ -20,10 +20,9 @@ in {
     ++ lib.optional (desktop != null) ./system/desktop;
 
   home = {
-    # TODO: remove or keep?
-    # activation.report-changes = config.lib.dag.entryAnywhere ''
-    #   ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
-    # '';
+    activation.report-changes = config.lib.dag.entryAnywhere ''
+      ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+    '';
     homeDirectory =
       if isDarwin
       then "/Users/${username}"
@@ -63,7 +62,7 @@ in {
     package = pkgs.nix;
     settings = {
       auto-optimise-store = true;
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "auto-allocate-uids"];
       # Avoid unwanted garbage collection when using nix-direnv
       keep-outputs = true;
       keep-derivations = true;

@@ -72,7 +72,7 @@
     package = pkgs.nixUnstable;
     settings = {
       auto-optimise-store = true;
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "auto-allocate-uids"];
       # Avoid unwanted garbage collection when using nix-direnv
       keep-outputs = true;
       keep-derivations = true;
@@ -91,6 +91,14 @@
     enableOnBoot = true;
   };
 
-  system.stateVersion = stateVersion;
+  system = {
+    activationScripts.diff = {
+      supportsDryActivation = true;
+      text = ''
+        ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+      '';
+    };
+    stateVersion = stateVersion;
+  };
   zramSwap.enable = true;
 }
