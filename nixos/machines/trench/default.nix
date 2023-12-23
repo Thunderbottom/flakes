@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    inputs.nixos-hardware.commons.cpu.amd
+    inputs.nixos-hardware.common.cpu.amd
     ../../system/hardware/boot.nix
     ../../system/hardware/initrd-luks.nix
     ../../system/services/nginx.nix
