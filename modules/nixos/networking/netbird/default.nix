@@ -17,9 +17,6 @@
 
       # ref: https://github.com/NixOS/nixpkgs/issues/113589
       wireguard.enable = true;
-
-      # netbird requires iproute2 route tables.
-      # iproute2.enable = true;
     };
 
     services.netbird.enable = true;
