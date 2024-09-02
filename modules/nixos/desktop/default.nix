@@ -46,10 +46,6 @@
     services.xserver.excludePackages = [pkgs.xterm];
     services.xserver.desktopManager.xterm.enable = false;
 
-    # Enable profile-sync-daemon for browsers.
-    # ref: https://wiki.archlinux.org/title/profile-sync-daemon
-    services.psd.enable = true;
-
     # Add udev rules for ADB.
     services.udev.packages = [pkgs.android-udev-rules];
 
