@@ -10,6 +10,11 @@
         root-password.file = ./secrets/machines/bicboye/root-password.age;
       };
     };
+    monitoring = {
+      grafana = {
+        password.file = ./secrets/monitoring/grafana/password.age;
+      };
+    };
     services = {
       gitea = {
         password.file = ./secrets/services/gitea/password.age;
@@ -19,6 +24,9 @@
       };
       paperless = {
         password.file = ./secrets/services/paperless/password.age;
+      };
+      unifi-unpoller = {
+        password.file = ./secrets/services/unifi-unpoller/password.age;
       };
       vaultwarden = {
         password.file = ./secrets/services/vaultwarden/password.age;
