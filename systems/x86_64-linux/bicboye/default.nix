@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   userdata,
@@ -12,14 +13,11 @@
   networking = {
     hostName = "bicboye";
     useDHCP = lib.mkDefault false;
-    interfaces.enp6s0 = {
+    interfaces.enp2s0 = {
       useDHCP = lib.mkDefault true;
       wakeOnLan.enable = true;
     };
-    firewall.allowedTCPPorts = [
-      80
-      443
-    ];
+    firewall.allowedTCPPorts = [80 443];
   };
 
   # Enable weekly btrfs auto-scrub.
@@ -35,33 +33,93 @@
 
   # TODO: move to module
   security.acme.defaults.email = "chinmaydpai@gmail.com";
+  security.dhparams = {
+    enable = true;
+    params.nginx = {};
+  };
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
     recommendedTlsSettings = true;
+    sslDhparam = config.security.dhparams.params.nginx.path;
+
+    # Disable default_server access and return HTTP 444.
+    appendHttpConfig = ''
+      server {
+        listen 80 http2 default_server;
+        listen 443 ssl http2 default_server;
+
+        ssl_reject_handshake on;
+        return 444;
+      }
+    '';
   };
 
   snowflake = {
     stateVersion = "24.05";
+
+    extraPackages = with pkgs; [
+      nmap
+      recyclarr
+    ];
 
     core.docker.enable = true;
     core.docker.storageDriver = "btrfs";
     core.security.sysctl.enable = lib.mkForce false;
 
     networking.networkManager.enable = true;
+    networking.resolved.enable = true;
 
     hardware.initrd-luks = {
       enable = true;
       authorizedKeys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
       ];
       availableKernelModules = ["r8169"];
     };
 
+    monitoring = {
+      enable = true;
+      grafana = {
+        domain = "lens.deku.moe";
+        adminPasswordFile = userdata.secrets.monitoring.grafana.password;
+      };
+      victoriametrics.extraPrometheusConfig = [
+        {
+          job_name = "unpoller";
+          static_configs = [
+            {
+              targets = ["127.0.0.1:${toString config.services.prometheus.exporters.unpoller.port}"];
+            }
+          ];
+        }
+        {
+          job_name = "router";
+          static_configs = [
+            {
+              targets = ["192.168.69.1:9100"];
+            }
+          ];
+          relabel_configs = [
+            {
+              source_labels = ["__address__"];
+              target_label = "instance";
+              regex = "([^:]+)(:[0-9]+)?";
+              replacement = "openwrt";
+            }
+          ];
+        }
+      ];
+    };
+
     services = {
+      arr.enable = true;
+
       gitea = {
         enable = true;
         domain = "git.deku.moe";
@@ -73,6 +131,11 @@
         enable = true;
         domain = "flux.deku.moe";
         adminTokenFile = userdata.secrets.services.miniflux.password;
+      };
+
+      ntfy-sh = {
+        enable = true;
+        domain = "ntfy.deku.moe";
       };
 
       paperless = {
@@ -93,7 +156,13 @@
         package = pkgs.maych-in;
         domain = "maych.in";
       };
-      unifi-controller.enable = true;
+      unifi-controller = {
+        enable = true;
+        unpoller = {
+          enable = true;
+          passwordFile = userdata.secrets.services.unifi-unpoller.password;
+        };
+      };
     };
 
     user = {
@@ -105,6 +174,8 @@
       extraAuthorizedKeys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
       ];
     };
   };
