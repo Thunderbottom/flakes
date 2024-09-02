@@ -1,5 +1,8 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  ...
+}: {
   options.snowflake.services.gitea = {
     enable = lib.mkEnableOption "Enable gitea service";
 
@@ -60,7 +63,7 @@
           HTTP_ADDR = "127.0.0.1";
           HTTP_PORT = config.snowflake.services.gitea.httpPort;
           ROOT_URL = "https://${config.snowflake.services.gitea.domain}";
-          SSH_DOMAIN = "https://${config.snowflake.services.gitea.sshDomain}";
+          SSH_DOMAIN = config.snowflake.services.gitea.sshDomain;
           SSH_PORT = config.snowflake.services.gitea.sshPort;
         };
         service = {
@@ -81,7 +84,7 @@
     };
 
     networking.firewall = lib.mkIf config.networking.firewall.enable {
-      allowedTCPPorts = [ config.snowflake.services.gitea.sshPort ];
+      allowedTCPPorts = [config.snowflake.services.gitea.sshPort];
     };
 
     users.users.git = {
@@ -91,7 +94,7 @@
       group = "git";
       isSystemUser = true;
     };
-    users.groups.git = { };
+    users.groups.git = {};
 
     services.nginx = {
       virtualHosts = {
