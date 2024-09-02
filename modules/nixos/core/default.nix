@@ -24,9 +24,9 @@
 
   config = {
     console = {
+      font = "Lat2-Terminus16";
       keyMap = lib.mkDefault "us";
       useXkbConfig = true;
-      font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
     };
 
     # Enable all snowflake core modules.
@@ -46,7 +46,6 @@
       kernelParams = [
         "pcie_aspm.policy=performance"
         "nmi_watchdog=0"
-        "udev.log_level=3"
       ];
 
       loader = {
