@@ -3,58 +3,60 @@ _: {
     initrd = {
       availableKernelModules = [
         "xhci_pci"
-        "xhci_hcd"
+        "thunderbolt"
         "nvme"
         "usb_storage"
         "sd_mod"
       ];
-      luks.devices."cryptroot".device = "/dev/disk/by-uuid/312b4d84-64dc-4721-9be3-bb0148199b16";
-      luks.devices."cryptroot".preLVM = true;
+      luks.devices."cryptroot".device = "/dev/disk/by-uuid/9de352ea-128f-4d56-a720-36d81dfd9b92";
     };
     kernelModules = [
       "kvm-intel"
       "thinkpad_acpi"
-      "iwlwifi"
-      "i915"
+      # "iwlwifi"
+      "xe"
     ];
-    blacklistedKernelModules = [
-      "iTCO_wdt"
+    kernelParams = [
+      "quiet"
+      "xe.force_probe=7d55"
+      "i915.force_probe=!7d55"
+      # "resume_offset=2465529"
+      "intel_pstate=active"
+      "thinkpad_acpi.fan_control=1"
     ];
-    kernelParams = ["resume_offset=2465529" "intel_pstate=active" "i915.enable_gvt=1" "i915.enable_guc=3" "thinkpad_acpi.fan_control=1"];
-    resumeDevice = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
-    supportedFilesystems = ["btrfs"];
+    # resumeDevice = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
   };
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
+        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
         "subvol=@"
-        "discard=async"
       ];
       neededForBoot = true;
     };
 
     "/home" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
+        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
         "subvol=@home"
-        "discard=async"
       ];
     };
 
     "/.snapshots" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
@@ -62,38 +64,37 @@ _: {
         "noatime"
         "ssd"
         "subvol=@snapshots"
-        "discard=async"
       ];
     };
 
     "/var/log" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
+        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
         "subvol=@log"
-        "discard=async"
       ];
     };
 
     "/var/cache" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
+        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
         "subvol=@cache"
-        "discard=async"
       ];
     };
 
     "/etc/nixos" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
@@ -105,32 +106,34 @@ _: {
     };
 
     "/nix" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
+      device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
       fsType = "btrfs";
       options = [
         "defaults"
+        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
         "subvol=@nix-store"
-        "discard=async"
       ];
     };
 
+    # TODO: setup swap
     # ref: https://sawyershepherd.org/post/hibernating-to-an-encrypted-swapfile-on-btrfs-with-nixos/
-    "/swap" = {
-      device = "/dev/disk/by-uuid/d5c21883-f0e6-4e7a-b9a5-ee0bf4780ec5";
-      fsType = "btrfs";
-      options = [
-        "subvol=@swap"
-        "noatime"
-      ];
-    };
+    # "/swap" = {
+    #   device = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
+    #   fsType = "btrfs";
+    #   options = [
+    #     "subvol=@swap"
+    #     "noatime"
+    #   ];
+    # };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/90A5-35FF";
+      device = "/dev/disk/by-uuid/7FBB-9E80";
       fsType = "vfat";
+      options = ["fmask=0022" "dmask=0022"];
     };
   };
-  swapDevices = [{device = "/swap/swapfile";}];
+  swapDevices = [];
 }

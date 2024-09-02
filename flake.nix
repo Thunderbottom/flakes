@@ -19,14 +19,14 @@
 
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.age
+        chaotic.nixosModules.default
         disko.nixosModules.disko
-        nur.nixosModules.nur
         srvos.nixosModules.common
         srvos.nixosModules.mixins-systemd-boot
       ];
 
       systems.hosts.thonkpad.modules = [
-        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
+        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-12th-gen
         inputs.lanzaboote.nixosModules.lanzaboote
       ];
       systems.hosts.thonkpad.specialArgs = {
@@ -38,6 +38,10 @@
         inherit userdata;
       };
       systems.hosts.smolboye.modules = [inputs.srvos.nixosModules.server];
+
+      homes.modules = with inputs; [
+        nur.hmModules.nur
+      ];
 
       overlays = [(_: prev: {inherit (inputs.maych-in.packages.${prev.system}) maych-in;})];
 
@@ -69,6 +73,8 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
+
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
