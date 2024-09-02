@@ -20,7 +20,6 @@
       autoPrune = {
         enable = true;
       };
-      extraOptions = "--iptables=False";
       inherit (config.snowflake.core.docker) storageDriver;
     };
 
