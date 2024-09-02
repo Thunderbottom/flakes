@@ -1,0 +1,12 @@
+{
+  inputs,
+  nixosModules,
+  overlays,
+  userdata,
+  ...
+}: let
+  helpers = import ./helpers.nix {inherit inputs nixosModules overlays userdata;};
+in {
+  inherit (helpers) mkHost;
+  inherit (helpers) forAllSystems;
+}
