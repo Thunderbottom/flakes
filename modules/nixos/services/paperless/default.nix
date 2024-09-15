@@ -42,7 +42,7 @@
         settings = {
           PAPERLESS_URL = "https://${cfg.domain}";
           PAPERLESS_OCR_LANGUAGE = "eng";
-          PAPEERLESS_TASK_WORKERS = 4;
+          PAPERLESS_TASK_WORKERS = 4;
           PAPERLESS_THREADS_PER_WORKER = 4;
           PAPERLESS_ADMIN_USER = cfg.adminUser;
           PAPERLESS_FILENAME_FORMAT = "{created_year}/{document_type}/{title}";
