@@ -1,4 +1,8 @@
-_: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   boot = {
     initrd = {
       availableKernelModules = [
@@ -16,6 +20,7 @@ _: {
       "iwlwifi"
       "xe"
     ];
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_testing;
     kernelParams = [
       # NixOS produces many wakeups per second, which is bad for battery life.
       # This disables the timer tick on the last 7 cores.
