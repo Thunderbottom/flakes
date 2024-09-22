@@ -9,20 +9,20 @@ _: {
         "sd_mod"
       ];
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/9de352ea-128f-4d56-a720-36d81dfd9b92";
+      luks.devices."cryptroot".bypassWorkqueues = true;
     };
     kernelModules = [
       "kvm-intel"
-      "thinkpad_acpi"
-      # "iwlwifi"
+      "iwlwifi"
       "xe"
     ];
     kernelParams = [
-      "quiet"
-      "xe.force_probe=7d55"
+      # NixOS produces many wakeups per second, which is bad for battery life.
+      # This disables the timer tick on the last 7 cores.
+      "nohz_full=14-21"
       "i915.force_probe=!7d55"
+      "xe.force_probe=7d55"
       # "resume_offset=2465529"
-      "intel_pstate=active"
-      "thinkpad_acpi.fan_control=1"
     ];
     # resumeDevice = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
   };

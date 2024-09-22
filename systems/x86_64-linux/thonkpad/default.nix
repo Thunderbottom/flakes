@@ -6,8 +6,13 @@
 }: {
   imports = [./hardware.nix];
 
+  chaotic.mesa-git.enable = true;
+
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+  hardware.graphics.extraPackages = with pkgs; [
+    mesa_git.opencl
+  ];
 
   networking.hostName = "thonkpad";
   networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
@@ -37,7 +42,6 @@
     extraPackages = with pkgs; [
       easyeffects
       glibc
-      logseq
       obsidian
       piper
       # terraform
