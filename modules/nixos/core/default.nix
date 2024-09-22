@@ -24,7 +24,7 @@
 
   config = {
     console = {
-      font = "Lat2-Terminus16";
+      font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
       keyMap = lib.mkDefault "us";
       useXkbConfig = true;
     };
