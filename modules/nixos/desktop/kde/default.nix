@@ -10,21 +10,12 @@
 
   config = lib.mkIf config.snowflake.desktop.kde.enable {
     services = {
-      libinput.enable = true;
-
-      xserver = {
-        enable = true;
-      };
       displayManager.sddm = {
         enable = true;
         wayland.enable = true;
         wayland.compositor = "kwin";
       };
       desktopManager.plasma6.enable = true;
-
-      # Enable fingerprint authentication.
-      # Requires fingerprint registered using `fprint-enroll` to work.
-      fprintd.enable = true;
     };
 
     # Remove bloatware that we do not require.
@@ -39,11 +30,7 @@
     # SDDM does not work well with fingerprint authentication.
     security.pam.services.login.fprintAuth = false;
 
-    # Additional configuration for XDG Portal.
-    xdg.portal.wlr.enable = true;
-    xdg.portal.xdgOpenUsePortal = true;
     xdg.portal.extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
       xdg-desktop-portal-kde
     ];
 

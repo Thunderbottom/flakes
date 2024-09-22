@@ -4,7 +4,10 @@
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.enable = lib.mkEnableOption "Enable core Desktop Environment configuration";
+  options.snowflake.desktop = {
+    enable = lib.mkEnableOption "Enable core Desktop Environment configuration";
+    fingerprint.enable = lib.mkEnableOption "Enable fingerprint support for Desktop Environments";
+  };
 
   config = lib.mkIf config.snowflake.desktop.enable {
     snowflake = {
@@ -41,6 +44,12 @@
       LIBVA_DRIVER_NAME = "iHD";
     };
 
+    # Enable fingerprint authentication.
+    # Requires fingerprint registered using `fprint-enroll` to work.
+    services.fprintd.enable = true;
+    services.libinput.enable = true;
+
+    services.xserver.enable = true;
     # Prevents xterm from being installed.
     # Prefer installing a custom terminal emulator instead.
     services.xserver.excludePackages = [pkgs.xterm];
@@ -53,6 +62,13 @@
     # Additional configuration will be done through individual
     # desktop environment configurations.
     xdg.portal.enable = true;
+    # Additional configuration for XDG Portal.
+    xdg.portal.wlr.enable = true;
+    xdg.portal.xdgOpenUsePortal = true;
+    xdg.portal.extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-kde
+    ];
 
     # Set environment variables for the system.
     environment.variables = {

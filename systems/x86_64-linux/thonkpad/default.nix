@@ -54,6 +54,7 @@
     core.docker.storageDriver = "btrfs";
 
     desktop.enable = true;
+    desktop.fingerprint.enable = true;
     desktop.kde.enable = true;
 
     gaming.steam.enable = true;
