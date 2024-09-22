@@ -4,8 +4,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options.snowflake.core.nix = {
     enable = lib.mkEnableOption "Enable core nix configuration";
   };
@@ -22,13 +21,16 @@
 
       # Add each flake input as a registry to make nix3 commands
       # consistent with nix flakes.
-      registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
 
       # Add inputs to system's legacy channels.
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
       # Use the latest, unstable version of nix.
-      package = pkgs.nixVersions.git;
+      package = pkgs.nixVersions.nix_2_23;
+      # TODO: switch back to nix git. Current version has a security issue that allows
+      # remote code execution.
+      # package = pkgs.nixVersions.git;
 
       settings = {
         # Accept flake configuration without prompting.
@@ -65,8 +67,8 @@
         warn-dirty = false;
 
         # Add cache substituters to allow fetching cached builds.
-        trusted-substituters = [ "https://nix-community.cachix.org" ];
-        trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
+        trusted-substituters = ["https://nix-community.cachix.org"];
+        trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
       };
     };
   };
