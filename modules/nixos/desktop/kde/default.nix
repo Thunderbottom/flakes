@@ -14,7 +14,6 @@
 
       xserver = {
         enable = true;
-        videoDrivers = ["intel"];
       };
       displayManager.sddm = {
         enable = true;
