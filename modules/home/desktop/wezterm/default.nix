@@ -4,8 +4,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options.snowflake.desktop.wezterm.enable = lib.mkEnableOption "Enable wezterm home configuration";
 
   config = lib.mkIf config.snowflake.desktop.wezterm.enable {
@@ -37,6 +36,8 @@
           color_scheme = "ayu",
           use_fancy_tab_bar = false,
           window_decorations = "NONE",
+
+          check_for_updates = false,
         }
       '';
     };
