@@ -35,7 +35,6 @@
         vaapiIntel
         libvdpau-va-gl
         vaapiVdpau
-        intel-ocl
         intel-media-driver
       ];
     };
@@ -65,10 +64,9 @@
     # Additional configuration for XDG Portal.
     xdg.portal.wlr.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
-    xdg.portal.extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-kde
-    ];
+
+    # Add bibata cursors everywhere because it looks cool.
+    environment.systemPackages = [pkgs.bibata-cursors];
 
     # Set environment variables for the system.
     environment.variables = {

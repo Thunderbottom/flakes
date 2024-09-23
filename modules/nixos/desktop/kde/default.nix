@@ -32,6 +32,7 @@
 
     xdg.portal.extraPortals = with pkgs; [
       xdg-desktop-portal-kde
+      xdg-desktop-portal-gtk
     ];
 
     snowflake.user.extraGroups = [
