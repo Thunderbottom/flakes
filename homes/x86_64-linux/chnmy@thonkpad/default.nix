@@ -90,7 +90,7 @@
         };
         # Fonts - make web pages follow system font
         "browser.display.use_document_fonts" = {
-          Value = 0;
+          Value = 1;
           Status = "locked";
         };
       };
@@ -189,10 +189,6 @@
         "media.rdd-ffmpeg.enabled" = true;
         "widget.dmabuf.force-enabled" = true;
         "svg.context-properties.content.enabled" = true;
-        "gnomeTheme.hideSingleTab" = true;
-        "gnomeTheme.bookmarksToolbarUnderTabs" = true;
-        "gnomeTheme.normalWidthTabs" = false;
-        "gnomeTheme.tabsAsHeaderbar" = false;
       };
     };
   };
