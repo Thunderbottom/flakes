@@ -25,11 +25,8 @@
     fileSystems = ["/"];
   };
 
-  services.system76-scheduler.enable = true;
-  services.system76-scheduler.settings.cfsProfiles.enable = true;
   # Power management, enable powertop and thermald.
   powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = lib.mkDefault "schedutil";
   services.thermald.enable = true;
 
   # TODO: remove, temporary for mongoDB build

@@ -20,13 +20,19 @@
       "iwlwifi"
       "xe"
     ];
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_testing;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
     kernelParams = [
       # NixOS produces many wakeups per second, which is bad for battery life.
       # This disables the timer tick on the last 7 cores.
       "nohz_full=14-21"
       "i915.force_probe=!7d55"
       "xe.force_probe=7d55"
+      "initcall_blacklist=simpledrm_platform_driver_init"
+      # This solves an issue with resume after suspend where the SSD goes into
+      # a read-only state. We trust some random, obscure Arch wiki article over
+      # actually trying to figure out why it might be so.
+      # ref: https://wiki.archlinux.org/title/Solid_state_drive/NVMe#Controller_failure_due_to_broken_suspend_support
+      "iommu=soft"
       # "resume_offset=2465529"
     ];
     # resumeDevice = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
