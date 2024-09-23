@@ -88,6 +88,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # NOTE: enable this to make hyprland work
+    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
