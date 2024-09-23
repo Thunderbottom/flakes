@@ -2,7 +2,7 @@ _: _self: super: let
   version = "0.29.4";
 in {
   netbird = super.netbird.override {
-    buildGoModule = args:
+    buildGo123Module = args:
       super.buildGo123Module (
         args
         // {
