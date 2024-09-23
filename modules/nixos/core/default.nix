@@ -42,9 +42,7 @@
       initrd.verbose = false;
       # Default to the latest kernel package.
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-      # Force performance policy for Active State Performance Management.
       kernelParams = [
-        "pcie_aspm.policy=performance"
         "nmi_watchdog=0"
       ];
 
