@@ -128,6 +128,11 @@
         dbPasswordFile = userdata.secrets.services.gitea.password;
       };
 
+      immich = {
+        enable = true;
+        domain = "photos.deku.moe";
+      };
+
       miniflux = {
         enable = true;
         domain = "flux.deku.moe";

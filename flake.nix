@@ -101,6 +101,7 @@
     nil.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-immich.url = "github:nixos/nixpkgs/d026e3fa1ad0d78d9072d9afdeae515d2d68acae";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     nur.url = "github:nix-community/nur";
