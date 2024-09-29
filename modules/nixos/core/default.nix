@@ -51,8 +51,8 @@
         # Use systemd-boot for all systems.
         systemd-boot = {
           enable = true;
-          # Show only last 10 configurations in the boot menu.
-          configurationLimit = lib.mkDefault 10;
+          # Show only last 5 configurations in the boot menu.
+          configurationLimit = lib.mkDefault 5;
         };
       };
     };
