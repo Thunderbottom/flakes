@@ -69,6 +69,7 @@
     core.docker.storageDriver = "btrfs";
     core.security.sysctl.enable = lib.mkForce false;
 
+    networking.firewall.enable = true;
     networking.networkManager.enable = true;
     networking.resolved.enable = true;
 
