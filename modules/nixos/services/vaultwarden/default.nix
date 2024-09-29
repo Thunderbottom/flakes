@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options.snowflake.services.vaultwarden = {
     enable = lib.mkEnableOption "Enable vaultwarden service with postgres and nginx";
 
@@ -19,10 +18,12 @@
     };
   };
 
-  config =
-    let
-      cfg = config.snowflake.services.vaultwarden;
-    in
+  # TODO: when upgrading stateVersion to 24.11, the data directory will
+  # change from /var/lib/bitwarden_rs to /var/lib/vaultwarden.
+  # We need to move the data and then change the backup service directory.
+  config = let
+    cfg = config.snowflake.services.vaultwarden;
+  in
     lib.mkIf cfg.enable {
       age.secrets.vaultwarden = {
         inherit (cfg.adminTokenFile) file;
@@ -53,7 +54,7 @@
         # NOTE: To upgrade postgresql to a newer version, refer:
         # https://nixos.org/manual/nixos/stable/#module-services-postgres-upgrading
         package = pkgs.postgresql_14;
-        ensureDatabases = [ "vaultwarden" ];
+        ensureDatabases = ["vaultwarden"];
         ensureUsers = [
           {
             name = "vaultwarden";
@@ -75,5 +76,9 @@
           };
         };
       };
+
+      snowflake.services.backups.vaultwarden.paths = [
+        "/var/lib/bitwarden_rs"
+      ];
     };
 }

@@ -63,5 +63,15 @@
           };
         };
       };
+
+      snowflake.services.backups.paperless.config = {
+        dynamicFilesFrom = let
+          path = config.services.paperless.dataDir;
+        in ''
+          mkdir -p ${path}/exported
+          ${path}/paperless-manage document_exporter ${path}/exported
+          echo ${path}/exported/
+        '';
+      };
     };
 }

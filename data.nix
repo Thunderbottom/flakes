@@ -16,6 +16,10 @@
       };
     };
     services = {
+      backups = {
+        environment.file = ./secrets/services/backups/environment.age;
+        password.file = ./secrets/services/backups/password.age;
+      };
       gitea = {
         password.file = ./secrets/services/gitea/password.age;
       };

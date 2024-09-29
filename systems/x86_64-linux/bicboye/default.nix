@@ -121,6 +121,13 @@
     services = {
       arr.enable = true;
 
+      backups = {
+        enable = true;
+        repository = "b2:restic-nix";
+        resticPasswordFile = userdata.secrets.services.backups.password;
+        resticEnvironmentFile = userdata.secrets.services.backups.environment;
+      };
+
       gitea = {
         enable = true;
         domain = "git.deku.moe";
