@@ -32,7 +32,7 @@
       # a read-only state. We trust some random, obscure Arch wiki article over
       # actually trying to figure out why it might be so.
       # ref: https://wiki.archlinux.org/title/Solid_state_drive/NVMe#Controller_failure_due_to_broken_suspend_support
-      "iommu=soft"
+      # "iommu=soft"
       # "resume_offset=2465529"
     ];
     # resumeDevice = "/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d";
