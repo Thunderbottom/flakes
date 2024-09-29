@@ -20,10 +20,11 @@
 
     # Remove bloatware that we do not require.
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
-      konsole
-      khelpcenter
-      kate
       elisa
+      kate
+      khelpcenter
+      konsole
+      plasma-browser-integration
     ];
 
     # Disable fprint authentication for login.
