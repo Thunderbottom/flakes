@@ -23,11 +23,11 @@
         disko.nixosModules.disko
         srvos.nixosModules.common
         srvos.nixosModules.mixins-systemd-boot
+        inputs.lanzaboote.nixosModules.lanzaboote
       ];
 
       systems.hosts.thonkpad.modules = [
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-12th-gen
-        inputs.lanzaboote.nixosModules.lanzaboote
       ];
       systems.hosts.thonkpad.specialArgs = {
         inherit userdata;
@@ -101,7 +101,6 @@
     nil.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-immich.url = "github:nixos/nixpkgs/d026e3fa1ad0d78d9072d9afdeae515d2d68acae";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     nur.url = "github:nix-community/nur";

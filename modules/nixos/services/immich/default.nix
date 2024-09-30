@@ -1,13 +1,9 @@
 {
   config,
-  inputs,
   lib,
+  pkgs,
   ...
 }: {
-  imports = [
-    "${inputs.nixpkgs-immich}/nixos/modules/services/web-apps/immich.nix"
-  ];
-
   options.snowflake.services.immich = {
     enable = lib.mkEnableOption "Enable immich service";
 
@@ -24,7 +20,7 @@
     lib.mkIf cfg.enable {
       services.immich = {
         enable = true;
-        package = inputs.nixpkgs-immich.legacyPackages.x86_64-linux.immich;
+        package = pkgs.immich;
         mediaLocation = "/storage/media/immich-library";
         port = 9121;
       };
