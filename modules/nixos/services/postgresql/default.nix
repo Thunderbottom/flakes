@@ -26,7 +26,7 @@
         package = cfg.package;
       };
 
-      snowflake.services.backup.config.postgresql = let
+      snowflake.services.backups.config.postgresql = let
         compressSuffix = ".zstd";
         compressCmd = "${pkgs.zstd}/bin/zstd -c";
 
