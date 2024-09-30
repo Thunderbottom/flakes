@@ -84,8 +84,8 @@ with lib; {
   in
     mkIf cfg.enable {
       age.secrets = {
-        restic-environment.file = cfg.resticEnvironment.file;
-        restic-password.file = cfg.resticPassword.file;
+        restic-environment.file = cfg.resticEnvironmentFile.file;
+        restic-password.file = cfg.resticPasswordFile.file;
       };
 
       services.restic.backups =
