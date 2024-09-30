@@ -158,6 +158,12 @@
         adminUser = "chinmay";
       };
 
+      postgresql = {
+        enable = true;
+        backup.enable = true;
+        upgrade.enable = true;
+      };
+
       vaultwarden = {
         enable = true;
         domain = "bw.deku.moe";

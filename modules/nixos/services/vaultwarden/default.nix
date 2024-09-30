@@ -51,9 +51,6 @@
       };
 
       services.postgresql = {
-        # NOTE: To upgrade postgresql to a newer version, refer:
-        # https://nixos.org/manual/nixos/stable/#module-services-postgres-upgrading
-        package = pkgs.postgresql_14;
         ensureDatabases = ["vaultwarden"];
         ensureUsers = [
           {
