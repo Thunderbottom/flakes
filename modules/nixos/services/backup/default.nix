@@ -3,9 +3,7 @@
   lib,
   ...
 }:
-with lib; let
-  inherit (utils.systemdUtils.unitOptions) unitOption;
-in {
+with lib; {
   options.snowflake.services.backups = {
     enable = mkEnableOption "Enable restic backup service";
 
@@ -27,7 +25,7 @@ in {
       default = {};
       type = types.attrsOf (
         types.submodule (
-          {_}: {
+          {lib, ...}: {
             options = {
               dynamicFilesFrom = mkOption {
                 type = types.nullOr types.str;
@@ -63,7 +61,6 @@ in {
               };
 
               timerConfig = mkOption {
-                type = types.attrsOf unitOption;
                 default = {
                   OnCalendar = "daily";
                 };

@@ -64,7 +64,7 @@
         };
       };
 
-      snowflake.services.backups.paperless.config = {
+      snowflake.services.backups.config.paperless = {
         dynamicFilesFrom = let
           path = config.services.paperless.dataDir;
         in ''

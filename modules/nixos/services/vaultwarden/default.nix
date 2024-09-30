@@ -77,7 +77,7 @@
         };
       };
 
-      snowflake.services.backups.vaultwarden.paths = [
+      snowflake.services.backups.config.vaultwarden.paths = [
         "/var/lib/bitwarden_rs"
       ];
     };
