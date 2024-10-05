@@ -28,7 +28,7 @@
           factor = "4";
         };
 
-        ignoreIPs =
+        ignoreIP =
           [
             "192.168.69.0/16"
             "172.16.0.0/12"
@@ -38,9 +38,11 @@
 
         jails = {
           DEFAULT = {
-            blocktype = "DROP";
-            bantime = "6h";
-            findtime = "6h";
+            settings = {
+              blocktype = "DROP";
+              bantime = lib.mkDefault "6h";
+              findtime = "6h";
+            };
           };
 
           sshd = {
@@ -56,10 +58,12 @@
           };
 
           port-scan = {
-            filter = "port-scan";
-            action = "iptables-allports[name=port-scan]";
-            bantime = 86400;
-            maxretry = 2;
+            settings = {
+              filter = "port-scan";
+              action = "iptables-allports[name=port-scan]";
+              bantime = 86400;
+              maxretry = 2;
+            };
           };
         };
       };
