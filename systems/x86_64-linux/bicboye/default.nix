@@ -102,6 +102,8 @@
         resticEnvironmentFile = userdata.secrets.services.backups.environment;
       };
 
+      fail2ban.enable = true;
+
       gitea = {
         enable = true;
         domain = "git.deku.moe";
@@ -155,6 +157,7 @@
         package = pkgs.maych-in;
         domain = "maych.in";
       };
+
       unifi-controller = {
         enable = true;
         unpoller = {
