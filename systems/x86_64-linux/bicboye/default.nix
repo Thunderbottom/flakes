@@ -31,32 +31,6 @@
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
 
-  # TODO: move to module
-  security.acme.defaults.email = "chinmaydpai@gmail.com";
-  security.dhparams = {
-    enable = true;
-    params.nginx = {};
-  };
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
-    recommendedTlsSettings = true;
-    sslDhparam = config.security.dhparams.params.nginx.path;
-
-    # Disable default_server access and return HTTP 444.
-    appendHttpConfig = ''
-      server {
-        listen 80 http2 default_server;
-        listen 443 ssl http2 default_server;
-
-        ssl_reject_handshake on;
-        return 444;
-      }
-    '';
-  };
-
   snowflake = {
     stateVersion = "24.05";
 
@@ -144,6 +118,12 @@
         enable = true;
         domain = "flux.deku.moe";
         adminTokenFile = userdata.secrets.services.miniflux.password;
+      };
+
+      nginx = {
+        enable = true;
+        acmeEmail = "chinmaydpai@gmail.com";
+        enableCloudflareRealIP = true;
       };
 
       ntfy-sh = {
