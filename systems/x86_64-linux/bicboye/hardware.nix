@@ -96,7 +96,7 @@ _: {
     };
 
     "/storage/media" = {
-      device = "/dev/disk/by-uuid/f8aadf58-d561-476b-a2c5-64b266dc5755";
+      device = "/dev/disk/by-uuid/8cf1e73e-39fe-4e5d-a2ec-652e51931f27";
       fsType = "btrfs";
       options = [
         "defaults"
