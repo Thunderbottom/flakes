@@ -55,12 +55,18 @@
               return 444;
             }
           ''
-          ++ lib.optionalString cfg.enableCloudflareRealIP ''
+          + lib.optionalString cfg.enableCloudflareRealIP ''
             ${lib.concatMapStrings (ip: "set_real_ip_from ${ip};\n")
               (lib.filter (line: line != "")
                 (lib.splitString "\n" ''
-                  ${lib.readFile (lib.fetchurl "https://www.cloudflare.com/ips-v4/")}
-                  ${lib.readFile (lib.fetchurl "https://www.cloudflare.com/ips-v6/")}
+                  ${lib.readFile (builtins.fetchurl {
+                    url = "https://www.cloudflare.com/ips-v4/";
+                    sha256 = "sha256-8Cxtg7wBqwroV3Fg4DbXAMdFU1m84FTfiE5dfZ5Onns=";
+                  })}
+                  ${lib.readFile (builtins.fetchurl {
+                    url = "https://www.cloudflare.com/ips-v6/";
+                    sha256 = "sha256-np054+g7rQDE3sr9U8Y/piAp89ldto3pN9K+KCNMoKk=";
+                  })}
                 ''))}
             real_ip_header CF-Connecting-IP;
           '';
