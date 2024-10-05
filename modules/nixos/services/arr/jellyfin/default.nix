@@ -58,8 +58,33 @@
             forceSSL = true;
             locations."/" = {
               proxyPass = "http://localhost:8096/";
+              extraConfig = ''
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+              '';
             };
           };
+        };
+      };
+
+      services.fail2ban.jails.jellyfin = {
+        enabled = true;
+        filter = "jellyfin";
+      };
+
+      environment.etc = {
+        jellyfin = {
+          target = "fail2ban/filter.d/jellyfin.conf";
+          text = ''
+            [INCLUDES]
+            before = common.conf
+
+            [Definition]
+            failregex = ^.*Authentication request for .* has been denied \(IP: "<ADDR>"\)\.
+            ignoreregex =
+            journalmatch = _SYSTEMD_UNIT=jellyfin.service
+          '';
         };
       };
     };

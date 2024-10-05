@@ -73,5 +73,22 @@
           echo ${path}/exported/
         '';
       };
+
+      services.fail2ban.jails.paperless = {
+        enabled = true;
+        filter = "paperless";
+      };
+
+      environment.etc = {
+        paperless-ngx = {
+          target = "fail2ban/filter.d/paperless.conf";
+          text = ''
+            [Definition]
+            failregex = Login failed for user `.*` from (?:IP|private IP) `<HOST>`\.$
+            ignoreregex =
+            journalmatch = _SYSTEMD_UNIT=paperless-web.service
+          '';
+        };
+      };
     };
 }

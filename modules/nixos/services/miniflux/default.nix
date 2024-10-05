@@ -1,5 +1,8 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  ...
+}: {
   options.snowflake.services.miniflux = {
     enable = lib.mkEnableOption "Enable miniflux service";
 
@@ -20,10 +23,9 @@
     };
   };
 
-  config =
-    let
-      cfg = config.snowflake.services.miniflux;
-    in
+  config = let
+    cfg = config.snowflake.services.miniflux;
+  in
     lib.mkIf cfg.enable {
       age.secrets.miniflux = {
         inherit (cfg.adminTokenFile) file;
@@ -49,12 +51,28 @@
               proxyPass = "http://localhost:${toString cfg.listenPort}";
               extraConfig = ''
                 proxy_redirect off;
-                proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
               '';
             };
           };
+        };
+      };
+
+      services.fail2ban.jails.miniflux = {
+        enabled = true;
+        filter = "miniflux";
+      };
+
+      environment.etc = {
+        miniflux = {
+          target = "fail2ban/filter.d/miniflux.conf";
+          text = ''
+            [Definition]
+            failregex = ^.*msg="[^"]*(Incorrect|Invalid) username or password[^"]*".*client_ip=<ADDR>
+            ignoreregex =
+            journalmatch = _SYSTEMD_UNIT=miniflux.service
+          '';
         };
       };
     };

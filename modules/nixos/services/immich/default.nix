@@ -47,5 +47,25 @@
           };
         };
       };
+
+      services.fail2ban.jails.immich = {
+        enabled = true;
+        filter = "immich";
+      };
+
+      environment.etc = {
+        immich = {
+          target = "fail2ban/filter.d/immich.conf";
+          text = ''
+            [INCLUDES]
+            before = common.conf
+
+            [Definition]
+            failregex = ^.*Username or password is incorrect\. Try again\. IP: <ADDR>\. Username:.*$
+            ignoreregex =
+            journalmatch = _SYSTEMD_UNIT=immich-server.service
+          '';
+        };
+      };
     };
 }

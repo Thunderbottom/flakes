@@ -22,5 +22,20 @@
         };
       };
     };
+    environment.etc = {
+      jellyseerr = {
+        target = "fail2ban/filter.d/jellyseerr.conf";
+        text = ''
+          [INCLUDES]
+          before = common.conf
+
+          [Definition]
+          failregex = ^.*\[warn\]\[API\]: Failed sign-in attempt using invalid Overseerr password {"ip":"<HOST>","email":
+                      ^.*\[warn\]\[Auth\]: Failed login attempt from user with incorrect Jellyfin credentials {"account":{"ip":"<HOST>","email":
+          ignoreregex =
+          journalmatch = _SYSTEMD_UNIT=jellyseerr.service
+        '';
+      };
+    };
   };
 }

@@ -77,5 +77,20 @@
       snowflake.services.backups.config.vaultwarden.paths = [
         "/var/lib/bitwarden_rs"
       ];
+
+      environment.etc = {
+        vaultwarden = {
+          target = "fail2ban/filter.d/vaultwarden.conf";
+          text = ''
+            [INCLUDES]
+            before = common.conf
+
+            [Definition]
+            failregex = ^.*Username or password is incorrect\. Try again\. IP: <ADDR>\. Username:.*$
+            ignoreregex =
+            journalmatch = _SYSTEMD_UNIT=vaultwarden.service
+          '';
+        };
+      };
     };
 }
