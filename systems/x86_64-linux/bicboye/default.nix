@@ -143,7 +143,6 @@
       postgresql = {
         enable = true;
         backup.enable = true;
-        upgrade.enable = true;
       };
 
       vaultwarden = {

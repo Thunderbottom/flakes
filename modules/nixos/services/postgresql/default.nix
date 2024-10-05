@@ -9,12 +9,11 @@
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.postgresql_14;
-      description = "Package to use as a root directory for the static site";
+      default = pkgs.postgresql_16;
+      description = "Package to use for the PostgreSQL service";
     };
 
     backup.enable = lib.mkEnableOption "Enable backup service for postgresql databases";
-    upgrade.enable = lib.mkEnableOption "Enable upgrade-pg-cluster script for postgresql";
   };
 
   config = let
@@ -60,38 +59,5 @@
             echo ${curFile}
           '';
         };
-
-      # NOTE: login with `sudo su -` and run `upgrade-pg-cluster` to perform
-      # the upgrade. Ensure that you run `VACUUMDB` commands after the upgrade,
-      # and then update the postgres package version in the service config.
-      environment.systemPackages = lib.mkIf cfg.upgrade.enable [
-        (let
-          newPostgres = pkgs.postgresql_16.withPackages (ps: [
-            # Immich requires pgvecto-rs
-            ps.pgvecto-rs
-          ]);
-        in
-          pkgs.writeScriptBin "upgrade-pg-cluster" ''
-            set -eux
-            # It's perhaps advisable to stop all services that depend on postgresql
-            systemctl stop postgresql
-
-            export NEWDATA="/var/lib/postgresql/${newPostgres.psqlSchema}"
-
-            export NEWBIN="${newPostgres}/bin"
-
-            export OLDDATA="${config.services.postgresql.dataDir}"
-            export OLDBIN="${config.services.postgresql.package}/bin"
-
-            install -d -m 0700 -o postgres -g postgres "$NEWDATA"
-            cd "$NEWDATA"
-            sudo -u postgres $NEWBIN/initdb -D "$NEWDATA"
-
-            sudo -u postgres $NEWBIN/pg_upgrade \
-              --old-datadir "$OLDDATA" --new-datadir "$NEWDATA" \
-              --old-bindir $OLDBIN --new-bindir $NEWBIN \
-              "$@"
-          '')
-      ];
     };
 }
