@@ -109,6 +109,11 @@
       };
     };
 
+    snowflake.services.backups.config.gitea.paths = [
+      config.services.gitea.repositoryRoot
+      config.services.gitea.lfs.contentDir
+    ];
+
     services.fail2ban.jails.gitea = {
       enabled = true;
       filter = "gitea";
