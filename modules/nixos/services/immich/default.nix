@@ -43,6 +43,16 @@
               proxy_connect_timeout 600;
               proxy_read_timeout 600;
               proxy_send_timeout 600;
+
+              add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://${cfg.domain} https://static.immich.cloud https://tiles.immich.cloud 'sha256-h5wSYKWbmHcoYTdkHNNguMswVNCphpvwW+uxooXhF/Y=' 'sha256-+tEpShk9UPRYp31qABDDu+0EulxL6LIbIZ035p8TTss='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://${cfg.domain} https://tiles.immich.cloud https://static.immich.cloud; frame-ancestors 'self'; worker-src 'self' blob:;" always;
+
+              add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+              add_header Referrer-Policy "no-referrer-when-downgrade" always;
+              add_header Cross-Origin-Embedder-Policy "require-corp" always;
+              add_header Cross-Origin-Opener-Policy "same-origin" always;
+              add_header Cross-Origin-Resource-Policy "same-origin" always;
+              add_header X-Frame-Options "SAMEORIGIN" always;
+              add_header X-Content-Type-Options "nosniff" always;
             '';
           };
         };
