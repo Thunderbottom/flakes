@@ -20,6 +20,10 @@
       description = "Timezone to use for the system";
       default = "Asia/Kolkata";
     };
+    bootloader = lib.mkOption {
+      type = lib.types.enum ["systemd-boot" "grub"];
+      description = "Bootloader to use, can be either `systemd-boot` or `grub`";
+    };
   };
 
   config = {
@@ -38,7 +42,7 @@
     snowflake.core.sshd.enable = lib.mkDefault true;
 
     boot = {
-      initrd.systemd.enable = true;
+      initrd.systemd.enable = config.snowflake.bootloader == "systemd-boot";
       initrd.verbose = false;
       # Default to the latest kernel package.
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -50,9 +54,16 @@
         efi.canTouchEfiVariables = true;
         # Use systemd-boot for all systems.
         systemd-boot = {
-          enable = true;
+          enable = config.snowflake.bootloader == "systemd-boot";
           # Show only last 5 configurations in the boot menu.
           configurationLimit = lib.mkDefault 5;
+        };
+
+        grub = {
+          enable = config.snowflake.bootloader == "grub";
+          efiSupport = true;
+          efiInstallAsRemovable = true;
+          forceInstall = true;
         };
       };
     };
