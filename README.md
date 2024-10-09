@@ -1,4 +1,11 @@
 <h1 align="center">NixOS Snowflake</h1>
+<p align="center">
+    <a href="https://builtwithnix.org">
+        <img alt="Built with Nix" src="https://builtwithnix.org/badge.svg">
+    </a>
+</p>
+
+-----
 
 This repository contains modularized NixOS configurations, carefully compiled and in often places inspired by other similar configurations. The setup is flake-based and fully reproducible. Feel free to explore and use any part that inspires you.
 
