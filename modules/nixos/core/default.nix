@@ -23,6 +23,7 @@
     bootloader = lib.mkOption {
       type = lib.types.enum ["systemd-boot" "grub"];
       description = "Bootloader to use, can be either `systemd-boot` or `grub`";
+      default = "systemd-boot";
     };
   };
 
