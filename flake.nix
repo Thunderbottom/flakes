@@ -22,7 +22,6 @@
         chaotic.nixosModules.default
         disko.nixosModules.disko
         srvos.nixosModules.common
-        srvos.nixosModules.mixins-systemd-boot
         inputs.lanzaboote.nixosModules.lanzaboote
       ];
 
@@ -33,11 +32,19 @@
         inherit userdata;
       };
       # TODO: setup atticd
-      systems.hosts.bicboye.modules = [inputs.srvos.nixosModules.server];
+      systems.hosts.bicboye.modules = [
+        inputs.srvos.nixosModules.server
+        inputs.srvos.nixosModules.mixins-systemd-boot
+      ];
       systems.hosts.bicboye.specialArgs = {
         inherit userdata;
       };
-      systems.hosts.smolboye.modules = [inputs.srvos.nixosModules.server];
+      systems.hosts.smolboye.modules = [
+        inputs.nixos-hardware.nixosModules.common-cpu-intel
+      ];
+      systems.hosts.smolboye.specialArgs = {
+        inherit userdata;
+      };
 
       homes.modules = with inputs; [
         nur.hmModules.nur
@@ -102,6 +109,9 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
+
+    nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    nixos-mailserver.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/nur";
 

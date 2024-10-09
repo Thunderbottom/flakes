@@ -24,12 +24,15 @@ in {
   "machines/thonkpad/root-password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/bicboye/password.age".publicKeys = thunderbottom ++ bicboye;
   "machines/bicboye/root-password.age".publicKeys = thunderbottom ++ bicboye;
+  "machines/smolboye/password.age".publicKeys = thunderbottom ++ smolboye;
+  "machines/smolboye/root-password.age".publicKeys = thunderbottom ++ smolboye;
   "monitoring/grafana/password.age".publicKeys = thunderbottom ++ bicboye;
-  "services/backup/environment.age".publicKeys = thunderbottom ++ bicboye;
-  "services/backup/password.age".publicKeys = thunderbottom ++ bicboye;
+  "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
+  "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/gitea/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/user-watashi.age".publicKeys = thunderbottom ++ servers;
+  "services/mailserver/watashi.age".publicKeys = thunderbottom ++ smolboye;
   "services/miniflux/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/paperless/password.age".publicKeys = users ++ bicboye;
   "services/unifi-unpoller/password.age".publicKeys = users ++ bicboye;

@@ -62,7 +62,6 @@
         grub = {
           enable = config.snowflake.bootloader == "grub";
           efiSupport = true;
-          efiInstallAsRemovable = true;
           forceInstall = true;
         };
       };
