@@ -19,7 +19,6 @@
 
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.age
-        chaotic.nixosModules.default
         disko.nixosModules.disko
         srvos.nixosModules.common
         inputs.lanzaboote.nixosModules.lanzaboote
@@ -80,8 +79,6 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
-
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";

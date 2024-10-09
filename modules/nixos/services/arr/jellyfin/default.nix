@@ -28,7 +28,7 @@
             withVpl = true;
           };
         };
-        vaapiIntel = pkgs.vaapiIntel.override {enableHybridCodec = true;};
+        intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
       };
 
       environment.systemPackages = with pkgs; [

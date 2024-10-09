@@ -32,8 +32,6 @@
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        vaapiIntel
-        libvdpau-va-gl
         vaapiVdpau
         intel-media-driver
       ];
