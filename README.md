@@ -222,7 +222,7 @@ An encrypted swap partition can optionally be set up using BTRFS later.
 All commands prefixed with `#` are expected to be run as the `root` user. Make sure to enter a strong encryption password during `luksFormat` (and then remember it!).
 
 ```shell
-# cryptsetup luksFormat --type=luk2 /dev/nvme0n1p2
+# cryptsetup luksFormat --type=luks2 /dev/nvme0n1p2
 # cryptsetup open /dev/nvme0n1p2 cryptroot
 ```
 
