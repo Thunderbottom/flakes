@@ -6,6 +6,17 @@
 }: {
   imports = [./disk-config.nix];
 
+  boot = {
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod"];
+    initrd.supportedFilesystems = ["btrfs"];
+    kernelModules = ["kvm-intel" "virtio_gpu"];
+    kernelParams = ["console=tty"];
+    loader.grub = {
+      device = "/dev/sda";
+      configurationLimit = 2;
+    };
+  };
+
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
@@ -27,14 +38,6 @@
       interface = "enp1s0";
     };
     firewall.allowedTCPPorts = [80 443];
-  };
-
-  boot = {
-    initrd.availableKernelModules = ["xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod"];
-    kernelModules = ["kvm-amd" "virtio_gpu"];
-    kernelParams = ["console=tty"];
-    loader.grub.device = "/dev/sda";
-    supportedFilesystems = ["btrfs"];
   };
 
   # Enable weekly btrfs auto-scrub.
@@ -61,6 +64,8 @@
     networking.resolved.enable = true;
 
     services = {
+      fail2ban.enable = true;
+
       mailserver = {
         enable = true;
         fqdn = "mail.deku.moe";

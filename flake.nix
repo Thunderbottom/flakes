@@ -40,6 +40,7 @@
       };
       systems.hosts.smolboye.modules = [
         inputs.nixos-hardware.nixosModules.common-cpu-intel
+        inputs.srvos.nixosModules.hardware-hetzner-cloud
       ];
       systems.hosts.smolboye.specialArgs = {
         inherit userdata;
