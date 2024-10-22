@@ -6,7 +6,7 @@
 }: {
   options.snowflake.services.immich = {
     enable = lib.mkEnableOption "Enable immich service";
-    monitoring.enable = lib.mkEnable "Enable immich monitoring";
+    monitoring.enable = lib.mkEnableOption "Enable immich monitoring";
 
     domain = lib.mkOption {
       type = lib.types.str;
