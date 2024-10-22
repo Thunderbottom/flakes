@@ -113,6 +113,9 @@
 
     nur.url = "github:nix-community/nur";
 
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     snowfall-lib.url = "github:snowfallorg/lib";
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -121,5 +124,6 @@
 
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
+    wezterm.inputs.rust-overlay.follows = "rust-overlay";
   };
 }
