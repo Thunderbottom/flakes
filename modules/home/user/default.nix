@@ -4,8 +4,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   config = lib.mkIf config.snowfallorg.user.enable {
     programs.eza = {
       enable = true;
@@ -14,7 +13,7 @@
         "--header"
       ];
       git = config.snowflake.development.git.enable;
-      icons = true;
+      icons = "auto";
     };
 
     # Enable faster, indexed search for nixpkgs.
@@ -41,7 +40,10 @@
     };
 
     # Set the EDITOR environment variable.
-    home.sessionVariables.EDITOR = if config.snowflake.development.helix.enable then "hx" else "nano";
+    home.sessionVariables.EDITOR =
+      if config.snowflake.development.helix.enable
+      then "hx"
+      else "nano";
 
     # Show activation change diff for new builds.
     home.activation.report-changes = inputs.home-manager.lib.hm.dag.entryAnywhere ''
