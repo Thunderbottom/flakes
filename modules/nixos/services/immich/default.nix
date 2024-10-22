@@ -6,6 +6,7 @@
 }: {
   options.snowflake.services.immich = {
     enable = lib.mkEnableOption "Enable immich service";
+    monitoring.enable = lib.mkEnable "Enable immich monitoring";
 
     domain = lib.mkOption {
       type = lib.types.str;
@@ -23,6 +24,13 @@
         package = pkgs.immich;
         mediaLocation = "/storage/media/immich-library";
         port = 9121;
+
+        environment = {
+          IMMICH_METRICS =
+            if cfg.monitoring.enable
+            then "true"
+            else "false";
+        };
       };
 
       users.users.immich.extraGroups = ["media" "video" "render"];
@@ -34,6 +42,12 @@
             serverName = "${cfg.domain}";
             enableACME = true;
             forceSSL = true;
+            locations."/metrics" = {
+              extraConfig = ''
+                deny all;
+              '';
+            };
+
             locations."/" = {
               proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
               proxyWebsockets = true;
@@ -44,7 +58,7 @@
               proxy_read_timeout 600;
               proxy_send_timeout 600;
 
-              add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://${cfg.domain} https://static.immich.cloud https://tiles.immich.cloud 'sha256-h5wSYKWbmHcoYTdkHNNguMswVNCphpvwW+uxooXhF/Y=' 'sha256-+tEpShk9UPRYp31qABDDu+0EulxL6LIbIZ035p8TTss='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://${cfg.domain} https://tiles.immich.cloud https://static.immich.cloud; frame-ancestors 'self'; worker-src 'self' blob:;" always;
+              add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://${cfg.domain} https://static.immich.cloud https://tiles.immich.cloud 'sha256-h5wSYKWbmHcoYTdkHNNguMswVNCphpvwW+uxooXhF/Y=' 'sha256-lKeXpeCMSkZLF5wgriN98a1ykRBCe5ThK7QWajyrvE8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://${cfg.domain} https://tiles.immich.cloud https://static.immich.cloud; frame-ancestors 'self'; worker-src 'self' blob:;" always;
 
               add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
               add_header Referrer-Policy "no-referrer-when-downgrade" always;
