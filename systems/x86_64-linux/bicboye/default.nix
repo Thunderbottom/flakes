@@ -145,11 +145,7 @@
         backup.enable = true;
       };
 
-      vaultwarden = {
-        enable = true;
-        domain = "bw.deku.moe";
-        adminTokenFile = userdata.secrets.services.vaultwarden.password;
-      };
+      technitium.enable = true;
 
       static-site = {
         enable = true;
@@ -163,6 +159,12 @@
           enable = true;
           passwordFile = userdata.secrets.services.unifi-unpoller.password;
         };
+      };
+
+      vaultwarden = {
+        enable = true;
+        domain = "bw.deku.moe";
+        adminTokenFile = userdata.secrets.services.vaultwarden.password;
       };
     };
 
