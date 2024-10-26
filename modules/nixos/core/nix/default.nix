@@ -39,6 +39,8 @@
         auto-optimise-store = true;
         # Use cache from remote build machines if available.
         builders-use-substitutes = true;
+        # Set git commit message for --commit-lock-file.
+        commit-lockfile-summary = "chore: update flake.lock";
         experimental-features = [
           "auto-allocate-uids"
           "ca-derivations"
