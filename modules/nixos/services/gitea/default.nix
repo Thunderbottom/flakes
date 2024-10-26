@@ -127,7 +127,7 @@
 
             container = {
               network = "bridge";
-              privileged = "false";
+              privileged = false;
               docker_host = "";
             };
             host.workdir_parent = "/var/tmp/gitea-actions-work";
