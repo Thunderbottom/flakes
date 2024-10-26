@@ -106,11 +106,36 @@
           name = config.networking.hostName;
           url = "https://${cfg.domain}";
           tokenFile = config.age.secrets.gitea-actions-runner.path;
+
           labels = [
             "ubuntu-latest:docker://node:22-bookworm"
           ];
+
+          settings = {
+            log.level = "info";
+
+            cache = {
+              enabled = true;
+              dir = "/var/cache/gitea-runner/actions";
+            };
+
+            runner = {
+              capacity = 2;
+              envs = {};
+              timeout = "1h";
+            };
+
+            container = {
+              network = "bridge";
+              privileged = "false";
+              docker_host = "";
+            };
+            host.workdir_parent = "/var/tmp/gitea-actions-work";
+          };
         };
       };
+
+      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = "gitea-runner";
 
       networking.firewall = lib.mkIf config.networking.firewall.enable {
         allowedTCPPorts = [cfg.sshPort];
