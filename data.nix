@@ -26,6 +26,7 @@
       };
       gitea = {
         password.file = ./secrets/services/gitea/password.age;
+        actions-runner.token.file = ./secrets/services/gitea/actions-runner/token.age;
       };
       mailserver = {
         watashi.password.file = ./secrets/services/mailserver/watashi.age;

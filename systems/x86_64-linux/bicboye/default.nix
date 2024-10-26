@@ -109,6 +109,10 @@
         domain = "git.deku.moe";
         sshDomain = "git-ssh.deku.moe";
         dbPasswordFile = userdata.secrets.services.gitea.password;
+        actions-runner = {
+          enable = true;
+          tokenFile = userdata.secrets.services.gitea.actions-runner.token;
+        };
       };
 
       immich = {
