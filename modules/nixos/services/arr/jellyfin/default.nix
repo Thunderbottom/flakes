@@ -57,6 +57,7 @@
             enableACME = true;
             forceSSL = true;
             locations."/" = {
+              proxyWebsockets = true;
               proxyPass = "http://localhost:8096/";
               extraConfig = ''
                 proxy_set_header X-Real-IP $remote_addr;
