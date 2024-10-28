@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options.snowflake.desktop.fonts.enable = lib.mkEnableOption "Enable desktop font configuration";
 
   config = lib.mkIf config.snowflake.desktop.fonts.enable {
@@ -39,7 +38,7 @@
           ];
         })
         noto-fonts
-        noto-fonts-cjk
+        noto-fonts-cjk-sans
         noto-fonts-emoji
         noto-fonts-extra
         powerline-fonts
@@ -68,7 +67,7 @@
             "JetBrainsMono Nerd Font"
             "Noto Color Emoji"
           ];
-          emoji = [ "Noto Color Emoji" ];
+          emoji = ["Noto Color Emoji"];
         };
         hinting = {
           autohint = false;
