@@ -60,6 +60,7 @@
       services.forgejo = {
         enable = true;
         lfs.enable = true;
+        package = pkgs.forgejo;
         user = "git";
 
         database = {
@@ -101,7 +102,7 @@
         };
       };
 
-      services.gitea-actions-runner = {
+      services.gitea-actions-runner = lib.mkIf cfg.actions-runner.enable {
         package = pkgs.forgejo-actions-runner;
         instances.default = {
           enable = cfg.actions-runner.enable;
@@ -137,7 +138,7 @@
         };
       };
 
-      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = "forgejo-runner";
+      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = lib.mkIf cfg.actions-runner.enable "forgejo-runner";
 
       networking.firewall = lib.mkIf config.networking.firewall.enable {
         allowedTCPPorts = [cfg.sshPort];
