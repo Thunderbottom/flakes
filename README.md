@@ -76,7 +76,7 @@ The repository follows the standard Snowfall Lib [flake structure](https://snowf
 │       │   ├── arr
 │       │   ├── backup
 │       │   ├── fail2ban
-│       │   ├── gitea
+│       │   ├── forgejo
 │       │   ├── homebridge
 │       │   ├── immich
 │       │   ├── mailserver

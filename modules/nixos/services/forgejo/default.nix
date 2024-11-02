@@ -1,71 +1,72 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
-  options.snowflake.services.gitea = {
-    enable = lib.mkEnableOption "Enable gitea service";
+  options.snowflake.services.forgejo = {
+    enable = lib.mkEnableOption "Enable forgejo service";
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Configuration domain to use for the gitea service";
+      description = "Configuration domain to use for the forgejo service";
     };
 
     sshDomain = lib.mkOption {
       type = lib.types.str;
-      description = "SSH domain to use for the gitea service";
+      description = "SSH domain to use for the forgejo service";
     };
 
     dbPasswordFile = lib.mkOption {
-      description = "Age module containing the postgresql password to use for gitea";
+      description = "Age module containing the postgresql password to use for forgejo";
     };
 
     httpPort = lib.mkOption {
       type = lib.types.int;
-      description = "Configuration port for the gitea service to listen on";
+      description = "Configuration port for the forgejo service to listen on";
       default = 3001;
     };
 
     sshPort = lib.mkOption {
       type = lib.types.int;
-      description = "SSH port for the gitea service to listen on";
+      description = "SSH port for the forgejo service to listen on";
       default = 22022;
     };
 
     actions-runner = {
-      enable = lib.mkEnableOption "Enable a single-instance of gitea-actions-runner";
+      enable = lib.mkEnableOption "Enable a single-instance of forgejo-actions-runner";
       tokenFile = lib.mkOption {
-        description = "Age module containing the token to use for gitea-actions-runner";
+        description = "Age module containing the token to use for forgejo-actions-runner";
       };
     };
   };
 
   config = let
-    cfg = config.snowflake.services.gitea;
+    cfg = config.snowflake.services.forgejo;
   in
     lib.mkIf cfg.enable {
       age.secrets = {
-        gitea = {
+        forgejo = {
           inherit (cfg.dbPasswordFile) file;
-          owner = config.services.gitea.user;
-          group = config.services.gitea.user;
+          owner = config.services.forgejo.user;
+          group = config.services.forgejo.user;
         };
 
-        gitea-actions-runner = lib.mkIf cfg.actions-runner.enable {
+        forgejo-actions-runner = lib.mkIf cfg.actions-runner.enable {
           inherit (cfg.actions-runner.tokenFile) file;
         };
       };
 
-      services.gitea = {
+      services.forgejo = {
         enable = true;
         lfs.enable = true;
         user = "git";
 
         database = {
           type = "postgres";
-          passwordFile = config.age.secrets.gitea.path;
-          name = config.services.gitea.user;
-          inherit (config.services.gitea) user;
+          passwordFile = config.age.secrets.forgejo.path;
+          name = config.services.forgejo.user;
+          inherit (config.services.forgejo) user;
         };
 
         settings = {
@@ -101,11 +102,12 @@
       };
 
       services.gitea-actions-runner = {
+        package = pkgs.forgejo-actions-runner;
         instances.default = {
           enable = cfg.actions-runner.enable;
           name = config.networking.hostName;
           url = "https://${cfg.domain}";
-          tokenFile = config.age.secrets.gitea-actions-runner.path;
+          tokenFile = config.age.secrets.forgejo-actions-runner.path;
 
           labels = [
             "ubuntu-latest:docker://node:22-bookworm"
@@ -116,7 +118,7 @@
 
             cache = {
               enabled = true;
-              dir = "/var/cache/gitea-runner/actions";
+              dir = "/var/cache/forgejo-runner/actions";
             };
 
             runner = {
@@ -130,20 +132,20 @@
               privileged = false;
               docker_host = "";
             };
-            host.workdir_parent = "/var/tmp/gitea-actions-work";
+            host.workdir_parent = "/var/tmp/forgejo-actions-work";
           };
         };
       };
 
-      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = "gitea-runner";
+      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = "forgejo-runner";
 
       networking.firewall = lib.mkIf config.networking.firewall.enable {
         allowedTCPPorts = [cfg.sshPort];
       };
 
       users.users.git = {
-        description = "Gitea service user";
-        home = config.services.gitea.stateDir;
+        description = "Forgejo service user";
+        home = config.services.forgejo.stateDir;
         useDefaultShell = true;
         group = "git";
         isSystemUser = true;
@@ -163,24 +165,24 @@
         };
       };
 
-      snowflake.services.backups.config.gitea.paths = [
-        config.services.gitea.repositoryRoot
-        config.services.gitea.lfs.contentDir
+      snowflake.services.backups.config.forgejo.paths = [
+        config.services.forgejo.repositoryRoot
+        config.services.forgejo.lfs.contentDir
       ];
 
-      services.fail2ban.jails.gitea = {
+      services.fail2ban.jails.forgejo = {
         enabled = true;
-        filter = "gitea";
+        filter = "forgejo";
       };
 
       environment.etc = {
-        gitea = {
-          target = "fail2ban/filter.d/gitea.conf";
+        forgejo = {
+          target = "fail2ban/filter.d/forgejo.conf";
           text = ''
             [Definition]
             failregex =  .*(Failed authentication attempt|invalid credentials|Attempted access of unknown user).* from <HOST>
             ignoreregex =
-            journalmatch = _SYSTEMD_UNIT=gitea.service
+            journalmatch = _SYSTEMD_UNIT=forgejo.service
           '';
         };
       };

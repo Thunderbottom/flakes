@@ -24,9 +24,9 @@
         environment.file = ./secrets/services/backups/environment.age;
         password.file = ./secrets/services/backups/password.age;
       };
-      gitea = {
-        password.file = ./secrets/services/gitea/password.age;
-        actions-runner.token.file = ./secrets/services/gitea/actions-runner/token.age;
+      forgejo = {
+        password.file = ./secrets/services/forgejo/password.age;
+        actions-runner.token.file = ./secrets/services/forgejo/actions-runner/token.age;
       };
       mailserver = {
         watashi.password.file = ./secrets/services/mailserver/watashi.age;

@@ -29,8 +29,8 @@ in {
   "monitoring/grafana/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
-  "services/gitea/password.age".publicKeys = thunderbottom ++ bicboye;
-  "services/gitea/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
+  "services/forgejo/password.age".publicKeys = thunderbottom ++ bicboye;
+  "services/forgejo/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/user-watashi.age".publicKeys = thunderbottom ++ servers;
   "services/mailserver/watashi.age".publicKeys = thunderbottom ++ smolboye;

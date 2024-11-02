@@ -104,14 +104,14 @@
 
       fail2ban.enable = true;
 
-      gitea = {
+      forgejo = {
         enable = true;
         domain = "git.deku.moe";
         sshDomain = "git-ssh.deku.moe";
-        dbPasswordFile = userdata.secrets.services.gitea.password;
+        dbPasswordFile = userdata.secrets.services.forgejo.password;
         actions-runner = {
           enable = true;
-          tokenFile = userdata.secrets.services.gitea.actions-runner.token;
+          tokenFile = userdata.secrets.services.forgejo.actions-runner.token;
         };
       };
 
