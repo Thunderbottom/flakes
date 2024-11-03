@@ -22,18 +22,8 @@
       };
 
       nixpkgs.config.packageOverrides = pkgs: {
-        jellyfin-ffmpeg = pkgs.jellyfin-ffmpeg.override {
-          ffmpeg_6-full = pkgs.ffmpeg_6-full.override {
-            withMfx = false;
-            withVpl = true;
-          };
-        };
         intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
       };
-
-      environment.systemPackages = with pkgs; [
-        jellyfin-ffmpeg
-      ];
 
       hardware.graphics = {
         enable = true;
