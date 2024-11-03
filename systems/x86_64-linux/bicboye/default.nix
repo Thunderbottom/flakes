@@ -126,6 +126,11 @@
         adminTokenFile = userdata.secrets.services.miniflux.password;
       };
 
+      navidrome = {
+        enable = true;
+        musicFolder = "/storage/media/library/music";
+      };
+
       nginx = {
         enable = true;
         acmeEmail = "chinmaydpai@gmail.com";
