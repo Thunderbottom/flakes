@@ -20,9 +20,12 @@
     snowflake.services = {
       jellyfin.enable = true;
       jellyseerr.enable = true;
+
+      prowlarr.enable = true;
       radarr.enable = true;
       sonarr.enable = true;
-      prowlarr.enable = true;
+
+      sabnzbd.enable = true;
       qbittorrent-nox = {
         enable = true;
         openFirewall = true;
