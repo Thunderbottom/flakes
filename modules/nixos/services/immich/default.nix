@@ -26,10 +26,10 @@
         port = 9121;
 
         environment = {
-          IMMICH_METRICS =
+          IMMICH_TELEMETRY_INCLUDE =
             if cfg.monitoring.enable
-            then "true"
-            else "false";
+            then "all"
+            else "";
         };
       };
 
