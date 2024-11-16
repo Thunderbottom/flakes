@@ -30,7 +30,7 @@
       services.victoriametrics = {
         enable = cfg.enable;
         listenAddress = "127.0.0.1:${toString cfg.port}";
-        retentionPeriod = 3;
+        retentionPeriod = "90d";
       };
       services.vmagent = {
         enable = cfg.enable;
