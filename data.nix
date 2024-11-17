@@ -30,6 +30,7 @@
       };
       mailserver = {
         watashi.password.file = ./secrets/services/mailserver/watashi.age;
+        noreply.password.file = ./secrets/services/mailserver/noreply.age;
       };
       miniflux = {
         password.file = ./secrets/services/miniflux/password.age;

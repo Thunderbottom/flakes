@@ -51,6 +51,7 @@
 
   age.secrets = {
     mailserver-watashi.file = userdata.secrets.services.mailserver.watashi.password.file;
+    mailserver-noreply.file = userdata.secrets.services.mailserver.noreply.password.file;
   };
 
   snowflake = {
@@ -75,6 +76,11 @@
             hashedPasswordFile = config.age.secrets.mailserver-watashi.path;
             aliases = ["@deku.moe"];
             catchAll = ["deku.moe"];
+          };
+          "noreply@deku.moe" = {
+            hashedPasswordFile = config.age.secrets.mailserver-noreply.path;
+            aliases = ["git@deku.moe" "jelly@deku.moe"];
+            sendOnly = true;
           };
         };
       };

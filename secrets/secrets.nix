@@ -34,6 +34,7 @@ in {
   "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/user-watashi.age".publicKeys = thunderbottom ++ servers;
   "services/mailserver/watashi.age".publicKeys = thunderbottom ++ smolboye;
+  "services/mailserver/noreply.age".publicKeys = thunderbottom ++ smolboye;
   "services/miniflux/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/paperless/password.age".publicKeys = users ++ bicboye;
   "services/unifi-unpoller/password.age".publicKeys = users ++ bicboye;
