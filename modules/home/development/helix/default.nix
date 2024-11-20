@@ -3,31 +3,20 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options.snowflake.development.helix.enable = lib.mkEnableOption "Enable helix development configuration";
 
   config = lib.mkIf config.snowflake.development.helix.enable {
     programs.helix = {
       enable = true;
-      package = pkgs.helix.overrideAttrs (old: {
-        makeWrapperArgs =
-          with pkgs;
-          old.makeWrapperArgs or [ ]
-          ++ [
-            "--suffix"
-            "PATH"
-            ":"
-            (lib.makeBinPath [
-              alejandra
-              nil
-              gopls
-              gotools
-              marksman
-              shellcheck
-            ])
-          ];
-      });
+      extraPackages = with pkgs; [
+        alejandra
+        nil
+        gopls
+        gotools
+        marksman
+        shellcheck
+      ];
 
       defaultEditor = true;
 
@@ -73,7 +62,7 @@
               "spinner"
               "diagnostics"
             ];
-            center = [ "file-name" ];
+            center = ["file-name"];
             right = [
               "file-encoding"
               "file-line-ending"
@@ -98,8 +87,21 @@
       languages = {
         language = [
           {
+            name = "bash";
+            auto-format = true;
+            formatter = {
+              command = lib.getExe pkgs.shfmt;
+              args = ["-i" "2"];
+            };
+          }
+          {
             name = "go";
             auto-format = true;
+          }
+          {
+            name = "markdown";
+            auto-format = true;
+            language-servers = ["marksman"];
           }
           {
             name = "nix";
@@ -108,16 +110,21 @@
           }
         ];
         language-server = {
+          bash-language-server = {
+            command = lib.getExe pkgs.bash-language-server;
+            args = ["start"];
+          };
+          gopls = {
+            command = lib.getExe pkgs.gopls;
+            config.gopls.formatting.command = ["${pkgs.go}/bin/gofmt"];
+          };
+          marksman.command = lib.getExe pkgs.marksman;
           nil = {
             command = lib.getExe pkgs.nil;
             config.nil.formatting.command = [
               "${lib.getExe pkgs.alejandra}"
               "-q"
             ];
-          };
-          gopls = {
-            command = lib.getExe pkgs.gopls;
-            config.gopls.formatting.command = [ "${pkgs.go}/bin/gofmt" ];
           };
         };
       };
