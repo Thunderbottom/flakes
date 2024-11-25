@@ -27,23 +27,9 @@
     # Start the ssh agent if enabled.
     programs.ssh.startAgent = config.snowflake.core.sshd.enable;
 
-    # Add opengl hardware support.
-    hardware.graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        vaapiVdpau
-        intel-media-driver
-      ];
-    };
-
-    environment.sessionVariables = {
-      LIBVA_DRIVER_NAME = "iHD";
-    };
-
     # Enable fingerprint authentication.
     # Requires fingerprint registered using `fprint-enroll` to work.
-    services.fprintd.enable = true;
+    services.fprintd.enable = config.snowflake.desktop.fingerprint.enable;
     services.libinput.enable = true;
 
     services.xserver.enable = true;
