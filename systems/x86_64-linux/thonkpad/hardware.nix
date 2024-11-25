@@ -27,7 +27,7 @@
       "nohz_full=14-21"
       "i915.force_probe=!7d55"
       "xe.force_probe=7d55"
-      "initcall_blacklist=simpledrm_platform_driver_init"
+      # "initcall_blacklist=simpledrm_platform_driver_init"
       # Potentially improve performance on intel CPUs
       "dev.i915.perf_stream_paranoid=0"
       # This solves an issue with resume after suspend where the SSD goes into
