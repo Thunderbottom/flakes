@@ -5,6 +5,10 @@
         password.file = ./secrets/machines/thonkpad/password.age;
         root-password.file = ./secrets/machines/thonkpad/root-password.age;
       };
+      zippyrus = {
+        password.file = ./secrets/machines/zippyrus/password.age;
+        root-password.file = ./secrets/machines/zippyrus/root-password.age;
+      };
       bicboye = {
         password.file = ./secrets/machines/bicboye/password.age;
         root-password.file = ./secrets/machines/bicboye/root-password.age;

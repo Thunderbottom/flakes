@@ -11,6 +11,9 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMrNdHskpknCow+nuCTEBRrKb0b2BKzwTQY60eEAWztS"
   ];
+  zippyrus = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHLWaHgjXm/P8YBoGPeN6UKgl+2o2YoyoKELNYP1pbVy"
+  ];
 
   smolboye = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQFm91hLes24sYbq96zD52mDrrr1l2F2xstcfAEg+qI"];
   bicboye = [
@@ -22,6 +25,8 @@ let
 in {
   "machines/thonkpad/password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/thonkpad/root-password.age".publicKeys = thunderbottom ++ thonkpad;
+  "machines/zippyrus/password.age".publicKeys = thunderbottom ++ zippyrus;
+  "machines/zippyrus/root-password.age".publicKeys = thunderbottom ++ zippyrus;
   "machines/bicboye/password.age".publicKeys = thunderbottom ++ bicboye;
   "machines/bicboye/root-password.age".publicKeys = thunderbottom ++ bicboye;
   "machines/smolboye/password.age".publicKeys = thunderbottom ++ smolboye;

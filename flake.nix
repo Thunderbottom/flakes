@@ -30,6 +30,11 @@
       systems.hosts.thonkpad.specialArgs = {
         inherit userdata;
       };
+      systems.hosts.zippyrus.modules = [];
+      systems.hosts.zippyrus.specialArgs = {
+        inherit userdata;
+      };
+
       # TODO: setup atticd
       systems.hosts.bicboye.modules = [
         inputs.srvos.nixosModules.server
