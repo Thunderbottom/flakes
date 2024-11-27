@@ -14,6 +14,13 @@
   networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
   networking.useNetworkd = true;
 
+  networking.wireless.iwd.settings = {
+    General = {
+      RoamThreshold = -75;
+      RoamThreshold5G = -80;
+    };
+  };
+
   # Enable weekly btrfs auto-scrub.
   services.btrfs.autoScrub = {
     enable = true;

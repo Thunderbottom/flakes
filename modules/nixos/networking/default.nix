@@ -27,7 +27,7 @@
             AddressRandomization = "network";
             AddressRandomizationRange = "full";
             EnableNetworkConfiguration = true;
-            RoamRetryInterval = 15;
+            RoamRetryInterval = 20;
           };
           Network = {
             EnableIPv6 = true;
