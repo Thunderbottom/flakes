@@ -43,6 +43,7 @@
     desktop.enable = true;
     desktop.kde.enable = true;
 
+    gaming.proton.enable = true;
     gaming.steam.enable = true;
 
     hardware.bluetooth.enable = true;
