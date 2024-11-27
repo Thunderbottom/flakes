@@ -15,6 +15,6 @@
     # Bottles: run games like on native windowss
     # heroic: launcher for epic games, gog, and other stuff
     # mangohud: shows an overlay for FPS, CPU/GPU temperatures in game.
-    config.snowflake.extraPackages = with pkgs; [bottles heroic mangohud];
+    snowflake.extraPackages = with pkgs; [bottles heroic mangohud];
   };
 }
