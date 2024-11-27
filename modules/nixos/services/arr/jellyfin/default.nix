@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: {
   options.snowflake.services.jellyfin = {
@@ -23,18 +22,6 @@
 
       nixpkgs.config.packageOverrides = pkgs: {
         intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
-      };
-
-      hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-          intel-compute-runtime
-          intel-media-driver
-          intel-vaapi-driver
-          libvdpau-va-gl
-          vaapiVdpau
-          vpl-gpu-rt
-        ];
       };
 
       services.jellyseerr.enable = true;
