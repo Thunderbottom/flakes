@@ -47,6 +47,7 @@
     networking.networkManager.enable = true;
     networking.resolved.enable = true;
 
+    hardware.graphics.intel.enable = true;
     hardware.initrd-luks = {
       enable = true;
       authorizedKeys = [
