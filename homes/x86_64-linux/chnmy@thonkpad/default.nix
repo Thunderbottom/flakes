@@ -18,7 +18,7 @@
   snowflake.development.git.work = {
     enable = true;
     email = "chinmay.pai@zerodha.com";
-    path = "/home/${config.snowfallorg.user.name}/workspace/gitlab.zerodha.tech";
+    path = "/home/${config.snowfallorg.user.name}/Documents/Repositories/gitlab.zerodha.tech";
     extraConfig = {
       url."ssh://git@gitlab.zerodha.tech:2280".insteadOf = "https://gitlab.zerodha.tech";
       url."ssh://git@gitlab.zerodha.tech:2280/".insteadOf = "git@gitlab.zerodha.tech:";
