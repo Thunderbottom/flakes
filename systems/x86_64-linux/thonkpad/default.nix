@@ -45,7 +45,10 @@
 
     hardware.bluetooth.enable = true;
     hardware.yubico.enable = true;
-    hardware.graphics.intel.enable = true;
+    hardware.graphics.intel = {
+      enable = true;
+      driver = "xe";
+    };
 
     networking.firewall.enable = true;
     networking.networkManager.enable = true;
