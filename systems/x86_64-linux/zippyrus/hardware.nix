@@ -21,8 +21,8 @@
     };
     kernelModules = ["acpi_call" "kvm-amd" "zenpower"];
     kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
-    kernelParams = ["amd_pstate=active"];
-    blacklistedKernelModules = ["k10temp"];
+    kernelParams = ["nowatchdog" "amd_pstate=active"];
+    blacklistedKernelModules = ["k10temp" "sp5100_tco"];
     extraModulePackages = with config.boot.kernelPackages; [zenpower acpi_call];
     # resumeDevice = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
   };
