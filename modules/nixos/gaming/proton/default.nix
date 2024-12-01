@@ -16,5 +16,8 @@
     # heroic: launcher for epic games, gog, and other stuff
     # mangohud: shows an overlay for FPS, CPU/GPU temperatures in game.
     snowflake.extraPackages = with pkgs; [bottles heroic mangohud];
+
+    # Add user to the gamemode group.
+    snowflake.user.extraGroups = ["gamemode"];
   };
 }
