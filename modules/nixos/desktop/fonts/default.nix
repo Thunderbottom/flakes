@@ -28,15 +28,11 @@
         libre-baskerville
         material-design-icons
         mplus-outline-fonts.githubRelease
-        (nerdfonts.override {
-          fonts = [
-            "FiraCode"
-            "JetBrainsMono"
-            "NerdFontsSymbolsOnly"
-            "SourceCodePro"
-            "UbuntuMono"
-          ];
-        })
+        nerd-fonts.fira-code
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+        nerd-fonts.sauce-code-pro
+        nerd-fonts.ubuntu-mono
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-emoji
