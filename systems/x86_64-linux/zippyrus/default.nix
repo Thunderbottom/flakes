@@ -34,7 +34,7 @@
 
   services.ratbagd.enable = true;
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
 
   snowflake = {
     stateVersion = "24.05";
