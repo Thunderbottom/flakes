@@ -27,7 +27,7 @@
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
       # Use the latest, unstable version of nix.
-      package = pkgs.nixVersions.nix_2_23;
+      package = pkgs.nixVersions.git;
 
       settings = {
         # Accept flake configuration without prompting.
