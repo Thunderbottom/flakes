@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   options.snowflake.desktop.firefox.enable = lib.mkEnableOption "Enable firefox home configuration";
@@ -73,7 +74,7 @@
         };
       };
       profiles.ff = {
-        extensions = with config.nur.repos.rycee.firefox-addons; [
+        extensions = with pkgs.firefox-addons; [
           bitwarden
           clearurls
           duckduckgo-privacy-essentials

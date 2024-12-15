@@ -52,10 +52,15 @@
       };
 
       homes.modules = with inputs; [
-        nur.hmModules.nur
+        nur.modules.homeManager.default
       ];
 
-      overlays = [(_: prev: {inherit (inputs.maych-in.packages.${prev.system}) maych-in;})];
+      overlays = [
+        (_: prev: {
+          inherit (inputs.maych-in.packages.${prev.system}) maych-in;
+          inherit (inputs.nur.legacyPackages.${prev.system}.repos.rycee) firefox-addons;
+        })
+      ];
 
       channels-config.allowUnfree = true;
 
