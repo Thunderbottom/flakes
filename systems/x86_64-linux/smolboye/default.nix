@@ -79,7 +79,7 @@
           };
           "noreply@deku.moe" = {
             hashedPasswordFile = config.age.secrets.mailserver-noreply.path;
-            aliases = ["git@deku.moe" "jelly@deku.moe"];
+            aliases = ["git@deku.moe" "jelly@deku.moe" "vaultwarden@deku.moe"];
             sendOnly = true;
           };
         };
