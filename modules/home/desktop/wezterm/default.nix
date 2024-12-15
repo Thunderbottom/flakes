@@ -28,8 +28,8 @@
         end)
 
         return {
-          font = wezterm.font 'IBM Plex Mono',
-          font_size = 12.0,
+          font = wezterm.font 'JetBrains Mono',
+          font_size = 14.0,
 
           cursor_blink_rate = 800,
 
