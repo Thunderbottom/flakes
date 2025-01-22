@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  system,
   ...
 }: {
   options.snowflake = {
@@ -132,6 +133,8 @@
       };
       supportedLocales = ["en_US.UTF-8/UTF-8"];
     };
+
+    nixpkgs.hostPlatform = system;
 
     # Can be configured further or is started in user sessions.
     programs.mtr.enable = true;
