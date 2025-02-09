@@ -1,5 +1,5 @@
 _: _self: super: let
-  version = "0.36.3";
+  version = "0.36.5";
 in {
   netbird = super.netbird.override {
     buildGoModule = args:
@@ -11,9 +11,9 @@ in {
             owner = "netbirdio";
             repo = "netbird";
             rev = "v${version}";
-            hash = "sha256-ZAKVjBjffinOyHhzln/ny7tooZwtKHfMEDb/Uy0k6Gw=";
+            hash = "sha256-3k41lydp6bIfANblvdYK07xY/B3SbXwipbLAIUxmf9I=";
           };
-          vendorHash = "sha256-xZz2JkD3yD7tuXVFlMm2g1hRBItkGmO9OvnLdUfqai0=";
+          vendorHash = "sha256-30KSccdeQ+DrYjotCR0w0LvY1jCBBJIAy5rKQtSsD9Q=";
           ldflags = [
             "-s"
             "-w"
