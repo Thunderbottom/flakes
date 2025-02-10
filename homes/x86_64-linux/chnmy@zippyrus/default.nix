@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   snowfallorg.user.enable = true;
   snowfallorg.user.name = "chnmy";
 
@@ -19,6 +15,7 @@
   snowflake.development.helix.enable = true;
   snowflake.development.tmux.enable = true;
   snowflake.shell.fish.enable = true;
+  snowflake.shell.direnv.enable = true;
 
   home.packages = [
     pkgs.mpv
