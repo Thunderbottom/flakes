@@ -108,6 +108,11 @@
             formatter.command = "alejandra";
             auto-format = true;
           }
+          {
+            name = "rust";
+            formatter.command = lib.getExe pkgs.rustfmt;
+            auto-format = true;
+          }
         ];
         language-server = {
           bash-language-server = {
@@ -125,6 +130,14 @@
               "${lib.getExe pkgs.alejandra}"
               "-q"
             ];
+          };
+          rust-analyzer = {
+            command = lib.getExe pkgs.rust-analyzer;
+            config.rust-analyzer = {
+              checkOnSave.command = "${pkgs.clippy}/bin/clippy";
+              cargo.features = "all";
+              cargo.unsetTest = [];
+            };
           };
         };
       };
