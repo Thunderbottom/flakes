@@ -11,10 +11,13 @@
       enable = true;
       extraPackages = with pkgs; [
         alejandra
+        clippy
         nil
         gopls
         gotools
+        lldb
         marksman
+        rust-analyzer
         shellcheck
       ];
 
@@ -107,10 +110,15 @@
             name = "nix";
             formatter.command = "alejandra";
             auto-format = true;
+            language-servers = ["nil"];
           }
           {
             name = "rust";
-            formatter.command = lib.getExe pkgs.rustfmt;
+            formatter = {
+              command = lib.getExe pkgs.rustfmt;
+              args = ["--edition" "2021"];
+            };
+            language-servers = ["rust-analyzer"];
             auto-format = true;
           }
         ];
@@ -133,8 +141,8 @@
           };
           rust-analyzer = {
             command = lib.getExe pkgs.rust-analyzer;
-            config.rust-analyzer = {
-              checkOnSave.command = "${pkgs.clippy}/bin/clippy";
+            config = {
+              checkOnSave.command = "clippy";
               cargo.features = "all";
               cargo.unsetTest = [];
             };
