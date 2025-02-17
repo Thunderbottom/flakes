@@ -122,6 +122,7 @@
     nixos-mailserver.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/nur";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
