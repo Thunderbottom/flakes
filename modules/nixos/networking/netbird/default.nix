@@ -11,7 +11,7 @@
       firewall = {
         checkReversePath = "loose";
         trustedInterfaces = ["wt0"];
-        allowedUDPPorts = [config.services.netbird.tunnels.wt0.port];
+        allowedUDPPorts = [config.services.netbird.clients.default.port];
       };
       # networkmanager.unmanaged = ["wt0"];
 
