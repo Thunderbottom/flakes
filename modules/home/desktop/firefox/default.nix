@@ -74,7 +74,7 @@
         };
       };
       profiles.ff = {
-        extensions = with pkgs.firefox-addons; [
+        extensions.packages = with pkgs.firefox-addons; [
           bitwarden
           clearurls
           duckduckgo-privacy-essentials
