@@ -18,6 +18,7 @@
         enable = true;
         extraGSettingsOverridePackages = [
           pkgs.nautilus-open-any-terminal
+          pkgs.mutter
         ];
       };
     };
@@ -56,24 +57,20 @@
       systemPackages = with pkgs; [
         ffmpegthumbnailer
         adwaita-icon-theme
+        adwaita-icon-theme-legacy
         bibata-cursors
         dconf-editor
         gnome-tweaks
         nautilus-python
         nautilus-open-any-terminal
         wl-clipboard
-      ];
-    };
 
-    programs.dconf.profiles = {
-      gdm.databases = [
-        {
-          settings = {
-            "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
-            "org/gnome/desktop/peripherals/mouse".accel-profile = "flat";
-            "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
-          };
-        }
+        gnomeExtensions.caffeine
+        gnomeExtensions.dash-to-dock
+        gnomeExtensions.appindicator
+        gnomeExtensions.clipboard-history
+        gnomeExtensions.just-perfection
+        gnomeExtensions.blur-my-shell
       ];
     };
 
