@@ -32,7 +32,7 @@
     security.pam.services.login.fprintAuth = false;
 
     xdg.portal.extraPortals = with pkgs; [
-      xdg-desktop-portal-kde
+      kdePackages.xdg-desktop-portal-kde
       xdg-desktop-portal-gtk
     ];
 
