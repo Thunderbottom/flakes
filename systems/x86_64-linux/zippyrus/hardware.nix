@@ -19,9 +19,9 @@
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/80db9688-8fb5-47c6-a94f-dcb991a80e9a";
       luks.devices."cryptroot".bypassWorkqueues = true;
     };
-    kernelModules = ["acpi_call" "kvm-amd" "zenpower"];
+    kernelModules = ["kvm-amd" "zenpower"];
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-    kernelParams = ["nowatchdog" "amd_pstate=active" "mem_sleep_default=deep" "pcie_aspm.policy=powersupersave"];
+    kernelParams = ["nowatchdog" "amd_pstate=active" "pcie_aspm.policy=powersupersave"];
     blacklistedKernelModules = ["k10temp" "sp5100_tco"];
     extraModulePackages = with config.boot.kernelPackages; [zenpower];
     # resumeDevice = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
