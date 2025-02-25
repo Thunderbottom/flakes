@@ -41,8 +41,6 @@
           "15=#ffffff"
         ];
         font-family = "JetBrains Mono";
-        gtk-titlebar = false;
-        window-decoration = false;
       };
     };
   };
