@@ -1,6 +1,10 @@
-{ config, lib, ... }:
 {
-  options.snowflake.services.static-site = {
+  config,
+  lib,
+  namespace,
+  ...
+}: {
+  options.${namespace}.services.static-site = {
     enable = lib.mkEnableOption "Enable static site using nginx";
     package = lib.mkOption {
       type = lib.types.package;
@@ -12,14 +16,14 @@
     };
   };
 
-  config = lib.mkIf config.snowflake.services.static-site.enable {
+  config = lib.mkIf config.${namespace}.services.static-site.enable {
     services.nginx = {
       virtualHosts = {
-        "${config.snowflake.services.static-site.domain}" = {
-          serverName = config.snowflake.services.static-site.domain;
+        "${config.${namespace}.services.static-site.domain}" = {
+          serverName = config.${namespace}.services.static-site.domain;
           enableACME = true;
           forceSSL = true;
-          root = config.snowflake.services.static-site.package;
+          root = config.${namespace}.services.static-site.package;
         };
       };
     };

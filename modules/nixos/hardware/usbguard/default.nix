@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.hardware.usbguard = {
+  options.${namespace}.hardware.usbguard = {
     # WARNING: be very careful before turning on usbguard. It'll has the potential
     # to disable your keyboard and render your system useless. To use this
     # module follow the following steps.
@@ -47,12 +48,12 @@
     };
   };
 
-  config = lib.mkIf config.snowflake.hardware.usbguard.enable {
+  config = lib.mkIf config.${namespace}.hardware.usbguard.enable {
     environment.systemPackages = [pkgs.usbguard];
 
     services.usbguard = {
-      enable = config.snowflake.hardware.usbguard.service.enable;
-      rules = config.snowflake.hardware.usbguard.rules;
+      enable = config.${namespace}.hardware.usbguard.service.enable;
+      rules = config.${namespace}.hardware.usbguard.rules;
       dbus.enable = true;
       IPCAllowedGroups = ["wheel"];
     };

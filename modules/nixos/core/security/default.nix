@@ -1,14 +1,15 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.core.security = {
+  options.${namespace}.core.security = {
     enable = lib.mkEnableOption "Enable core security configuration";
     sysctl.enable = lib.mkEnableOption "Enable sysctl security configuration";
   };
 
-  config = lib.mkIf config.snowflake.core.security.enable {
+  config = lib.mkIf config.${namespace}.core.security.enable {
     boot = lib.mkMerge [
       {
         # Disable console logging.
@@ -26,7 +27,7 @@
         kernelModules = ["tcp_bbr"];
       }
 
-      (lib.mkIf config.snowflake.core.security.sysctl.enable {
+      (lib.mkIf config.${namespace}.core.security.sysctl.enable {
         kernel.sysctl = {
           # The Magic SysRq key is a key combo that allows users connected to the
           # system console of a Linux kernel to perform some low-level commands.

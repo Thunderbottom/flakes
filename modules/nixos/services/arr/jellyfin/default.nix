@@ -1,14 +1,15 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.services.jellyfin = {
+  options.${namespace}.services.jellyfin = {
     enable = lib.mkEnableOption "Enable jellyfin deployment configuration";
   };
 
   config = let
-    cfg = config.snowflake.services.jellyfin;
+    cfg = config.${namespace}.services.jellyfin;
   in
     lib.mkIf cfg.enable {
       services.jellyfin = {

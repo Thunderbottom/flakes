@@ -1,6 +1,10 @@
-{ config, lib, ... }:
 {
-  options.snowflake.user = {
+  config,
+  lib,
+  namespace,
+  ...
+}: {
+  options.${namespace}.user = {
     enable = lib.mkEnableOption "Enable user configuration";
 
     uid = lib.mkOption {
@@ -18,16 +22,16 @@
     };
     extraGroups = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ ];
+      default = [];
     };
     extraAuthorizedKeys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ ];
+      default = [];
       description = "Additional authorized keys for the system user";
     };
     extraRootAuthorizedKeys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ ];
+      default = [];
       description = "Additional authorized keys for root user";
     };
     userPasswordAgeModule = lib.mkOption {
@@ -45,15 +49,15 @@
     users.mutableUsers = false;
 
     # Add ~/bin to $PATH.
-    environment.homeBinInPath = config.snowflake.user.enable;
+    environment.homeBinInPath = config.${namespace}.user.enable;
 
     # Load password files.
-    age.secrets.hashed-user-password = lib.mkIf (
-      !config.snowflake.user.setEmptyPassword && config.snowflake.user.enable
-    ) config.snowflake.user.userPasswordAgeModule;
-    age.secrets.hashed-root-password = lib.mkIf (
-      !config.snowflake.user.setEmptyRootPassword
-    ) config.snowflake.user.rootPasswordAgeModule;
+    age.secrets.hashed-user-password =
+      lib.mkIf (
+        !config.${namespace}.user.setEmptyPassword && config.${namespace}.user.enable
+      )
+      config.${namespace}.user.userPasswordAgeModule;
+    age.secrets.hashed-root-password = lib.mkIf (!config.${namespace}.user.setEmptyRootPassword) config.${namespace}.user.rootPasswordAgeModule;
 
     # Configure the user account.
     # NOTE: hashedPasswordFile has an issue. If the auth method is changed from `hashedPassword`
@@ -61,29 +65,24 @@
     # we need to remove all the users' entries from /etc/shadow and run nixos-rebuild. Seems to be
     # a one-time thing.
     # ref: https://github.com/NixOS/nixpkgs/issues/99433
-    users.users.${config.snowflake.user.username} = lib.mkIf config.snowflake.user.enable {
-      inherit (config.snowflake.user) description;
-      extraGroups = [
-        "wheel"
-        "users"
-      ] ++ config.snowflake.user.extraGroups;
-      hashedPasswordFile = lib.mkIf (
-        !config.snowflake.user.setEmptyPassword
-      ) config.age.secrets.hashed-user-password.path;
+    users.users.${config.${namespace}.user.username} = lib.mkIf config.${namespace}.user.enable {
+      inherit (config.${namespace}.user) description;
+      extraGroups =
+        [
+          "wheel"
+          "users"
+        ]
+        ++ config.${namespace}.user.extraGroups;
+      hashedPasswordFile = lib.mkIf (!config.${namespace}.user.setEmptyPassword) config.age.secrets.hashed-user-password.path;
       isNormalUser = true;
-      openssh.authorizedKeys.keys = config.snowflake.user.extraAuthorizedKeys;
-      inherit (config.snowflake.user) uid;
+      openssh.authorizedKeys.keys = config.${namespace}.user.extraAuthorizedKeys;
+      inherit (config.${namespace}.user) uid;
     };
 
     # Define password, authorized keys and shell for root user.
     users.users.root = {
-      hashedPasswordFile = lib.mkIf (
-        !config.snowflake.user.setEmptyRootPassword
-      ) config.age.secrets.hashed-root-password.path;
-      openssh.authorizedKeys.keys = config.snowflake.user.extraRootAuthorizedKeys;
+      hashedPasswordFile = lib.mkIf (!config.${namespace}.user.setEmptyRootPassword) config.age.secrets.hashed-root-password.path;
+      openssh.authorizedKeys.keys = config.${namespace}.user.extraRootAuthorizedKeys;
     };
-
-    # Configure some miscellaneous dotfiles for my user.
-    # home-manager.users.${config.snowflake.user.username} = lib.mkIf config.snowflake.user.enable {
   };
 }

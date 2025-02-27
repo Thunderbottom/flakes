@@ -2,14 +2,15 @@
   config,
   inputs,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.hyprland = {
+  options.${namespace}.desktop.hyprland = {
     enable = lib.mkEnableOption "Enable the Hyprland Desktop Environment";
   };
 
-  config = lib.mkIf config.snowflake.desktop.hyprland.enable {
+  config = lib.mkIf config.${namespace}.desktop.hyprland.enable {
     programs.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
@@ -30,7 +31,7 @@
       fprintAuth = false;
     };
 
-    snowflake.user.extraGroups = [
+    ${namespace}.user.extraGroups = [
       "audio"
       "input"
       "video"

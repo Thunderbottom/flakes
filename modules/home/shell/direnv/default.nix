@@ -1,11 +1,12 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.shell.direnv.enable = lib.mkEnableOption "Enable direnv home configuration";
+  options.${namespace}.shell.direnv.enable = lib.mkEnableOption "Enable direnv home configuration";
 
-  config = lib.mkIf config.snowflake.shell.direnv.enable {
+  config = lib.mkIf config.${namespace}.shell.direnv.enable {
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;

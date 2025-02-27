@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.services.forgejo = {
+  options.${namespace}.services.forgejo = {
     enable = lib.mkEnableOption "Enable forgejo service";
 
     domain = lib.mkOption {
@@ -16,8 +17,8 @@
     sshDomain = lib.mkOption {
       type = lib.types.str;
       description = "SSH domain to use for the forgejo service";
-      default = config.snowflake.services.forgejo.domain;
-      defaultText = "config.snowflake.services.forgejo.domain";
+      default = config.${namespace}.services.forgejo.domain;
+      defaultText = "config.${namespace}.services.forgejo.domain";
     };
 
     dbPasswordFile = lib.mkOption {
@@ -45,13 +46,13 @@
   };
 
   config = let
-    cfg = config.snowflake.services.forgejo;
+    cfg = config.${namespace}.services.forgejo;
   in
     lib.mkIf cfg.enable {
       assertions = [
         {
           assertion = cfg.domain != "";
-          message = "snowflake.services.forgejo.domain must not be empty";
+          message = "${namespace}.services.forgejo.domain must not be empty";
         }
       ];
 
@@ -59,8 +60,8 @@
         if cfg.sshDomain == cfg.domain
         then [
           ''
-            No unique value specified for `snowflake.services.forgejo.sshDomain`.
-            Will default to snowflake.services.forgejo.domain. This might cause
+            No unique value specified for `${namespace}.services.forgejo.sshDomain`.
+            Will default to ${namespace}.services.forgejo.domain. This might cause
             issues with SSH if the forgejo service is behind a proxy, like CloudFlare.
           ''
         ]
@@ -187,7 +188,7 @@
         };
       };
 
-      snowflake.services.backups.config.forgejo.paths = [
+      ${namespace}.services.backups.config.forgejo.paths = [
         config.services.forgejo.repositoryRoot
         config.services.forgejo.lfs.contentDir
       ];

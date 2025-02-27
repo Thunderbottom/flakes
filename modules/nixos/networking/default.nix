@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.networking = {
+  options.${namespace}.networking = {
     iwd.enable = lib.mkEnableOption "Enable iwd backend for network manager";
     networkd.enable = lib.mkEnableOption "Enable systemd network management daemon";
     networkManager.enable = lib.mkEnableOption "Enable network-manager";
@@ -14,12 +15,12 @@
   config = lib.mkMerge [
     {
       # Enable the network firewall by default.
-      networking.firewall.enable = config.snowflake.networking.firewall.enable;
+      networking.firewall.enable = config.${namespace}.networking.firewall.enable;
       # use nftables for firewall
       networking.nftables.enable = true;
     }
 
-    (lib.mkIf config.snowflake.networking.iwd.enable {
+    (lib.mkIf config.${namespace}.networking.iwd.enable {
       networking.wireless.iwd = {
         enable = true;
         settings = {
@@ -43,7 +44,7 @@
       };
     })
 
-    (lib.mkIf config.snowflake.networking.networkManager.enable {
+    (lib.mkIf config.${namespace}.networking.networkManager.enable {
       systemd.services.NetworkManager-wait-online.enable = false;
 
       networking.networkmanager = {
@@ -51,19 +52,19 @@
         # Disable Wifi powersaving
         wifi.powersave = false;
         wifi.backend =
-          if config.snowflake.networking.iwd.enable
+          if config.${namespace}.networking.iwd.enable
           then "iwd"
           else "wpa_supplicant";
       };
 
-      snowflake.user.extraGroups = ["networkmanager"];
+      ${namespace}.user.extraGroups = ["networkmanager"];
 
       services.resolved = {
-        enable = config.snowflake.networking.resolved.enable;
+        enable = config.${namespace}.networking.resolved.enable;
       };
     })
 
-    (lib.mkIf config.snowflake.networking.networkd.enable {
+    (lib.mkIf config.${namespace}.networking.networkd.enable {
       systemd.network.enable = true;
 
       systemd.services = {

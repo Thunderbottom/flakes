@@ -1,8 +1,12 @@
-{ config, lib, ... }:
 {
-  options.snowflake.development.tmux.enable = lib.mkEnableOption "Enable tmux core configuration";
+  config,
+  lib,
+  namespace,
+  ...
+}: {
+  options.${namespace}.development.tmux.enable = lib.mkEnableOption "Enable tmux core configuration";
 
-  config = lib.mkIf config.snowflake.development.tmux.enable {
+  config = lib.mkIf config.${namespace}.development.tmux.enable {
     programs.tmux = {
       enable = true;
       shortcut = "a";

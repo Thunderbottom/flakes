@@ -1,11 +1,12 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   system,
   ...
 }: {
-  options.snowflake = {
+  options.${namespace} = {
     stateVersion = lib.mkOption {
       type = lib.types.str;
       example = "24.05";
@@ -35,16 +36,18 @@
       useXkbConfig = true;
     };
 
-    # Enable all snowflake core modules.
-    snowflake.core.fish.enable = lib.mkDefault true;
-    snowflake.core.gnupg.enable = lib.mkDefault true;
-    snowflake.core.nix.enable = lib.mkDefault true;
-    snowflake.core.security.enable = lib.mkDefault true;
-    snowflake.core.security.sysctl.enable = lib.mkDefault true;
-    snowflake.core.sshd.enable = lib.mkDefault true;
+    # Enable all core modules.
+    ${namespace}.core = {
+      fish.enable = lib.mkDefault true;
+      gnupg.enable = lib.mkDefault true;
+      nix.enable = lib.mkDefault true;
+      security.enable = lib.mkDefault true;
+      security.sysctl.enable = lib.mkDefault true;
+      sshd.enable = lib.mkDefault true;
+    };
 
     boot = {
-      initrd.systemd.enable = config.snowflake.bootloader == "systemd-boot";
+      initrd.systemd.enable = config.${namespace}.bootloader == "systemd-boot";
       initrd.verbose = false;
       # Default to the latest kernel package.
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -56,13 +59,13 @@
         efi.canTouchEfiVariables = true;
         # Use systemd-boot for all systems.
         systemd-boot = {
-          enable = config.snowflake.bootloader == "systemd-boot";
+          enable = config.${namespace}.bootloader == "systemd-boot";
           # Show only last 5 configurations in the boot menu.
           configurationLimit = lib.mkDefault 5;
         };
 
         grub = {
-          enable = config.snowflake.bootloader == "grub";
+          enable = config.${namespace}.bootloader == "grub";
           efiSupport = true;
           forceInstall = true;
         };
@@ -115,7 +118,7 @@
           prettyping
           whois
         ]
-        ++ config.snowflake.extraPackages;
+        ++ config.${namespace}.extraPackages;
     };
 
     i18n = {
@@ -154,7 +157,7 @@
     # ref: https://github.com/Irqbalance/irqbalance/issues/308
     systemd.services.irqbalance.serviceConfig.ProtectKernelTunables = "no";
 
-    system.stateVersion = config.snowflake.stateVersion;
+    system.stateVersion = config.${namespace}.stateVersion;
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -162,7 +165,7 @@
       '';
     };
 
-    time.timeZone = config.snowflake.timeZone;
+    time.timeZone = config.${namespace}.timeZone;
 
     # Enable zram swap.
     # ref: https://wiki.archlinux.org/title/Zram

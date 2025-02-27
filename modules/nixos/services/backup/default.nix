@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   ...
 }:
 with lib; {
-  options.snowflake.services.backups = {
+  options.${namespace}.services.backups = {
     enable = mkEnableOption "Enable restic backup service";
 
     resticEnvironmentFile = mkOption {
@@ -80,7 +81,7 @@ with lib; {
   };
 
   config = let
-    cfg = config.snowflake.services.backups;
+    cfg = config.${namespace}.services.backups;
   in
     mkIf cfg.enable {
       age.secrets = {

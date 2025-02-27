@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.gaming.steam.enable = lib.mkEnableOption "Enable steam";
+  options.${namespace}.gaming.steam.enable = lib.mkEnableOption "Enable steam";
 
-  config = lib.mkIf config.snowflake.gaming.steam.enable {
+  config = lib.mkIf config.${namespace}.gaming.steam.enable {
     programs.steam = {
       enable = true;
       gamescopeSession.enable = true;

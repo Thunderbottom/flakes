@@ -1,20 +1,20 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
-}:
-{
-  options.snowflake.core.gnupg.enable = lib.mkEnableOption "Enable core gnupg configuration";
+}: {
+  options.${namespace}.core.gnupg.enable = lib.mkEnableOption "Enable core gnupg configuration";
 
-  config = lib.mkIf config.snowflake.core.gnupg.enable {
+  config = lib.mkIf config.${namespace}.core.gnupg.enable {
     services.pcscd.enable = true;
 
     programs.gnupg.agent = {
       enable = true;
-      enableSSHSupport = !config.snowflake.core.sshd.enable;
+      enableSSHSupport = !config.${namespace}.core.sshd.enable;
     };
 
-    environment.systemPackages = [ pkgs.gnupg ];
+    environment.systemPackages = [pkgs.gnupg];
   };
 }

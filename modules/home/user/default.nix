@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
@@ -12,7 +13,7 @@
         "--group-directories-first"
         "--header"
       ];
-      git = config.snowflake.development.git.enable;
+      git = config.${namespace}.development.git.enable;
       icons = "auto";
     };
 
@@ -41,7 +42,7 @@
 
     # Set the EDITOR environment variable.
     home.sessionVariables.EDITOR =
-      if config.snowflake.development.helix.enable
+      if config.${namespace}.development.helix.enable
       then "hx"
       else "nano";
 

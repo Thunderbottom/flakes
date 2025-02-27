@@ -1,5 +1,6 @@
 {
   lib,
+  namespace,
   pkgs,
   userdata,
   ...
@@ -36,7 +37,7 @@
 
   services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
 
-  snowflake = {
+  ${namespace} = {
     stateVersion = "24.05";
     extraPackages = with pkgs; [
       obsidian

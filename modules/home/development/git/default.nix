@@ -1,19 +1,20 @@
-{ config, lib, ... }:
-let
+{
+  config,
+  lib,
+  namespace,
+  ...
+}: let
   # Redefine gitIniTyp.
   # ref: https://github.com/nix-community/home-manager/blob/master/modules/programs/git.nix
-  gitIniType =
-    with lib.types;
-    let
-      primitiveType = either str (either bool int);
-      multipleType = either primitiveType (listOf primitiveType);
-      sectionType = attrsOf multipleType;
-      supersectionType = attrsOf (either multipleType sectionType);
-    in
+  gitIniType = with lib.types; let
+    primitiveType = either str (either bool int);
+    multipleType = either primitiveType (listOf primitiveType);
+    sectionType = attrsOf multipleType;
+    supersectionType = attrsOf (either multipleType sectionType);
+  in
     attrsOf supersectionType;
-in
-{
-  options.snowflake.development.git = {
+in {
+  options.${namespace}.development.git = {
     enable = lib.mkEnableOption "Enable development git configuration";
 
     user.name = lib.mkOption {
@@ -36,7 +37,7 @@ in
     };
     work.extraConfig = lib.mkOption {
       type = lib.types.either lib.types.lines gitIniType;
-      default = { };
+      default = {};
       description = "Additional configuration for work git.";
     };
     work.email = lib.mkOption {
@@ -45,7 +46,7 @@ in
     };
   };
 
-  config = lib.mkIf config.snowflake.development.git.enable {
+  config = lib.mkIf config.${namespace}.development.git.enable {
     programs.git = {
       enable = true;
 
@@ -58,31 +59,33 @@ in
         };
       };
 
-      extraConfig = {
-        init.defaultBranch = "main";
-        commit.gpgSign = true;
-        diff.algorithm = "histogram";
-        gc.writeCommitGraph = true;
+      extraConfig =
+        {
+          init.defaultBranch = "main";
+          commit.gpgSign = true;
+          diff.algorithm = "histogram";
+          gc.writeCommitGraph = true;
 
-        # Do not `git fetch && git merge` or `git fetch && git rebase`
-        # on default `git pull behavior`.
-        pull.ff = "only";
-        pull.rebase = false;
+          # Do not `git fetch && git merge` or `git fetch && git rebase`
+          # on default `git pull behavior`.
+          pull.ff = "only";
+          pull.rebase = false;
 
-        # Enable REuse REcorded REsolution for git merge conflicts.
-        rerere.enabled = true;
+          # Enable REuse REcorded REsolution for git merge conflicts.
+          rerere.enabled = true;
 
-        user.name = config.snowflake.development.git.user.name;
-        user.email = config.snowflake.development.git.user.email;
-        user.signingKey = config.snowflake.development.git.user.signingKey;
-      } // config.snowflake.development.git.work.extraConfig;
+          user.name = config.${namespace}.development.git.user.name;
+          user.email = config.${namespace}.development.git.user.email;
+          user.signingKey = config.${namespace}.development.git.user.signingKey;
+        }
+        // config.${namespace}.development.git.work.extraConfig;
 
       # Global gitignore configuration.
       ignores = [
         "*~"
         ".#*"
       ];
-      includes = lib.mkIf config.snowflake.development.git.work.enable [
+      includes = lib.mkIf config.${namespace}.development.git.work.enable [
         # Enable work git configuration in specific directories.
         # This allows existence of two different gitconfigs based on directories.
         # For this, structuring the git repositories into directories based on
@@ -90,16 +93,16 @@ in
         # Example:
         # ~/workspace/github.com: personal git workflow.
         # ~/workspace/git.work.example: $WORK git workflow.
-        # Setting config.snowflake.work.git.workpath = "~/workspace/git.work.example"
+        # Setting config.${namespace}.work.git.workpath = "~/workspace/git.work.example"
         # would apply the following configuration to only
         # the ~/workspace.git.work.example folder.
         {
-          condition = "gitdir:${config.snowflake.development.git.work.path}";
+          condition = "gitdir:${config.${namespace}.development.git.work.path}";
           contents = {
             commit.gpgSign = true;
-            user.email = config.snowflake.development.git.work.email;
-            user.name = config.snowflake.development.git.user.name;
-            user.signingKey = config.snowflake.development.git.user.signingKey;
+            user.email = config.${namespace}.development.git.work.email;
+            user.name = config.${namespace}.development.git.user.name;
+            user.signingKey = config.${namespace}.development.git.user.signingKey;
           };
         }
       ];

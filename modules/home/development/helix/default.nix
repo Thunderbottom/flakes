@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.development.helix.enable = lib.mkEnableOption "Enable helix development configuration";
+  options.${namespace}.development.helix.enable = lib.mkEnableOption "Enable helix development configuration";
 
-  config = lib.mkIf config.snowflake.development.helix.enable {
+  config = lib.mkIf config.${namespace}.development.helix.enable {
     programs.helix = {
       enable = true;
       extraPackages = with pkgs; [

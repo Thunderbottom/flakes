@@ -1,14 +1,15 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.gnome = {
+  options.${namespace}.desktop.gnome = {
     enable = lib.mkEnableOption "Enable the Gnome Desktop Environment";
   };
 
-  config = lib.mkIf config.snowflake.desktop.gnome.enable {
+  config = lib.mkIf config.${namespace}.desktop.gnome.enable {
     services.xserver = {
       displayManager.gdm = {
         enable = true;
@@ -74,7 +75,7 @@
       ];
     };
 
-    snowflake.user.extraGroups = [
+    ${namespace}.user.extraGroups = [
       "audio"
       "input"
       "video"

@@ -122,7 +122,7 @@ The repository follows the standard Snowfall Lib [flake structure](https://snowf
 
 ## Modules
 
-All modules are available under the `modules/` directory, for both Home manager and NixOS, with the options listed under `snowflake.*`. These modules makes deploying complex configurations quite simple. For example: A full-fledged, minimal, KDE Plasma desktop can be enabled by adding `snowflake.desktop.kde.enable = true` to your system configuration.
+All modules are available under the `modules/` directory, for both Home manager and NixOS, with the options listed under `${namespace}.*`. These modules makes deploying complex configurations quite simple. For example: A full-fledged, minimal, KDE Plasma desktop can be enabled by adding `${namespace}.desktop.kde.enable = true` to your system configuration.
 
 The modular configuration also allows for efficient reusability and config de-duplication between machines. Most of the configuration is tailored to my needs, but is still highly-customizable except for the security defaults.
 
@@ -142,7 +142,7 @@ As an example, to deploy a new workstation with a desktop environment:
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
 
-  snowflake = {
+  ${namespace} = {
     stateVersion = "24.05";
 
     core.lanzaboote.enable = true;

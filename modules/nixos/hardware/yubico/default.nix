@@ -1,13 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
-}:
-{
-  options.snowflake.hardware.yubico.enable = lib.mkEnableOption "Enable yubico hardware support";
+}: {
+  options.${namespace}.hardware.yubico.enable = lib.mkEnableOption "Enable yubico hardware support";
 
-  config = lib.mkIf config.snowflake.hardware.yubico.enable {
+  config = lib.mkIf config.${namespace}.hardware.yubico.enable {
     # Enable FIDO authentication support.
     # ref: https://nixos.wiki/wiki/Yubikey
     security.pam = {
@@ -17,6 +17,6 @@
         sudo.u2fAuth = true;
       };
     };
-    services.udev.packages = [ pkgs.yubikey-personalization ];
+    services.udev.packages = [pkgs.yubikey-personalization];
   };
 }

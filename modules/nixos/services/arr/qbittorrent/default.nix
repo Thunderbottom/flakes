@@ -1,11 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   namespace,
+  pkgs,
   ...
 }: {
-  options.snowflake.services.qbittorrent-nox = {
+  options.${namespace}.services.qbittorrent-nox = {
     enable = lib.mkEnableOption "Enable qbittorrent-nox service configuration";
 
     package = lib.mkPackageOption pkgs "qbittorrent-nox" {};
@@ -30,7 +30,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.qbittorrent-nox;
+    cfg = config.${namespace}.services.qbittorrent-nox;
   in
     lib.mkIf cfg.enable {
       networking.firewall.allowedTCPPorts =

@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.pipewire.enable = lib.mkEnableOption "Enable pipewire configuration";
+  options.${namespace}.desktop.pipewire.enable = lib.mkEnableOption "Enable pipewire configuration";
 
-  config = lib.mkIf config.snowflake.desktop.pipewire.enable {
+  config = lib.mkIf config.${namespace}.desktop.pipewire.enable {
     # Enable sound.
     # sound.enable = true;
 

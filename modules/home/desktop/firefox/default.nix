@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.firefox.enable = lib.mkEnableOption "Enable firefox home configuration";
+  options.${namespace}.desktop.firefox.enable = lib.mkEnableOption "Enable firefox home configuration";
 
-  config = lib.mkIf config.snowflake.desktop.firefox.enable {
+  config = lib.mkIf config.${namespace}.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
       policies = {

@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.services.postgresql = {
+  options.${namespace}.services.postgresql = {
     enable = lib.mkEnableOption "Enable postgresql service";
 
     package = lib.mkOption {
@@ -17,7 +18,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.postgresql;
+    cfg = config.${namespace}.services.postgresql;
   in
     lib.mkIf cfg.enable {
       services.postgresql = {
@@ -25,7 +26,7 @@
         package = cfg.package;
       };
 
-      snowflake.services.backups.config.postgresql = let
+      ${namespace}.services.backups.config.postgresql = let
         compressSuffix = ".zstd";
         compressCmd = "${pkgs.zstd}/bin/zstd -c";
 

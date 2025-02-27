@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.services.navidrome = {
+  options.${namespace}.services.navidrome = {
     enable = lib.mkEnableOption "Enable navidrome deployment configuration";
 
     port = lib.mkOption {
@@ -19,7 +20,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.navidrome;
+    cfg = config.${namespace}.services.navidrome;
   in
     lib.mkIf cfg.enable {
       services.navidrome = {

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  namespace,
   userdata,
   ...
 }: {
@@ -54,7 +55,7 @@
     mailserver-noreply.file = userdata.secrets.services.mailserver.noreply.password.file;
   };
 
-  snowflake = {
+  ${namespace} = {
     stateVersion = "24.11";
     bootloader = "grub";
 

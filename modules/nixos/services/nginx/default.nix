@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.services.nginx = {
+  options.${namespace}.services.nginx = {
     enable = lib.mkEnableOption "Enable nginx service";
     acmeEmail = lib.mkOption {
       type = lib.types.str;
@@ -13,7 +14,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.nginx;
+    cfg = config.${namespace}.services.nginx;
   in
     lib.mkIf cfg.enable {
       security.acme.defaults.email = cfg.acmeEmail;

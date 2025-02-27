@@ -1,5 +1,6 @@
 {
   lib,
+  namespace,
   pkgs,
   userdata,
   ...
@@ -24,7 +25,7 @@
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
 
-  snowflake = {
+  ${namespace} = {
     stateVersion = "24.05";
     extraPackages = with pkgs; [
       easyeffects

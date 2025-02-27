@@ -1,23 +1,24 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop = {
+  options.${namespace}.desktop = {
     enable = lib.mkEnableOption "Enable core Desktop Environment configuration";
     fingerprint.enable = lib.mkEnableOption "Enable fingerprint support for Desktop Environments";
   };
 
-  config = lib.mkIf config.snowflake.desktop.enable {
-    snowflake = {
+  config = lib.mkIf config.${namespace}.desktop.enable {
+    ${namespace} = {
       # Enable the fonts module.
       desktop.fonts.enable = true;
       # Enable the pipewire module.
       desktop.pipewire.enable = true;
 
       # Add user to networkmanager and adbusers group.
-      # Works only when snowflake.user.enable is true.
+      # Works only when ${namespace}.user.enable is true.
       user.extraGroups = ["adbusers"];
     };
 
@@ -25,11 +26,11 @@
     programs.adb.enable = true;
     programs.dconf.enable = true;
     # Start the ssh agent if enabled.
-    programs.ssh.startAgent = config.snowflake.core.sshd.enable;
+    programs.ssh.startAgent = config.${namespace}.core.sshd.enable;
 
     # Enable fingerprint authentication.
     # Requires fingerprint registered using `fprint-enroll` to work.
-    services.fprintd.enable = config.snowflake.desktop.fingerprint.enable;
+    services.fprintd.enable = config.${namespace}.desktop.fingerprint.enable;
     services.libinput.enable = true;
 
     services.xserver.enable = true;

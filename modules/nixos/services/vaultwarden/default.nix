@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.services.vaultwarden = {
+  options.${namespace}.services.vaultwarden = {
     enable = lib.mkEnableOption "Enable vaultwarden service with postgres and nginx";
 
     domain = lib.mkOption {
@@ -22,7 +23,7 @@
   # change from /var/lib/bitwarden_rs to /var/lib/vaultwarden.
   # We need to move the data and then change the backup service directory.
   config = let
-    cfg = config.snowflake.services.vaultwarden;
+    cfg = config.${namespace}.services.vaultwarden;
   in
     lib.mkIf cfg.enable {
       age.secrets.vaultwarden = {
@@ -74,7 +75,7 @@
         };
       };
 
-      snowflake.services.backups.config.vaultwarden.paths = [
+      ${namespace}.services.backups.config.vaultwarden.paths = [
         "/var/lib/bitwarden_rs"
       ];
 

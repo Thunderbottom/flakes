@@ -1,11 +1,12 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.hardware.graphics.nvidia.enable = lib.mkEnableOption "Enable Nvidia graphics configuration";
+  options.${namespace}.hardware.graphics.nvidia.enable = lib.mkEnableOption "Enable Nvidia graphics configuration";
 
-  config = lib.mkIf config.snowflake.hardware.graphics.nvidia.enable {
+  config = lib.mkIf config.${namespace}.hardware.graphics.nvidia.enable {
     # Add opengl hardware support.
     hardware.graphics = {
       enable = true;

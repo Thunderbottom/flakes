@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.monitoring.victoriametrics = let
+  options.${namespace}.monitoring.victoriametrics = let
     settingsFormat = pkgs.formats.json {};
   in {
     enable = lib.mkEnableOption "Enable victoriametrics and vmagent stack";
@@ -23,7 +24,7 @@
   };
 
   config = let
-    cfg = config.snowflake.monitoring.victoriametrics;
+    cfg = config.${namespace}.monitoring.victoriametrics;
     exporterCfg = config.services.prometheus.exporters;
   in
     lib.mkIf cfg.enable {

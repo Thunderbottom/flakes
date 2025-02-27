@@ -2,11 +2,12 @@
   config,
   inputs,
   lib,
+  namespace,
   ...
 }: {
   imports = [inputs.nixos-mailserver.nixosModules.mailserver];
 
-  options.snowflake.services.mailserver = {
+  options.${namespace}.services.mailserver = {
     enable = lib.mkEnableOption "Enable mailserver service";
 
     fqdn = lib.mkOption {
@@ -26,7 +27,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.mailserver;
+    cfg = config.${namespace}.services.mailserver;
   in
     lib.mkIf cfg.enable {
       # Ref: https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/issues/275

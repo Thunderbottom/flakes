@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.gnome-dconf.enable = lib.mkEnableOption "Enable gnome dconf home configuration";
+  options.${namespace}.desktop.gnome-dconf.enable = lib.mkEnableOption "Enable gnome dconf home configuration";
 
-  config = lib.mkIf config.snowflake.desktop.gnome-dconf.enable {
+  config = lib.mkIf config.${namespace}.desktop.gnome-dconf.enable {
     dconf.settings = {
       "org/gnome/shell" = {
         favorite-apps = [
@@ -105,7 +106,7 @@
         dash-max-icon-size = 48;
         dock-position = "BOTTOM";
         height-fraction = 0.9;
-        intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
+        intellihide-mode = "MAXIMIZED_WINDOWS";
         preferred-monitor = -2;
         preferred-monitor-by-connector = "eDP-1";
       };
@@ -144,6 +145,7 @@
       "org/gnome/desktop/peripherals/mouse" = {
         accel-profile = "flat";
         natural-scoll = false;
+        speed = 0.8;
       };
 
       "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;

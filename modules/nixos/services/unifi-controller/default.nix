@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.services.unifi-controller = {
+  options.${namespace}.services.unifi-controller = {
     enable = lib.mkEnableOption "Enable Unifi controller service for Unifi devices";
     unpoller = {
       enable = lib.mkEnableOption "Enable unpoller metrics for Unifi controller";
@@ -28,7 +29,7 @@
   };
 
   config = let
-    cfg = config.snowflake.services.unifi-controller;
+    cfg = config.${namespace}.services.unifi-controller;
   in
     lib.mkMerge [
       (lib.mkIf cfg.enable

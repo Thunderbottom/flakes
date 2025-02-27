@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.desktop.fonts.enable = lib.mkEnableOption "Enable desktop font configuration";
+  options.${namespace}.desktop.fonts.enable = lib.mkEnableOption "Enable desktop font configuration";
 
-  config = lib.mkIf config.snowflake.desktop.fonts.enable {
+  config = lib.mkIf config.${namespace}.desktop.fonts.enable {
     fonts = {
       fontDir.enable = true;
       packages = with pkgs; [

@@ -2,14 +2,15 @@
   config,
   inputs,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.core.nix = {
+  options.${namespace}.core.nix = {
     enable = lib.mkEnableOption "Enable core nix configuration";
   };
 
-  config = lib.mkIf config.snowflake.core.nix.enable {
+  config = lib.mkIf config.${namespace}.core.nix.enable {
     nix = {
       # Run garbage collector daily, and remove anything
       # older than 7 days.

@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  namespace,
   pkgs,
   ...
 }: {
-  options.snowflake.monitoring.grafana = let
+  options.${namespace}.monitoring.grafana = let
     settingsFormat = pkgs.formats.yaml {};
   in {
     enable = lib.mkEnableOption "Enable grafana for monitoring stack";
@@ -33,7 +34,7 @@
   };
 
   config = let
-    cfg = config.snowflake.monitoring.grafana;
+    cfg = config.${namespace}.monitoring.grafana;
   in
     lib.mkIf cfg.enable {
       age.secrets.grafana = {
@@ -67,7 +68,7 @@
               name = "Victoriametrics";
               type = "prometheus";
               access = "proxy";
-              url = "http://127.0.0.1:${toString config.snowflake.monitoring.victoriametrics.port}";
+              url = "http://127.0.0.1:${toString config.${namespace}.monitoring.victoriametrics.port}";
             }
             ++ cfg.extraDatasourceConfig;
         };

@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.core.docker = {
+  options.${namespace}.core.docker = {
     enable = lib.mkEnableOption "Enable core docker configuration";
     storageDriver = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
@@ -12,7 +13,7 @@
     };
   };
 
-  config = lib.mkIf config.snowflake.core.docker.enable {
+  config = lib.mkIf config.${namespace}.core.docker.enable {
     virtualisation.docker = {
       enable = true;
       # Required for containers with `--restart=always`.
@@ -20,10 +21,10 @@
       autoPrune = {
         enable = true;
       };
-      inherit (config.snowflake.core.docker) storageDriver;
+      inherit (config.${namespace}.core.docker) storageDriver;
     };
 
     # Add the system user to the docker group
-    snowflake.user.extraGroups = ["docker"];
+    ${namespace}.user.extraGroups = ["docker"];
   };
 }

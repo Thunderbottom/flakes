@@ -1,13 +1,14 @@
 {
   config,
   lib,
+  namespace,
   ...
 }: {
-  options.snowflake.monitoring.enable = lib.mkEnableOption "Enable the base monitoring stack configuration";
+  options.${namespace}.monitoring.enable = lib.mkEnableOption "Enable the base monitoring stack configuration";
 
-  config = lib.mkIf config.snowflake.monitoring.enable {
-    # Enable base snowflake monitoring modules.
-    snowflake.monitoring = {
+  config = lib.mkIf config.${namespace}.monitoring.enable {
+    # Enable base monitoring modules.
+    ${namespace}.monitoring = {
       victoriametrics.enable = lib.mkDefault true;
       grafana.enable = lib.mkDefault true;
       exporter.collectd.enable = lib.mkDefault true;
