@@ -10,11 +10,14 @@
     domain = lib.mkOption {
       type = lib.types.str;
       description = "Configuration domain to use for the forgejo service";
+      default = "";
     };
 
     sshDomain = lib.mkOption {
       type = lib.types.str;
       description = "SSH domain to use for the forgejo service";
+      default = config.snowflake.services.forgejo.domain;
+      defaultText = "config.snowflake.services.forgejo.domain";
     };
 
     dbPasswordFile = lib.mkOption {
@@ -45,6 +48,24 @@
     cfg = config.snowflake.services.forgejo;
   in
     lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.domain != "";
+          message = "snowflake.services.forgejo.domain must not be empty";
+        }
+      ];
+
+      warnings =
+        if cfg.sshDomain == cfg.domain
+        then [
+          ''
+            No unique value specified for `snowflake.services.forgejo.sshDomain`.
+            Will default to snowflake.services.forgejo.domain. This might cause
+            issues with SSH if the forgejo service is behind a proxy, like CloudFlare.
+          ''
+        ]
+        else [];
+
       age.secrets = {
         forgejo = {
           inherit (cfg.dbPasswordFile) file;
