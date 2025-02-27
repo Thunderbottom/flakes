@@ -16,6 +16,7 @@
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
       nvidiaSettings = true;
+      dynamicBoost.enable = true;
 
       powerManagement.enable = true;
       powerManagement.finegrained = true;
@@ -36,6 +37,7 @@
     environment.variables.KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = "1";
 
     boot.blacklistedKernelModules = ["nouveau"];
+    boot.kernelParams = ["nvidia-drm.modeset=1" "nvidia.NVreg_EnableS0ixPowerManagement=1"];
 
     systemd.services = {
       nvidia-hibernate = {
