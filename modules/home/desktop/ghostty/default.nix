@@ -41,6 +41,9 @@
           "15=#ffffff"
         ];
         font-family = "JetBrains Mono";
+        term = "xterm-256color";
+        window-padding-x = 2;
+        window-padding-y = 2;
       };
     };
   };
