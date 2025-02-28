@@ -40,7 +40,7 @@
 
     desktop.enable = true;
     desktop.fingerprint.enable = true;
-    desktop.kde.enable = true;
+    desktop.gnome.enable = true;
 
     gaming.steam.enable = true;
 
