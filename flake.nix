@@ -65,25 +65,16 @@
       channels-config.allowUnfree = true;
 
       outputs-builder = channels: {
-        formatter = channels.nixpkgs.writeShellApplication {
-          name = "format";
-          runtimeInputs = with channels.nixpkgs; [
-            nixfmt-rfc-style
-            deadnix
-            shfmt
-            statix
-          ];
-          text = ''
-            set -euo pipefail
-            shfmt --write --simplify --language-dialect bash --indent 2 --case-indent --space-redirects .;
-            deadnix --edit
-            statix check . || statix fix .
-            nixfmt .
-          '';
-        };
+        formatter = (inputs.treefmt-nix.lib.evalModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
       };
 
       deploy = lib.mkDeploy {inherit (inputs) self;};
+
+      templates = {
+        module.description = "Flake template for creating a new nix module";
+        desktop.description = "Flake template for creating a new desktop configuration";
+        server.description = "Flake template for creating a new server configuration";
+      };
     };
 
   inputs = {
@@ -134,6 +125,9 @@
 
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
+
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
