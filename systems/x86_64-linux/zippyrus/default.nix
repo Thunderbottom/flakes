@@ -58,7 +58,13 @@
     hardware.yubico.enable = true;
     hardware.graphics = {
       amd.enable = true;
-      nvidia.enable = true;
+      nvidia = {
+        enable = true;
+        busIDs = {
+          amd = "PCI:101:0:0";
+          nvidia = "PCI:1:0:0";
+        };
+      };
     };
 
     networking.firewall.enable = true;
