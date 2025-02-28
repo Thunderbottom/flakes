@@ -15,7 +15,10 @@
       # Enable the fonts module.
       desktop.fonts.enable = true;
       # Enable the pipewire module.
-      desktop.pipewire.enable = true;
+      desktop.pipewire = {
+        enable = true;
+        enableLowLatency = true;
+      };
 
       # Add user to networkmanager and adbusers group.
       # Works only when ${namespace}.user.enable is true.
@@ -32,6 +35,11 @@
     # Requires fingerprint registered using `fprint-enroll` to work.
     services.fprintd.enable = config.${namespace}.desktop.fingerprint.enable;
     services.libinput.enable = true;
+
+    # Enable printing support.
+    # Disables printing for browsed.
+    services.printing.enable = true;
+    services.printing.browsed.enable = false;
 
     services.xserver.enable = true;
     # Prevents xterm from being installed.
@@ -70,6 +78,18 @@
       XDG_SESSION_TYPE = "wayland";
       SDL_VIDEODRIVER = "wayland";
       CLUTTER_BACKEND = "wayland";
+
+      GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
+        with pkgs.gst_all_1; [
+          gstreamer
+          gst-plugins-base
+          gst-plugins-good
+          gst-plugins-bad
+          gst-plugins-ugly
+          gst-libav
+          gst-vaapi
+        ]
+      );
     };
   };
 }
