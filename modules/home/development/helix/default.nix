@@ -11,13 +11,13 @@
     programs.helix = {
       enable = true;
       extraPackages = with pkgs; [
-        alejandra
         clippy
         nil
         gopls
         gotools
         lldb
         marksman
+        nixfmt-rfc-style
         rust-analyzer
         shellcheck
       ];
@@ -109,7 +109,7 @@
           }
           {
             name = "nix";
-            formatter.command = "alejandra";
+            formatter.command = "nixfmt";
             auto-format = true;
             language-servers = ["nil"];
           }
@@ -136,7 +136,7 @@
           nil = {
             command = lib.getExe pkgs.nil;
             config.nil.formatting.command = [
-              "${lib.getExe pkgs.alejandra}"
+              "${lib.getExe pkgs.nixfmt-rfc-style}"
               "-q"
             ];
           };
