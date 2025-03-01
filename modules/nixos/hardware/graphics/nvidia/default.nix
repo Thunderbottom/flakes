@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.hardware.graphics.nvidia = {
     enable = lib.mkEnableOption "Enable Nvidia graphics configuration";
     busIDs = {
@@ -36,7 +37,9 @@
         message = "You need to define a bus ID for your Nvidia GPU. To learn how to find the bus ID, see https://wiki.nixos.org/wiki/Nvidia#Configuring_Optimus_PRIME:_Bus_ID_Values_.28Mandatory.29.";
       }
       {
-        assertion = config.${namespace}.hardware.graphics.nvidia.busIDs.intel != "" || config.${namespace}.hardware.graphics.nvidia.busIDs.amd != "";
+        assertion =
+          config.${namespace}.hardware.graphics.nvidia.busIDs.intel != ""
+          || config.${namespace}.hardware.graphics.nvidia.busIDs.amd != "";
         message = "You need to define a bus ID for your non-Nvidia GPU. To learn how to find your bus ID, see https://wiki.nixos.org/wiki/Nvidia#Configuring_Optimus_PRIME:_Bus_ID_Values_.28Mandatory.29.";
       }
     ];
@@ -44,7 +47,7 @@
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = [pkgs.vaapiVdpau];
+      extraPackages = [ pkgs.vaapiVdpau ];
     };
 
     hardware.nvidia = {
@@ -71,24 +74,7 @@
     environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
     environment.variables.KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = "1";
 
-    boot.blacklistedKernelModules = ["nouveau"];
-    boot.kernelParams = ["nvidia-drm.modeset=1" "nvidia.NVreg_EnableS0ixPowerManagement=1"];
-
-    systemd.services = {
-      nvidia-hibernate = {
-        before = ["systemd-suspend-then-hibernate.service"];
-        wantedBy = ["suspend-then-hibernate.target"];
-      };
-
-      nvidia-suspend = {
-        before = ["systemd-hybrid-sleep.service"];
-        wantedBy = ["hybrid-sleep.target"];
-      };
-
-      nvidia-resume = {
-        after = ["systemd-suspend-then-hibernate.service" "systemd-hybrid-sleep.service"];
-        wantedBy = ["post-resume.target"];
-      };
-    };
+    boot.blacklistedKernelModules = [ "nouveau" ];
+    boot.kernelParams = [ "nvidia-drm.modeset=1" ];
   };
 }
