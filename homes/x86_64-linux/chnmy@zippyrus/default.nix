@@ -1,10 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   snowfallorg.user.enable = true;
   snowfallorg.user.name = "chnmy";
 
   snowflake.desktop.firefox.enable = true;
   snowflake.desktop.ghostty.enable = true;
-  snowflake.desktop.wezterm.enable = true;
   snowflake.desktop.gnome-dconf.enable = true;
 
   snowflake.development.git.enable = true;
