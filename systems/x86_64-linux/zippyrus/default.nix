@@ -4,8 +4,9 @@
   pkgs,
   userdata,
   ...
-}: {
-  imports = [./hardware.nix];
+}:
+{
+  imports = [ ./hardware.nix ];
 
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
@@ -26,7 +27,7 @@
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   # Power management, enable powertop and thermald.
@@ -35,7 +36,10 @@
 
   services.ratbagd.enable = true;
 
-  services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
+  services.xserver.videoDrivers = lib.mkForce [
+    "amdgpu"
+    "nvidia"
+  ];
 
   ${namespace} = {
     stateVersion = "24.05";
@@ -49,7 +53,34 @@
     core.docker.storageDriver = "btrfs";
 
     desktop.enable = true;
+    desktop.plymouth.enable = true;
     desktop.gnome.enable = true;
+    desktop.gnome.monitors.xml = ''
+      <monitors version="2">
+        <configuration>
+          <layoutmode>logical</layoutmode>
+          <logicalmonitor>
+            <x>0</x>
+            <y>0</y>
+            <scale>1</scale>
+            <primary>yes</primary>
+            <monitor>
+              <monitorspec>
+                <connector>eDP-1</connector>
+                <vendor>SDC</vendor>
+                <product>ATNA40CU05-0 </product>
+                <serial>0x00000000</serial>
+              </monitorspec>
+              <mode>
+                <width>2880</width>
+                <height>1800</height>
+                <rate>120.000</rate>
+              </mode>
+            </monitor>
+          </logicalmonitor>
+        </configuration>
+      </monitors>
+    '';
 
     gaming.proton.enable = true;
     gaming.steam.enable = true;
@@ -77,7 +108,7 @@
     user.enable = true;
     user.username = "chnmy";
     user.description = "Chinmay D. Pai";
-    user.extraGroups = ["video"];
+    user.extraGroups = [ "video" ];
     user.userPasswordAgeModule = userdata.secrets.machines.zippyrus.password;
     user.rootPasswordAgeModule = userdata.secrets.machines.zippyrus.root-password;
   };

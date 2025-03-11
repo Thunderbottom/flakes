@@ -4,9 +4,15 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.desktop.gnome = {
     enable = lib.mkEnableOption "Enable the Gnome Desktop Environment";
+    monitors.xml = lib.mkOption {
+      default = "";
+      description = "The monitors.xml configuration to use for gdm";
+      type = lib.types.str;
+    };
   };
 
   config = lib.mkIf config.${namespace}.desktop.gnome.enable {
@@ -24,7 +30,7 @@
       };
     };
 
-    services.udev.packages = [pkgs.gnome-settings-daemon];
+    services.udev.packages = [ pkgs.gnome-settings-daemon ];
 
     # Remove bloatware that we do not require.
     environment = {
@@ -74,6 +80,15 @@
         gnomeExtensions.blur-my-shell
       ];
     };
+
+    systemd.tmpfiles.rules =
+      let
+        monitors.xml = pkgs.writeText "monitors.xml" config.${namespace}.desktop.gnome.monitors.xml;
+      in
+      [ "d ${config.users.users.gdm.home}/.config 0711 gdm gdm" ]
+      ++ (lib.optional (
+        config.${namespace}.desktop.gnome.monitors.xml != ""
+      ) "L+ ${config.users.users.gdm.home}/.config/monitors.xml - gdm gdm - ${monitors.xml}");
 
     ${namespace}.user.extraGroups = [
       "audio"
