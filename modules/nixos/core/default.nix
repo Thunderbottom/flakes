@@ -153,6 +153,15 @@
     # Use a high-performance implementation for DBus
     services.dbus.implementation = "broker";
 
+    services.smartd = {
+      enable = true;
+      autodetect = true;
+      notifications = {
+        wall.enable = true;
+        mail = {};
+      };
+    };
+
     # Workaround for irqbalance read-only filesystem issue.
     # ref: https://github.com/Irqbalance/irqbalance/issues/308
     systemd.services.irqbalance.serviceConfig.ProtectKernelTunables = "no";
