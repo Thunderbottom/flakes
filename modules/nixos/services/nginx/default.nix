@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.nginx = {
     enable = lib.mkEnableOption "Enable nginx service";
     acmeEmail = lib.mkOption {
@@ -13,14 +14,15 @@
     enableCloudflareRealIP = lib.mkEnableOption "Enable setting real_ip_header from Cloudflare IPs";
   };
 
-  config = let
-    cfg = config.${namespace}.services.nginx;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.nginx;
+    in
     lib.mkIf cfg.enable {
       security.acme.defaults.email = cfg.acmeEmail;
       security.dhparams = {
         enable = true;
-        params.nginx = {};
+        params.nginx = { };
       };
       services.nginx = {
         enable = true;
@@ -40,7 +42,7 @@
             add_header 'Referrer-Policy' 'origin-when-cross-origin';
 
             # Disable embedding as a frame
-            add_header X-Frame-Options DENY;
+            # add_header X-Frame-Options SAMEORIGIN;
 
             # Prevent injection of code in other mime types (XSS Attacks)
             add_header X-Content-Type-Options nosniff;
@@ -54,18 +56,24 @@
             }
           ''
           + lib.optionalString cfg.enableCloudflareRealIP ''
-            ${lib.concatMapStrings (ip: "set_real_ip_from ${ip};\n")
-              (lib.filter (line: line != "")
-                (lib.splitString "\n" ''
-                  ${lib.readFile (builtins.fetchurl {
-                    url = "https://www.cloudflare.com/ips-v4/";
-                    sha256 = "sha256-8Cxtg7wBqwroV3Fg4DbXAMdFU1m84FTfiE5dfZ5Onns=";
-                  })}
-                  ${lib.readFile (builtins.fetchurl {
-                    url = "https://www.cloudflare.com/ips-v6/";
-                    sha256 = "sha256-np054+g7rQDE3sr9U8Y/piAp89ldto3pN9K+KCNMoKk=";
-                  })}
-                ''))}
+            ${lib.concatMapStrings (ip: "set_real_ip_from ${ip};\n") (
+              lib.filter (line: line != "") (
+                lib.splitString "\n" ''
+                  ${lib.readFile (
+                    builtins.fetchurl {
+                      url = "https://www.cloudflare.com/ips-v4/";
+                      sha256 = "sha256-8Cxtg7wBqwroV3Fg4DbXAMdFU1m84FTfiE5dfZ5Onns=";
+                    }
+                  )}
+                  ${lib.readFile (
+                    builtins.fetchurl {
+                      url = "https://www.cloudflare.com/ips-v6/";
+                      sha256 = "sha256-np054+g7rQDE3sr9U8Y/piAp89ldto3pN9K+KCNMoKk=";
+                    }
+                  )}
+                ''
+              )
+            )}
             real_ip_header CF-Connecting-IP;
           '';
       };
