@@ -4,8 +4,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.development.helix.enable = lib.mkEnableOption "Enable helix development configuration";
+}:
+{
+  options.${namespace}.development.helix.enable =
+    lib.mkEnableOption "Enable helix development configuration";
 
   config = lib.mkIf config.${namespace}.development.helix.enable {
     programs.helix = {
@@ -18,6 +20,8 @@
         lldb
         marksman
         nixfmt-rfc-style
+        pyright
+        ruff
         rust-analyzer
         shellcheck
       ];
@@ -66,7 +70,7 @@
               "spinner"
               "diagnostics"
             ];
-            center = ["file-name"];
+            center = [ "file-name" ];
             right = [
               "file-encoding"
               "file-line-ending"
@@ -95,7 +99,10 @@
             auto-format = true;
             formatter = {
               command = lib.getExe pkgs.shfmt;
-              args = ["-i" "2"];
+              args = [
+                "-i"
+                "2"
+              ];
             };
           }
           {
@@ -105,32 +112,51 @@
           {
             name = "markdown";
             auto-format = true;
-            language-servers = ["marksman"];
+            language-servers = [ "marksman" ];
           }
           {
             name = "nix";
             formatter.command = "nixfmt";
             auto-format = true;
-            language-servers = ["nil"];
+            language-servers = [ "nil" ];
+          }
+          {
+            name = "python";
+            auto-format = true;
+            language-servers = [
+              "pyright"
+              "ruff"
+            ];
+            file-types = [
+              "py"
+              "pyi"
+              "py3"
+              "pyw"
+              ".pythonstartup"
+              ".pythonrc"
+            ];
           }
           {
             name = "rust";
             formatter = {
               command = lib.getExe pkgs.rustfmt;
-              args = ["--edition" "2021"];
+              args = [
+                "--edition"
+                "2021"
+              ];
             };
-            language-servers = ["rust-analyzer"];
+            language-servers = [ "rust-analyzer" ];
             auto-format = true;
           }
         ];
         language-server = {
           bash-language-server = {
             command = lib.getExe pkgs.bash-language-server;
-            args = ["start"];
+            args = [ "start" ];
           };
           gopls = {
             command = lib.getExe pkgs.gopls;
-            config.gopls.formatting.command = ["${pkgs.go}/bin/gofmt"];
+            config.gopls.formatting.command = [ "${pkgs.go}/bin/gofmt" ];
           };
           marksman.command = lib.getExe pkgs.marksman;
           nil = {
@@ -140,12 +166,25 @@
               "-q"
             ];
           };
+          pyright = {
+            command = "${pkgs.pyright}/bin/pyright-langserver";
+            config.pyright.formatting.command = [
+              "${lib.getExe pkgs.black}"
+              "-"
+              "--quiet"
+              "--line-length=88"
+            ];
+            args = [ "--stdio" ];
+          };
+          ruff = {
+            command = "${pkgs.ruff}/bin/ruff-lsp";
+          };
           rust-analyzer = {
             command = lib.getExe pkgs.rust-analyzer;
             config = {
               checkOnSave.command = "clippy";
               cargo.features = "all";
-              cargo.unsetTest = [];
+              cargo.unsetTest = [ ];
             };
           };
         };
