@@ -5,7 +5,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.core.nix = {
     enable = lib.mkEnableOption "Enable core nix configuration";
   };
@@ -22,13 +23,13 @@
 
       # Add each flake input as a registry to make nix3 commands
       # consistent with nix flakes.
-      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+      registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
 
       # Add inputs to system's legacy channels.
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
       # Use the latest, unstable version of nix.
-      package = pkgs.nixVersions.git;
+      package = pkgs.nixVersions.latest;
 
       settings = {
         # Accept flake configuration without prompting.
