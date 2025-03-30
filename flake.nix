@@ -1,18 +1,20 @@
 {
-  outputs = inputs: let
-    lib = inputs.snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
-      snowfall = {
-        namespace = "snowflake";
-        meta = {
-          name = "nix-snowflake";
-          title = "NixOS Flake configuration for snowflakes";
+  outputs =
+    inputs:
+    let
+      lib = inputs.snowfall-lib.mkLib {
+        inherit inputs;
+        src = ./.;
+        snowfall = {
+          namespace = "snowflake";
+          meta = {
+            name = "nix-snowflake";
+            title = "NixOS Flake configuration for snowflakes";
+          };
         };
       };
-    };
-    userdata = import ./data.nix;
-  in
+      userdata = import ./data.nix;
+    in
     lib.mkFlake {
       inherit inputs;
       src = ./.;
@@ -30,7 +32,7 @@
       systems.hosts.thonkpad.specialArgs = {
         inherit userdata;
       };
-      systems.hosts.zippyrus.modules = [];
+      systems.hosts.zippyrus.modules = [ ];
       systems.hosts.zippyrus.specialArgs = {
         inherit userdata;
       };
@@ -68,7 +70,7 @@
         formatter = (inputs.treefmt-nix.lib.evalModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
       };
 
-      deploy = lib.mkDeploy {inherit (inputs) self;};
+      deploy = lib.mkDeploy { inherit (inputs) self; };
 
       templates = {
         module.description = "Flake template for creating a new nix module";
