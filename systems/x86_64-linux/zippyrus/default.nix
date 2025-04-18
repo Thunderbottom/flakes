@@ -20,6 +20,7 @@
     General = {
       RoamThreshold = -75;
       RoamThreshold5G = -80;
+      RoamRetryInterval = 20;
     };
   };
 
@@ -92,7 +93,7 @@
       nvidia = {
         enable = true;
         busIDs = {
-          amd = "PCI:65:0:0";
+          amd = "PCI:101:0:0";
           nvidia = "PCI:1:0:0";
         };
       };
