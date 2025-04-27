@@ -4,8 +4,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.desktop.gnome-dconf.enable = lib.mkEnableOption "Enable gnome dconf home configuration";
+}:
+{
+  options.${namespace}.desktop.gnome-dconf.enable =
+    lib.mkEnableOption "Enable gnome dconf home configuration";
 
   config = lib.mkIf config.${namespace}.desktop.gnome-dconf.enable {
     dconf.settings = {
@@ -32,12 +34,14 @@
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"];
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        ];
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Super>Return";
-        command = "ghostty";
+        command = "${pkgs.ghostty}/bin/ghostty --gtk-single-instance=true";
         name = "Ghostty";
       };
 
@@ -133,14 +137,14 @@
       };
 
       "org/gnome/shell/world-clocks" = {
-        locations = [];
+        locations = [ ];
       };
 
       "org/gnome/tweaks" = {
         show-extensions-notice = false;
       };
 
-      "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
+      "org/gnome/mutter".experimental-features = [ "scale-monitor-framebuffer" ];
 
       "org/gnome/desktop/peripherals/mouse" = {
         accel-profile = "flat";
@@ -150,9 +154,9 @@
 
       "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
       "org/gnome/desktop/interface".show-battery-percentage = true;
-      "org/gnome/desktop/wm/keybindings".close = ["<Super>q"];
+      "org/gnome/desktop/wm/keybindings".close = [ "<Super>q" ];
 
-      "org/gnome/settings-daemon/plugins/media-keys".search = ["<Super>d"];
+      "org/gnome/settings-daemon/plugins/media-keys".search = [ "<Super>d" ];
     };
 
     gtk = {
