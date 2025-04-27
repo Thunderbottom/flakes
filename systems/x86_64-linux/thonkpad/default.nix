@@ -4,8 +4,9 @@
   pkgs,
   userdata,
   ...
-}: {
-  imports = [./hardware.nix];
+}:
+{
+  imports = [ ./hardware.nix ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
@@ -18,7 +19,7 @@
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   # Power management, enable powertop and thermald.
@@ -48,7 +49,6 @@
     hardware.yubico.enable = true;
     hardware.graphics.intel = {
       enable = true;
-      driver = "xe";
     };
 
     networking.firewall.enable = true;
@@ -60,7 +60,7 @@
     user.enable = true;
     user.username = "chnmy";
     user.description = "Chinmay D. Pai";
-    user.extraGroups = ["video"];
+    user.extraGroups = [ "video" ];
     user.userPasswordAgeModule = userdata.secrets.machines.thonkpad.password;
     user.rootPasswordAgeModule = userdata.secrets.machines.thonkpad.root-password;
   };
