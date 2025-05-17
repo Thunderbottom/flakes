@@ -29,7 +29,8 @@
       "nowatchdog"
       "amd_pstate=active"
       "pcie_aspm.policy=powersupersave"
-      "mem_sleep_default=deep"
+      # Attempt to fix mediatek wifi lag/latency on MT7922
+      "mt7921e.disable_aspm=Y"
     ];
     blacklistedKernelModules = [
       "k10temp"
