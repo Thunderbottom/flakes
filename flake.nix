@@ -60,6 +60,7 @@
       overlays = [
         (_: prev: {
           inherit (inputs.maych-in.packages.${prev.system}) maych-in;
+          inherit (inputs.toasters.packages.${prev.system}) toaste-rs;
           inherit (inputs.nur.legacyPackages.${prev.system}.repos.rycee) firefox-addons;
         })
       ];
@@ -104,7 +105,7 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
-    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/main.tar.gz";
+    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/astro-test.tar.gz";
     maych-in.inputs.nixpkgs.follows = "nixpkgs";
 
     nil.url = "github:oxalica/nil";
@@ -130,6 +131,9 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    toasters.url = "https://git.deku.moe/thunderbottom/toasters/archive/main.tar.gz";
+    toasters.inputs.nixpkgs.follows = "nixpkgs";
 
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
