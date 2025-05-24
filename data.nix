@@ -23,10 +23,14 @@
         password.file = ./secrets/monitoring/grafana/password.age;
       };
     };
+    nginx.ssl-environment.file = ./secrets/services/bluesky-pds/ssl-environment.age;
     services = {
       backups = {
         environment.file = ./secrets/services/backups/environment.age;
         password.file = ./secrets/services/backups/password.age;
+      };
+      bluesky-pds = {
+        environment.file = ./secrets/services/bluesky-pds/environment.age;
       };
       forgejo = {
         password.file = ./secrets/services/forgejo/password.age;

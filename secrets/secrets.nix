@@ -15,14 +15,15 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHLWaHgjXm/P8YBoGPeN6UKgl+2o2YoyoKELNYP1pbVy"
   ];
 
-  smolboye = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQFm91hLes24sYbq96zD52mDrrr1l2F2xstcfAEg+qI"];
+  smolboye = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQFm91hLes24sYbq96zD52mDrrr1l2F2xstcfAEg+qI" ];
   bicboye = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBsciEMPwLAYtbHNkdedjhSrb66fFQ46lgnVGssCuiLH"
   ];
 
   servers = bicboye ++ smolboye;
   users = thunderbottom ++ codingcoffee;
-in {
+in
+{
   "machines/thonkpad/password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/thonkpad/root-password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/zippyrus/password.age".publicKeys = thunderbottom ++ zippyrus;
@@ -34,6 +35,8 @@ in {
   "monitoring/grafana/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
+  "services/bluesky-pds/environment.age".publicKeys = thunderbottom ++ bicboye;
+  "services/bluesky-pds/ssl-environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
