@@ -4,8 +4,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.desktop.firefox.enable = lib.mkEnableOption "Enable firefox home configuration";
+}:
+{
+  options.${namespace}.desktop.firefox.enable =
+    lib.mkEnableOption "Enable firefox home configuration";
 
   config = lib.mkIf config.${namespace}.desktop.firefox.enable {
     programs.firefox = {
@@ -29,61 +31,64 @@
         SearchBar = "unified";
         NoDefaultBookmarks = true;
         DisplayBookmarksToolbar = "never";
-        Preferences = let
-          lock-false = {
-            Value = false;
-            Status = "locked";
-          };
-          lock-true = {
-            Value = false;
-            Status = "locked";
-          };
-          lock-empty-string = {
-            Value = false;
-            Status = "locked";
-          };
-        in {
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = lock-true;
+        Preferences =
+          let
+            lock-false = {
+              Value = false;
+              Status = "locked";
+            };
+            lock-true = {
+              Value = false;
+              Status = "locked";
+            };
+            lock-empty-string = {
+              Value = false;
+              Status = "locked";
+            };
+          in
+          {
+            "toolkit.legacyUserProfileCustomizations.stylesheets" = lock-true;
 
-          # Remove poluting defaults
-          "extensions.pocket.enabled" = lock-false;
+            # Remove poluting defaults
+            "extensions.pocket.enabled" = lock-false;
 
-          # Remove default top sites
-          "browser.topsites.contile.enabled" = lock-false;
-          "browser.urlbar.suggest.topsites" = lock-false;
+            # Remove default top sites
+            "browser.topsites.contile.enabled" = lock-false;
+            "browser.urlbar.suggest.topsites" = lock-false;
 
-          # Remove sponsored sites
-          "browser.newtabpage.pinned" = lock-empty-string;
-          "browser.newtabpage.activity-stream.showSponsored" = lock-false;
-          "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
-          "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
+            # Remove sponsored sites
+            "browser.newtabpage.pinned" = lock-empty-string;
+            "browser.newtabpage.activity-stream.showSponsored" = lock-false;
+            "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
+            "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
 
-          # Remove firefox shiny buttons
-          "browser.tabs.firefox-view" = false;
-          "browser.tabs.firefox-view-next" = false;
-          # Style
-          "browser.compactmode.show" = lock-true;
-          "browser.uidensity" = {
-            Value = 1;
-            Status = "locked";
+            # Remove firefox shiny buttons
+            "browser.tabs.firefox-view" = false;
+            "browser.tabs.firefox-view-next" = false;
+            # Style
+            "browser.compactmode.show" = lock-true;
+            "browser.uidensity" = {
+              Value = 1;
+              Status = "locked";
+            };
+            # Fonts - make web pages follow system font
+            "browser.display.use_document_fonts" = {
+              Value = 1;
+              Status = "locked";
+            };
           };
-          # Fonts - make web pages follow system font
-          "browser.display.use_document_fonts" = {
-            Value = 1;
-            Status = "locked";
-          };
-        };
       };
       profiles.ff = {
         extensions.packages = with pkgs.firefox-addons; [
           bitwarden
           clearurls
+          consent-o-matic
           duckduckgo-privacy-essentials
           reddit-enhancement-suite
           sponsorblock
           ublock-origin
         ];
-        bookmarks = {};
+        bookmarks = { };
         settings = {
           "browser.startup.homepage" = "about:home";
 
