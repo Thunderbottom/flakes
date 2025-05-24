@@ -51,8 +51,9 @@
       };
     };
 
-    ${namespace}.nginx.wildcard-ssl.domains."${config.${namespace}.services.bluesky-pds.domain
-    }".enable =
-      true;
+    ${namespace}.nginx.wildcard-ssl = {
+      enable = true;
+      domains."${config.${namespace}.services.bluesky-pds.domain}".enable = true;
+    };
   };
 }

@@ -11,6 +11,7 @@ in
 {
   options = with lib; {
     ${namespace}.nginx.wildcard-ssl = {
+      enable = mkEnableOption "Enable wildcard certificate generation for nginx";
       domains = mkOption {
         type = types.attrsOf (
           types.submodule {
@@ -31,7 +32,7 @@ in
       };
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
     age.secrets = {
       nginx-wildcard-ssl = {
         inherit (config.${namespace}.nginx.wildcard-ssl.sslEnvironmentFile) file;
