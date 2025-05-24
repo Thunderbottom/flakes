@@ -5,8 +5,9 @@
   pkgs,
   userdata,
   ...
-}: {
-  imports = [./hardware.nix];
+}:
+{
+  imports = [ ./hardware.nix ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
@@ -18,14 +19,17 @@
       useDHCP = lib.mkDefault true;
       wakeOnLan.enable = true;
     };
-    firewall.allowedTCPPorts = [80 443];
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 
   # Enable weekly btrfs auto-scrub.
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   # Power management, enable powertop and thermald.
@@ -57,7 +61,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
       ];
-      availableKernelModules = ["r8169"];
+      availableKernelModules = [ "r8169" ];
     };
 
     monitoring = {
@@ -71,7 +75,7 @@
           job_name = "unpoller";
           static_configs = [
             {
-              targets = ["127.0.0.1:${toString config.services.prometheus.exporters.unpoller.port}"];
+              targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.unpoller.port}" ];
             }
           ];
         }
@@ -79,12 +83,12 @@
           job_name = "router";
           static_configs = [
             {
-              targets = ["192.168.69.1:9100"];
+              targets = [ "192.168.69.1:9100" ];
             }
           ];
           relabel_configs = [
             {
-              source_labels = ["__address__"];
+              source_labels = [ "__address__" ];
               target_label = "instance";
               regex = "([^:]+)(:[0-9]+)?";
               replacement = "openwrt";
@@ -94,6 +98,8 @@
       ];
     };
 
+    nginx.wildcard-ssl.sslEnvironmentFile = userdata.secrets.nginx.ssl-environment;
+
     services = {
       arr.enable = true;
 
@@ -102,6 +108,12 @@
         repository = "b2:restic-nix";
         resticPasswordFile = userdata.secrets.services.backups.password;
         resticEnvironmentFile = userdata.secrets.services.backups.environment;
+      };
+
+      bluesky-pds = {
+        enable = true;
+        domain = "blue.deku.moe";
+        environmentFile = userdata.secrets.services.bluesky-pds.environment;
       };
 
       fail2ban.enable = true;
@@ -153,10 +165,18 @@
 
       technitium.enable = true;
 
-      static-site = {
-        enable = true;
-        package = pkgs.maych-in;
-        domain = "maych.in";
+      static-sites.sites = {
+        maych-in = {
+          enable = true;
+          package = pkgs.maych-in;
+          domain = "maych.in";
+        };
+
+        toasters = {
+          enable = true;
+          package = pkgs.toaste-rs;
+          domain = "toaste.rs";
+        };
       };
 
       unifi-controller = {
