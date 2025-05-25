@@ -3,10 +3,12 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.core.security = {
     enable = lib.mkEnableOption "Enable core security configuration";
     sysctl.enable = lib.mkEnableOption "Enable sysctl security configuration";
+    sysctl.gaming.enable = lib.mkEnableOption "Enable sysctl gaming configuration";
   };
 
   config = lib.mkIf config.${namespace}.core.security.enable {
@@ -24,7 +26,7 @@
 
         # Disable kernel param editing on boot.
         loader.systemd-boot.editor = false;
-        kernelModules = ["tcp_bbr"];
+        kernelModules = [ "tcp_bbr" ];
       }
 
       (lib.mkIf config.${namespace}.core.security.sysctl.enable {
@@ -65,6 +67,22 @@
           # Bufferbloat mitigations + slight improvement in throughput & latency.
           "net.ipv4.tcp_congestion_control" = "bbr";
           "net.core.default_qdisc" = "cake";
+        };
+      })
+
+      (lib.mkIf config.${namespace}.core.security.sysctl.gaming.enable {
+        kernel.sysctl = {
+          # Better memory management for gaming
+          "vm.swappiness" = 10;
+          "vm.vfs_cache_pressure" = 50;
+          "vm.dirty_ratio" = 15;
+          "vm.dirty_background_ratio" = 5;
+
+          # Network performance for gaming
+          "net.core.rmem_max" = 16777216;
+          "net.core.wmem_max" = 16777216;
+          "net.ipv4.tcp_rmem" = "4096 65536 16777216";
+          "net.ipv4.tcp_wmem" = "4096 65536 16777216";
         };
       })
     ];
