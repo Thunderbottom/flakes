@@ -4,14 +4,16 @@
   lib,
   namespace,
   ...
-}: let
+}:
+let
   cfg = config.${namespace}.services.myModule;
-in {
+in
+{
   options = {
     ${namespace}.services.myModule = {
       enable = lib.mkEnableOption "Enables this example module.";
       attributes = lib.mkOption {
-        default = {};
+        default = { };
         type = lib.types.attrs;
         description = "An example of an attributes option.";
       };
@@ -21,7 +23,7 @@ in {
         description = "An example of a string option.";
       };
       list = lib.mkOption {
-        default = [];
+        default = [ ];
         type = lib.types.listOf lib.types.int;
         description = "An example of a list (of integers) option.";
       };
@@ -45,6 +47,6 @@ in {
     myModule.unitConfig.RequiresMountsFor = cfg.home;
 
     # Tell Nginx to wait for the service to be available before coming online.
-    nginx.wants = [config.systemd.services.myModule.name];
+    nginx.wants = [ config.systemd.services.myModule.name ];
   };
 }

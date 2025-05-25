@@ -37,7 +37,7 @@ in
       nginx-wildcard-ssl = {
         inherit (config.${namespace}.nginx.wildcard-ssl.sslEnvironmentFile) file;
         owner = "pds";
-        group = config.users.users.pds.group;
+        inherit (config.users.users.pds) group;
         mode = "0440";
       };
     };
@@ -63,7 +63,7 @@ in
           dnsProvider = "cloudflare";
           credentialsFile = config.age.secrets.nginx-wildcard-ssl.path;
 
-          group = config.services.nginx.group;
+          inherit (config.services.nginx) group;
         }
       ) cfg.domains;
   };

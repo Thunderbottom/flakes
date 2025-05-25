@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.postgresql = {
     enable = lib.mkEnableOption "Enable postgresql service";
 
@@ -17,26 +18,28 @@
     backup.enable = lib.mkEnableOption "Enable backup service for postgresql databases";
   };
 
-  config = let
-    cfg = config.${namespace}.services.postgresql;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.postgresql;
+    in
     lib.mkIf cfg.enable {
       services.postgresql = {
         enable = true;
-        package = cfg.package;
+        inherit (cfg) package;
       };
 
-      ${namespace}.services.backups.config.postgresql = let
-        compressSuffix = ".zstd";
-        compressCmd = "${pkgs.zstd}/bin/zstd -c";
+      ${namespace}.services.backups.config.postgresql =
+        let
+          compressSuffix = ".zstd";
+          compressCmd = "${pkgs.zstd}/bin/zstd -c";
 
-        baseDir = "/tmp/postgres-backup";
+          baseDir = "/tmp/postgres-backup";
 
-        mkSqlPath = prefix: suffix: "/${baseDir}/all${prefix}.sql${suffix}";
-        curFile = mkSqlPath "" compressSuffix;
-        prevFile = mkSqlPath ".prev" compressSuffix;
-        inProgressFile = mkSqlPath ".in-progress" compressSuffix;
-      in
+          mkSqlPath = prefix: suffix: "/${baseDir}/all${prefix}.sql${suffix}";
+          curFile = mkSqlPath "" compressSuffix;
+          prevFile = mkSqlPath ".prev" compressSuffix;
+          inProgressFile = mkSqlPath ".in-progress" compressSuffix;
+        in
         lib.mkIf cfg.backup.enable {
           dynamicFilesFrom = ''
             set -e -o pipefail

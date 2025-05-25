@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.desktop.fonts.enable = lib.mkEnableOption "Enable desktop font configuration";
 
   config = lib.mkIf config.${namespace}.desktop.fonts.enable {
@@ -64,7 +65,7 @@
             "JetBrainsMono Nerd Font"
             "Noto Color Emoji"
           ];
-          emoji = ["Noto Color Emoji"];
+          emoji = [ "Noto Color Emoji" ];
         };
         hinting = {
           autohint = false;

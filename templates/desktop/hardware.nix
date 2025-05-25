@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   boot = {
     initrd = {
       availableKernelModules = [
@@ -18,11 +19,11 @@
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/80db9688-8fb5-47c6-a94f-dcb991a80e9a";
       luks.devices."cryptroot".bypassWorkqueues = true;
     };
-    kernelModules = [];
+    kernelModules = [ ];
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-    kernelParams = [];
-    blacklistedKernelModules = [];
-    extraModulePackages = with config.boot.kernelPackages; [];
+    kernelParams = [ ];
+    blacklistedKernelModules = [ ];
+    extraModulePackages = with config.boot.kernelPackages; [ ];
 
     # In case hibernate support is required, create a `filesystems."/swap"` entry
     # and enable the following option.
@@ -137,8 +138,11 @@
     "/boot" = {
       device = "/dev/disk/by-uuid/0BD6-9E8A";
       fsType = "vfat";
-      options = ["fmask=0022" "dmask=0022"];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
-  swapDevices = [];
+  swapDevices = [ ];
 }

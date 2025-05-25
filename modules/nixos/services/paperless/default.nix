@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.paperless = {
     enable = lib.mkEnableOption "Enable paperless service";
 
@@ -24,9 +25,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.paperless;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.paperless;
+    in
     lib.mkIf cfg.enable {
       age.secrets.paperless = {
         inherit (cfg.passwordFile) file;
@@ -66,13 +68,15 @@
       };
 
       ${namespace}.services.backups.config.paperless = {
-        dynamicFilesFrom = let
-          path = config.services.paperless.dataDir;
-        in ''
-          mkdir -p ${path}/exported
-          ${path}/paperless-manage document_exporter ${path}/exported
-          echo ${path}/exported/
-        '';
+        dynamicFilesFrom =
+          let
+            path = config.services.paperless.dataDir;
+          in
+          ''
+            mkdir -p ${path}/exported
+            ${path}/paperless-manage document_exporter ${path}/exported
+            echo ${path}/exported/
+          '';
       };
 
       services.fail2ban.jails.paperless = {

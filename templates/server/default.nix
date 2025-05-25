@@ -3,19 +3,28 @@
   namespace,
   userdata,
   ...
-}: let
+}:
+let
   hostname = "server";
-in {
-  imports = [./disk-config.nix];
+in
+{
+  imports = [ ./disk-config.nix ];
 
   # NOTE: since we use disko to configure disks, the boot configuration
   # needs to be updated here. If you do not wish to use disko, you can move
   # this section to hardware.nix.
   boot = {
-    initrd.availableKernelModules = ["xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod"];
-    initrd.supportedFilesystems = [];
-    kernelModules = [];
-    kernelParams = ["console=tty"];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "ehci_pci"
+      "nvme"
+      "usb_storage"
+      "sd_mod"
+    ];
+    initrd.supportedFilesystems = [ ];
+    kernelModules = [ ];
+    kernelParams = [ "console=tty" ];
     loader.grub = {
       device = "/dev/sda";
       configurationLimit = 2;
@@ -33,7 +42,7 @@ in {
   # Networking configuration
   networking = {
     hostName = hostname;
-    nameservers = ["1.1.1.1"];
+    nameservers = [ "1.1.1.1" ];
     useDHCP = lib.mkDefault false;
     interfaces.enp1s0 = {
       useDHCP = lib.mkDefault true;
@@ -48,7 +57,10 @@ in {
       address = "fe80::1";
       interface = "enp1s0";
     };
-    firewall.allowedTCPPorts = [80 443];
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 
   # TODO: replace email with an actual email for letsencrypt
@@ -72,7 +84,7 @@ in {
       description = "Server";
       userPasswordAgeModule = userdata.secrets.machines.${hostname}.password;
       rootPasswordAgeModule = userdata.secrets.machines.${hostname}.root-password;
-      extraAuthorizedKeys = [];
+      extraAuthorizedKeys = [ ];
     };
   };
 }

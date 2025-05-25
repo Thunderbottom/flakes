@@ -3,8 +3,10 @@
   lib,
   namespace,
   ...
-}: {
-  options.${namespace}.monitoring.enable = lib.mkEnableOption "Enable the base monitoring stack configuration";
+}:
+{
+  options.${namespace}.monitoring.enable =
+    lib.mkEnableOption "Enable the base monitoring stack configuration";
 
   config = lib.mkIf config.${namespace}.monitoring.enable {
     # Enable base monitoring modules.

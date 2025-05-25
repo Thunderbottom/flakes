@@ -4,7 +4,7 @@ let
   version = "0.43.0";
 in
 {
-  netbird = super.netbird.overrideAttrs (old: {
+  netbird = super.netbird.overrideAttrs (_old: {
     inherit version;
     src = super.fetchFromGitHub {
       owner = "netbirdio";

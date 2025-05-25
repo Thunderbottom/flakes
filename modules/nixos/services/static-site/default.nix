@@ -34,7 +34,7 @@
 
   config = {
     services.nginx.virtualHosts = lib.mapAttrs (
-      name: site:
+      _name: site:
       lib.mkIf site.enable {
         serverName = site.domain;
         enableACME = true;
@@ -42,6 +42,6 @@
         root = site.package;
       }
       // site.extraConfig
-    ) (lib.filterAttrs (name: site: site.enable) config.${namespace}.services.static-sites.sites);
+    ) (lib.filterAttrs (_name: site: site.enable) config.${namespace}.services.static-sites.sites);
   };
 }

@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.hardware.initrd-luks = {
     enable = lib.mkEnableOption "Enable initrd-luks hardware configuration";
 
@@ -19,17 +20,17 @@
     };
     hostKeys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = ["/etc/ssh/ssh_host_ed25519_key"];
+      default = [ "/etc/ssh/ssh_host_ed25519_key" ];
       description = "Path to the host keys to use for initrd-luks decryption";
     };
     authorizedKeys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "List of authorized keys for initrd-luks decyption";
     };
     availableKernelModules = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "List of available kernel modules for initrd-luks decryption";
     };
   };
@@ -55,7 +56,7 @@
       # requires a kernel module to work.
       initrd.availableKernelModules = config.${namespace}.hardware.initrd-luks.availableKernelModules;
       # Use DHCP to figure out the IP address.
-      kernelParams = ["ip=dhcp"];
+      kernelParams = [ "ip=dhcp" ];
     };
   };
 }

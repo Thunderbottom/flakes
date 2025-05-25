@@ -4,11 +4,12 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.qbittorrent-nox = {
     enable = lib.mkEnableOption "Enable qbittorrent-nox service configuration";
 
-    package = lib.mkPackageOption pkgs "qbittorrent-nox" {};
+    package = lib.mkPackageOption pkgs "qbittorrent-nox" { };
 
     openFirewall = lib.mkOption {
       description = "Allow firewall access for qbittorrent-nox";
@@ -29,15 +30,17 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.qbittorrent-nox;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.qbittorrent-nox;
+    in
     lib.mkIf cfg.enable {
       networking.firewall.allowedTCPPorts =
         lib.optional (cfg.openFirewall && cfg.torrentPort != null) cfg.torrentPort
         ++ lib.optional cfg.openFirewall cfg.uiPort;
-      networking.firewall.allowedUDPPorts =
-        lib.optional (cfg.openFirewall && cfg.torrentPort != null) cfg.torrentPort;
+      networking.firewall.allowedUDPPorts = lib.optional (
+        cfg.openFirewall && cfg.torrentPort != null
+      ) cfg.torrentPort;
 
       users.users.qbittorrent-nox = {
         isSystemUser = true;
@@ -47,9 +50,13 @@
 
       systemd.services.qbittorrent-nox = {
         description = "qBittorrent-nox service";
-        wants = ["network-online.target"];
-        after = ["local-fs.target" "network-online.target" "nss-lookup.target"];
-        wantedBy = ["multi-user.target"];
+        wants = [ "network-online.target" ];
+        after = [
+          "local-fs.target"
+          "network-online.target"
+          "nss-lookup.target"
+        ];
+        wantedBy = [ "multi-user.target" ];
         unitConfig.Documentation = "man:qbittorrent-nox(1)";
         # required for reverse proxying
         preStart = ''
@@ -67,7 +74,9 @@
           StateDirectory = "qbittorrent-nox";
           WorkingDirectory = "/var/lib/qbittorrent-nox";
           ExecStart = ''
-            ${cfg.package}/bin/qbittorrent-nox ${lib.optionalString (cfg.torrentPort != null) "--torrenting-port=${toString cfg.torrentPort}"} \
+            ${cfg.package}/bin/qbittorrent-nox ${
+              lib.optionalString (cfg.torrentPort != null) "--torrenting-port=${toString cfg.torrentPort}"
+            } \
               --webui-port=${toString cfg.uiPort} --profile=/var/lib/qbittorrent-nox
           '';
         };

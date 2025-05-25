@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.miniflux = {
     enable = lib.mkEnableOption "Enable miniflux service";
 
@@ -24,9 +25,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.miniflux;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.miniflux;
+    in
     lib.mkIf cfg.enable {
       age.secrets.miniflux = {
         inherit (cfg.adminTokenFile) file;

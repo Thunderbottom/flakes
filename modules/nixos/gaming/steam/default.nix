@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.gaming.steam.enable = lib.mkEnableOption "Enable steam";
 
   config = lib.mkIf config.${namespace}.gaming.steam.enable {
@@ -13,7 +14,7 @@
       gamescopeSession.enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
-      extraCompatPackages = [pkgs.proton-ge-bin];
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
   };
 }

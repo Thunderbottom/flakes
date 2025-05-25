@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.development.tmux.enable = lib.mkEnableOption "Enable tmux core configuration";
 
   config = lib.mkIf config.${namespace}.development.tmux.enable {

@@ -5,17 +5,17 @@
     </a>
 </p>
 
------
+---
 
 This repository contains modularized NixOS configurations, carefully compiled and in often places inspired by other similar configurations. The setup is flake-based and fully reproducible. Feel free to explore and use any part that inspires you.
 
 ## Highlights
 
-* Modular flake setup based on [Snowfall Lib](https://github.com/snowfallorg/lib)
-* Secret management based on [Agenix](https://github.com/ryantm/agenix)
-* Single flake setup for NixOS and Home Manager
-* Modules for servers, workstation, and mailserver
-* Encrypted BTRFS setup
+- Modular flake setup based on [Snowfall Lib](https://github.com/snowfallorg/lib)
+- Secret management based on [Agenix](https://github.com/ryantm/agenix)
+- Single flake setup for NixOS and Home Manager
+- Modules for servers, workstation, and mailserver
+- Encrypted BTRFS setup
 
 ## Structure
 
@@ -107,18 +107,17 @@ The repository follows the standard Snowfall Lib [flake structure](https://snowf
 └── data.nix
 ```
 
-* `flake.nix`: Entrypoint for the NixOS configurations
-* `data.nix`: Mappings for Agenix secrets, passed as `specialArgs` in `flake.nix` and referenced inside the configurations.
-* `checks`: Flake check configuration for deploy-rs
-* `homes`: Home configuration for the flakes, structured as `<architecture>/<username>@<system>`
-* `lib`: Custom library helper functions for the configuration, currently containing generator for deploy-rs
-* `modules`: Platform-based opinionated NixOS modules, containing `home` and `nixos`
-  * `home`: Home Manager configuration options programs and services
-  * `nixos`: NixOS configuration options for services, programs, and system setup 
-* `overlays`: Customized nix package builds for existing packages
-* `packages`: Custom packages for NixOS
-* `secrets`: Agenix deployment secrets, referenced in `data.nix`
-
+- `flake.nix`: Entrypoint for the NixOS configurations
+- `data.nix`: Mappings for Agenix secrets, passed as `specialArgs` in `flake.nix` and referenced inside the configurations.
+- `checks`: Flake check configuration for deploy-rs
+- `homes`: Home configuration for the flakes, structured as `<architecture>/<username>@<system>`
+- `lib`: Custom library helper functions for the configuration, currently containing generator for deploy-rs
+- `modules`: Platform-based opinionated NixOS modules, containing `home` and `nixos`
+  - `home`: Home Manager configuration options programs and services
+  - `nixos`: NixOS configuration options for services, programs, and system setup
+- `overlays`: Customized nix package builds for existing packages
+- `packages`: Custom packages for NixOS
+- `secrets`: Agenix deployment secrets, referenced in `data.nix`
 
 ## Modules
 
@@ -166,7 +165,7 @@ As an example, to deploy a new workstation with a desktop environment:
     user.username = "user";
     user.description = "User McUsername";
     user.extraGroups = ["video"];
-    
+
     # NOTE: this requires adding an agenix secret to `secrets/secrets.nix`
     # and an entry in `data.nix` to work. Refer these files for more details.
     user.userPasswordAgeModule = userdata.secrets.machines.workstation.password;
@@ -177,9 +176,9 @@ As an example, to deploy a new workstation with a desktop environment:
 
 ## Systems
 
-* `thonkpad`: Primary workstation on Lenovo X1 Carbon 12th Gen - Intel Core Ultra 7 155H, 32GB RAM
-* `bicboye`: A custom-built Homelab running Intel Core i5 12600K, 32GB RAM, 16TB storage
-* `smolboye`: Hetzner Cloud VPS Running a dual-core Intel Xeon, 4GB RAM
+- `thonkpad`: Primary workstation on Lenovo X1 Carbon 12th Gen - Intel Core Ultra 7 155H, 32GB RAM
+- `bicboye`: A custom-built Homelab running Intel Core i5 12600K, 32GB RAM, 16TB storage
+- `smolboye`: Hetzner Cloud VPS Running a dual-core Intel Xeon, 4GB RAM
 
 ## Secrets
 
@@ -189,14 +188,14 @@ For all deployment secrets, I am using `agenix`. All secrets are stored in the `
 
 To add new deployment secrets:
 
-* Create the relevant directory structure under `secrets/` and add an entry to `secrets.nix`
-* Create/Edit the secret with agenix. This command needs to be run in the same directory as `secrets.nix`. You do not require agenix to be installed, and instead can use `nix run`, for example:
+- Create the relevant directory structure under `secrets/` and add an entry to `secrets.nix`
+- Create/Edit the secret with agenix. This command needs to be run in the same directory as `secrets.nix`. You do not require agenix to be installed, and instead can use `nix run`, for example:
 
 ```shell
 $ nix run github:ryantm/agenix#agenix -- -e services/service-name/password.age
 ```
 
-* Add an entry for the secret to `data.nix`. The added secret can then be used as `userdata.secrets.services.service-name.password` in the configuration. Refer to `data.nix` for more details.
+- Add an entry for the secret to `data.nix`. The added secret can then be used as `userdata.secrets.services.service-name.password` in the configuration. Refer to `data.nix` for more details.
 
 ## Usage
 
@@ -212,8 +211,8 @@ You may setup NixOS through either the traditional way, by manual partitioning, 
 
 Wipe the partition table with `wipefs -a /dev/nvme0n1`. Edit the partition table to create two partitions:
 
-* `/dev/nvme0n1p1` - 512MiB EFI partition. This won't be encrypted.
-* `/dev/nvmen01p2` - root partition, will use LUKS+BTRFS for root.
+- `/dev/nvme0n1p1` - 512MiB EFI partition. This won't be encrypted.
+- `/dev/nvmen01p2` - root partition, will use LUKS+BTRFS for root.
 
 An encrypted swap partition can optionally be set up using BTRFS later.
 
@@ -226,14 +225,14 @@ All commands prefixed with `#` are expected to be run as the `root` user. Make s
 # cryptsetup open /dev/nvme0n1p2 cryptroot
 ```
 
-* Format the EFI and the root partition:
+- Format the EFI and the root partition:
 
 ```shell
 # mkfs.fat -F32 /dev/nvme0n1p1
 # mkfs.btrfs /dev/mapper/cryptroot
 ```
 
-* Create BTRFS subvolumes:
+- Create BTRFS subvolumes:
 
 ```shell
 # mount /dev/mapper/cryptroot /mnt
@@ -246,7 +245,7 @@ All commands prefixed with `#` are expected to be run as the `root` user. Make s
 # btrfs subvolume create /mnt/@nix-store
 ```
 
-* Create directories for the subvolumes:
+- Create directories for the subvolumes:
 
 ```shell
 # mkdir /mnt/@/home
@@ -261,7 +260,7 @@ All commands prefixed with `#` are expected to be run as the `root` user. Make s
 # umount -R /mnt
 ```
 
-* Mount all the file systems
+- Mount all the file systems
 
 ```shell
 # mount -o ssd,noatime,compress=zstd,space_cache=v2,autodefrag,subvol=@ /dev/mapper/cryptroot /mnt
@@ -353,13 +352,13 @@ Alternatively, running `nixos-install` should take care of the partitioning for 
 
 #### Installation
 
-* Clone the git repository
+- Clone the git repository
 
 ```shell
 # git clone https://git.deku.moe/thunderbottom/flakes.git /mnt/etc/nixos
 ```
 
-* Get the UUID for the disks and edit `hardware.nix` to match the `blkid` output. This step can be skipped if you are using `disko`:
+- Get the UUID for the disks and edit `hardware.nix` to match the `blkid` output. This step can be skipped if you are using `disko`:
 
 ```shell
 # blkid
@@ -371,13 +370,13 @@ Alternatively, running `nixos-install` should take care of the partitioning for 
 
 If you are not using `disko` for partition setup, make sure to set the following values in `hardware.nix`:
 
-* `luks.devices."cryptroot".device` to `/dev/nvme0n1p2` output, in this case: `/dev/disk/by-uuid/9de352ea-128f-4d56-a720-36d81dfd9b92`
-* All the values in `fileSystems.*`, except `/boot` to `/dev/mapper/cryptroot` output, `/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d`
-* `fileSystems."/boot"` to `/dev/nvme0n1p1` output, `/dev/disk/by-uuid/7FBB-9E80`
+- `luks.devices."cryptroot".device` to `/dev/nvme0n1p2` output, in this case: `/dev/disk/by-uuid/9de352ea-128f-4d56-a720-36d81dfd9b92`
+- All the values in `fileSystems.*`, except `/boot` to `/dev/mapper/cryptroot` output, `/dev/disk/by-uuid/870fde90-a91a-4554-8b1c-d5702c789f4d`
+- `fileSystems."/boot"` to `/dev/nvme0n1p1` output, `/dev/disk/by-uuid/7FBB-9E80`
 
 Check any of the `hardware.nix` files in the repository for more details.
 
-* Install NixOS with `nixos-install` and then `reboot`.
+- Install NixOS with `nixos-install` and then `reboot`.
 
 ### Deployments
 

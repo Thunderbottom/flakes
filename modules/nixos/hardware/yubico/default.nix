@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.hardware.yubico.enable = lib.mkEnableOption "Enable yubico hardware support";
 
   config = lib.mkIf config.${namespace}.hardware.yubico.enable {
@@ -17,6 +18,6 @@
         sudo.u2fAuth = true;
       };
     };
-    services.udev.packages = [pkgs.yubikey-personalization];
+    services.udev.packages = [ pkgs.yubikey-personalization ];
   };
 }

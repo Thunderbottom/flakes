@@ -4,14 +4,25 @@
   namespace,
   userdata,
   ...
-}: {
-  imports = [./disk-config.nix];
+}:
+{
+  imports = [ ./disk-config.nix ];
 
   boot = {
-    initrd.availableKernelModules = ["xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod"];
-    initrd.supportedFilesystems = ["btrfs"];
-    kernelModules = ["kvm-intel" "virtio_gpu"];
-    kernelParams = ["console=tty"];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "ehci_pci"
+      "nvme"
+      "usb_storage"
+      "sd_mod"
+    ];
+    initrd.supportedFilesystems = [ "btrfs" ];
+    kernelModules = [
+      "kvm-intel"
+      "virtio_gpu"
+    ];
+    kernelParams = [ "console=tty" ];
     loader.grub = {
       device = "/dev/sda";
       configurationLimit = 2;
@@ -23,7 +34,7 @@
 
   networking = {
     hostName = "smolboye";
-    nameservers = ["1.1.1.1"];
+    nameservers = [ "1.1.1.1" ];
     useDHCP = lib.mkDefault false;
     interfaces.enp1s0 = {
       useDHCP = lib.mkDefault true;
@@ -38,14 +49,17 @@
       address = "fe80::1";
       interface = "enp1s0";
     };
-    firewall.allowedTCPPorts = [80 443];
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 
   # Enable weekly btrfs auto-scrub.
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   security.acme.defaults.email = "chinmaydpai@gmail.com";
@@ -71,16 +85,20 @@
       mailserver = {
         enable = true;
         fqdn = "mail.deku.moe";
-        domains = ["deku.moe"];
+        domains = [ "deku.moe" ];
         loginAccounts = {
           "watashi@deku.moe" = {
             hashedPasswordFile = config.age.secrets.mailserver-watashi.path;
-            aliases = ["@deku.moe"];
-            catchAll = ["deku.moe"];
+            aliases = [ "@deku.moe" ];
+            catchAll = [ "deku.moe" ];
           };
           "noreply@deku.moe" = {
             hashedPasswordFile = config.age.secrets.mailserver-noreply.path;
-            aliases = ["git@deku.moe" "jelly@deku.moe" "vaultwarden@deku.moe"];
+            aliases = [
+              "git@deku.moe"
+              "jelly@deku.moe"
+              "vaultwarden@deku.moe"
+            ];
             sendOnly = true;
           };
         };

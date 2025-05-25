@@ -4,8 +4,9 @@
   lib,
   namespace,
   ...
-}: {
-  imports = [inputs.nixos-mailserver.nixosModules.mailserver];
+}:
+{
+  imports = [ inputs.nixos-mailserver.nixosModules.mailserver ];
 
   options.${namespace}.services.mailserver = {
     enable = lib.mkEnableOption "Enable mailserver service";
@@ -17,7 +18,7 @@
 
     domains = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "Configuration domains to use for the mailserver";
     };
 
@@ -26,15 +27,21 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.mailserver;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.mailserver;
+    in
     lib.mkIf cfg.enable {
       # Ref: https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/issues/275
-      services.dovecot2.sieve.extensions = ["fileinto"];
+      services.dovecot2.sieve.extensions = [ "fileinto" ];
 
       mailserver = {
-        inherit (cfg) enable fqdn domains loginAccounts;
+        inherit (cfg)
+          enable
+          fqdn
+          domains
+          loginAccounts
+          ;
 
         # Spin up a stripped-down nginx instance on
         # port 80 to generate a certificate automatically.

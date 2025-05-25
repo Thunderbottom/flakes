@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.hardware.usbguard = {
     # WARNING: be very careful before turning on usbguard. It'll has the potential
     # to disable your keyboard and render your system useless. To use this
@@ -49,13 +50,13 @@
   };
 
   config = lib.mkIf config.${namespace}.hardware.usbguard.enable {
-    environment.systemPackages = [pkgs.usbguard];
+    environment.systemPackages = [ pkgs.usbguard ];
 
     services.usbguard = {
-      enable = config.${namespace}.hardware.usbguard.service.enable;
-      rules = config.${namespace}.hardware.usbguard.rules;
+      inherit (config.${namespace}.hardware.usbguard.service) enable;
+      inherit (config.${namespace}.hardware.usbguard) rules;
       dbus.enable = true;
-      IPCAllowedGroups = ["wheel"];
+      IPCAllowedGroups = [ "wheel" ];
     };
   };
 }

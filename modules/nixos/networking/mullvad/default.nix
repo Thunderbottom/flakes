@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.networking.mullvad.enable = lib.mkEnableOption "Enable Mullvad VPN client";
 
   config = lib.mkIf config.${namespace}.networking.mullvad.enable {

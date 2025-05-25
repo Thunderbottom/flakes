@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.navidrome = {
     enable = lib.mkEnableOption "Enable navidrome deployment configuration";
 
@@ -19,9 +20,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.navidrome;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.navidrome;
+    in
     lib.mkIf cfg.enable {
       services.navidrome = {
         enable = true;

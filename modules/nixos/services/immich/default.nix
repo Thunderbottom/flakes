@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.immich = {
     enable = lib.mkEnableOption "Enable immich service";
     monitoring.enable = lib.mkEnableOption "Enable immich monitoring";
@@ -16,9 +17,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.immich;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.immich;
+    in
     lib.mkIf cfg.enable {
       services.immich = {
         enable = true;
@@ -27,14 +29,15 @@
         port = 9121;
 
         environment = {
-          IMMICH_TELEMETRY_INCLUDE =
-            if cfg.monitoring.enable
-            then "all"
-            else "";
+          IMMICH_TELEMETRY_INCLUDE = if cfg.monitoring.enable then "all" else "";
         };
       };
 
-      users.users.immich.extraGroups = ["media" "video" "render"];
+      users.users.immich.extraGroups = [
+        "media"
+        "video"
+        "render"
+      ];
 
       # Requires services.nginx.enable.
       services.nginx = {

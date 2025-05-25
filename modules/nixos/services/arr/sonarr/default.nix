@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.sonarr = {
     enable = lib.mkEnableOption "Enable sonarr deployment configuration";
   };

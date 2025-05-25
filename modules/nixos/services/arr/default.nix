@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.arr = {
     enable = lib.mkEnableOption "Enable arr suite configuration";
     monitoring = {

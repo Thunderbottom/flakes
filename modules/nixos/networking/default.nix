@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.networking = {
     iwd.enable = lib.mkEnableOption "Enable iwd backend for network manager";
     networkd.enable = lib.mkEnableOption "Enable systemd network management daemon";
@@ -51,16 +52,13 @@
         enable = lib.mkDefault true;
         # Disable Wifi powersaving
         wifi.powersave = false;
-        wifi.backend =
-          if config.${namespace}.networking.iwd.enable
-          then "iwd"
-          else "wpa_supplicant";
+        wifi.backend = if config.${namespace}.networking.iwd.enable then "iwd" else "wpa_supplicant";
       };
 
-      ${namespace}.user.extraGroups = ["networkmanager"];
+      ${namespace}.user.extraGroups = [ "networkmanager" ];
 
       services.resolved = {
-        enable = config.${namespace}.networking.resolved.enable;
+        inherit (config.${namespace}.networking.resolved) enable;
       };
     })
 

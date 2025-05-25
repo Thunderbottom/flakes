@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.vaultwarden = {
     enable = lib.mkEnableOption "Enable vaultwarden service with postgres and nginx";
 
@@ -22,9 +23,10 @@
   # TODO: when upgrading stateVersion to 24.11, the data directory will
   # change from /var/lib/bitwarden_rs to /var/lib/vaultwarden.
   # We need to move the data and then change the backup service directory.
-  config = let
-    cfg = config.${namespace}.services.vaultwarden;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.vaultwarden;
+    in
     lib.mkIf cfg.enable {
       age.secrets.vaultwarden = {
         inherit (cfg.adminTokenFile) file;
@@ -52,7 +54,7 @@
       };
 
       services.postgresql = {
-        ensureDatabases = ["vaultwarden"];
+        ensureDatabases = [ "vaultwarden" ];
         ensureUsers = [
           {
             name = "vaultwarden";

@@ -3,14 +3,16 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.jellyfin = {
     enable = lib.mkEnableOption "Enable jellyfin deployment configuration";
   };
 
-  config = let
-    cfg = config.${namespace}.services.jellyfin;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.jellyfin;
+    in
     lib.mkIf cfg.enable {
       services.jellyfin = {
         enable = true;
@@ -18,11 +20,14 @@
       };
 
       users.groups.media = {
-        members = ["@wheel" "jellyfin"];
+        members = [
+          "@wheel"
+          "jellyfin"
+        ];
       };
 
       nixpkgs.config.packageOverrides = pkgs: {
-        intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+        intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
       };
 
       services.jellyseerr.enable = true;

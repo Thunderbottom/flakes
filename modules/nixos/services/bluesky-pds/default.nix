@@ -21,7 +21,7 @@
       bluesky-pds = {
         inherit (config.${namespace}.services.bluesky-pds.environmentFile) file;
         owner = "pds";
-        group = config.users.users.pds.group;
+        inherit (config.users.users.pds) group;
         mode = "0440";
       };
     };

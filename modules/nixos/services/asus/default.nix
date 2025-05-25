@@ -3,9 +3,9 @@
   lib,
   namespace,
   ...
-}: {
-  options.${namespace}.services.asus.enable =
-    lib.mkEnableOption "Enable Asus-specific configuration";
+}:
+{
+  options.${namespace}.services.asus.enable = lib.mkEnableOption "Enable Asus-specific configuration";
 
   config = lib.mkIf config.${namespace}.services.asus.enable {
     # specific to Asus laptop

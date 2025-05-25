@@ -5,7 +5,8 @@
   pkgs,
   system,
   ...
-}: {
+}:
+{
   options.${namespace} = {
     stateVersion = lib.mkOption {
       type = lib.types.str;
@@ -14,7 +15,7 @@
     };
     extraPackages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
-      default = [];
+      default = [ ];
       description = "Extra packages to be installed system-wide";
     };
     timeZone = lib.mkOption {
@@ -23,7 +24,10 @@
       default = "Asia/Kolkata";
     };
     bootloader = lib.mkOption {
-      type = lib.types.enum ["systemd-boot" "grub"];
+      type = lib.types.enum [
+        "systemd-boot"
+        "grub"
+      ];
       description = "Bootloader to use, can be either `systemd-boot` or `grub`";
       default = "systemd-boot";
     };
@@ -82,7 +86,8 @@
     };
 
     environment = {
-      defaultPackages = with pkgs;
+      defaultPackages =
+        with pkgs;
         lib.mkForce [
           gitMinimal
           home-manager
@@ -92,7 +97,8 @@
         bash
         fish
       ];
-      systemPackages = with pkgs;
+      systemPackages =
+        with pkgs;
         [
           bat
           btop
@@ -134,7 +140,7 @@
         LC_TELEPHONE = "en_US.UTF-8";
         LC_TIME = "en_US.UTF-8";
       };
-      supportedLocales = ["en_US.UTF-8/UTF-8"];
+      supportedLocales = [ "en_US.UTF-8/UTF-8" ];
     };
 
     nixpkgs.hostPlatform = system;
@@ -158,7 +164,7 @@
       autodetect = true;
       notifications = {
         wall.enable = true;
-        mail = {};
+        mail = { };
       };
     };
 

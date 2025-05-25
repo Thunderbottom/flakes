@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.sabnzbd = {
     enable = lib.mkEnableOption "Enable sabnzbd deployment configuration";
   };
@@ -14,6 +15,6 @@
     services.sabnzbd.openFirewall = true;
 
     # This needs to be changed as per the port specified in the configuration.
-    networking.firewall.allowedTCPPorts = [8085];
+    networking.firewall.allowedTCPPorts = [ 8085 ];
   };
 }

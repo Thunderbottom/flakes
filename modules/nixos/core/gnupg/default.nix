@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.core.gnupg.enable = lib.mkEnableOption "Enable core gnupg configuration";
 
   config = lib.mkIf config.${namespace}.core.gnupg.enable {
@@ -15,6 +16,6 @@
       enableSSHSupport = !config.${namespace}.core.sshd.enable;
     };
 
-    environment.systemPackages = [pkgs.gnupg];
+    environment.systemPackages = [ pkgs.gnupg ];
   };
 }

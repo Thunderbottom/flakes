@@ -1,7 +1,9 @@
-_: _self: super: let
+_: _self: super:
+let
   version = "24.3.1";
-in {
-  cloud-init = super.cloud-init.overridePythonAttrs (oldAttrs: {
+in
+{
+  cloud-init = super.cloud-init.overridePythonAttrs (_oldAttrs: {
     inherit version;
     src = super.fetchFromGitHub {
       owner = "canonical";

@@ -4,7 +4,8 @@
   namespace,
   ...
 }:
-with lib; {
+with lib;
+{
   options.${namespace}.services.backups = {
     enable = mkEnableOption "Enable restic backup service";
 
@@ -23,10 +24,11 @@ with lib; {
     };
 
     config = mkOption {
-      default = {};
+      default = { };
       type = types.attrsOf (
         types.submodule (
-          {lib, ...}: {
+          { lib, ... }:
+          {
             options = {
               dynamicFilesFrom = mkOption {
                 type = types.nullOr types.str;
@@ -80,35 +82,34 @@ with lib; {
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.backups;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.backups;
+    in
     mkIf cfg.enable {
       age.secrets = {
         restic-environment.file = cfg.resticEnvironmentFile.file;
         restic-password.file = cfg.resticPasswordFile.file;
       };
 
-      services.restic.backups =
-        mapAttrs' (
-          name: value:
-            nameValuePair name (
-              {
-                initialize = true;
+      services.restic.backups = mapAttrs' (
+        name: value:
+        nameValuePair name (
+          {
+            initialize = true;
 
-                repository = "${cfg.repository}:/${config.system.name}/${name}";
-                environmentFile = config.age.secrets.restic-environment.path;
-                passwordFile = config.age.secrets.restic-password.path;
+            repository = "${cfg.repository}:/${config.system.name}/${name}";
+            environmentFile = config.age.secrets.restic-environment.path;
+            passwordFile = config.age.secrets.restic-password.path;
 
-                pruneOpts = [
-                  "--keep-daily 7"
-                  "--keep-weekly 5"
-                  "--keep-monthly 12"
-                ];
-              }
-              // value
-            )
+            pruneOpts = [
+              "--keep-daily 7"
+              "--keep-weekly 5"
+              "--keep-monthly 12"
+            ];
+          }
+          // value
         )
-        cfg.config;
+      ) cfg.config;
     };
 }

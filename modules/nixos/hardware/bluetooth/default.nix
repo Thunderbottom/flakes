@@ -4,8 +4,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.hardware.bluetooth.enable = lib.mkEnableOption "Enable bluetooth hardware support";
+}:
+{
+  options.${namespace}.hardware.bluetooth.enable =
+    lib.mkEnableOption "Enable bluetooth hardware support";
 
   config = lib.mkIf config.${namespace}.hardware.bluetooth.enable {
     # Enable bluetooth hardware.
@@ -23,6 +25,6 @@
     };
 
     # Add support for Bluetooth LE
-    ${namespace}.extraPackages = [pkgs.liblc3];
+    ${namespace}.extraPackages = [ pkgs.liblc3 ];
   };
 }

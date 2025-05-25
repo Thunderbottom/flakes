@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.prowlarr = {
     enable = lib.mkEnableOption "Enable prowlarr deployment configuration";
   };

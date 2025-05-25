@@ -3,20 +3,22 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.fail2ban = {
     enable = lib.mkEnableOption "Enable fail2ban service";
 
     extraIgnoreIPs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "List of IPs to ignore for fail2ban alongside the default local subnets and loopback";
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.fail2ban;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.fail2ban;
+    in
     lib.mkIf cfg.enable {
       services.fail2ban = {
         enable = true;
@@ -29,13 +31,11 @@
           factor = "4";
         };
 
-        ignoreIP =
-          [
-            "192.168.69.0/16"
-            "172.16.0.0/12"
-            "127.0.0.0/8"
-          ]
-          ++ cfg.extraIgnoreIPs;
+        ignoreIP = [
+          "192.168.69.0/16"
+          "172.16.0.0/12"
+          "127.0.0.0/8"
+        ] ++ cfg.extraIgnoreIPs;
 
         jails = {
           DEFAULT = {

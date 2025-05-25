@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.desktop.kde = {
     enable = lib.mkEnableOption "Enable the KDE Plasma Desktop Environment";
   };

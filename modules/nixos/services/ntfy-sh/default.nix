@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.ntfy-sh = {
     enable = lib.mkEnableOption "Enable ntfy-sh service";
 
@@ -20,9 +21,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.ntfy-sh;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.ntfy-sh;
+    in
     lib.mkIf cfg.enable {
       services.ntfy-sh.enable = true;
       services.ntfy-sh.settings = {

@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.radarr = {
     enable = lib.mkEnableOption "Enable radarr deployment configuration";
   };

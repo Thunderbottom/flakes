@@ -3,17 +3,21 @@
   lib,
   namespace,
   ...
-}: let
+}:
+let
   # Redefine gitIniTyp.
   # ref: https://github.com/nix-community/home-manager/blob/master/modules/programs/git.nix
-  gitIniType = with lib.types; let
-    primitiveType = either str (either bool int);
-    multipleType = either primitiveType (listOf primitiveType);
-    sectionType = attrsOf multipleType;
-    supersectionType = attrsOf (either multipleType sectionType);
-  in
+  gitIniType =
+    with lib.types;
+    let
+      primitiveType = either str (either bool int);
+      multipleType = either primitiveType (listOf primitiveType);
+      sectionType = attrsOf multipleType;
+      supersectionType = attrsOf (either multipleType sectionType);
+    in
     attrsOf supersectionType;
-in {
+in
+{
   options.${namespace}.development.git = {
     enable = lib.mkEnableOption "Enable development git configuration";
 
@@ -37,7 +41,7 @@ in {
     };
     work.extraConfig = lib.mkOption {
       type = lib.types.either lib.types.lines gitIniType;
-      default = {};
+      default = { };
       description = "Additional configuration for work git.";
     };
     work.email = lib.mkOption {
@@ -59,26 +63,24 @@ in {
         };
       };
 
-      extraConfig =
-        {
-          init.defaultBranch = "main";
-          commit.gpgSign = true;
-          diff.algorithm = "histogram";
-          gc.writeCommitGraph = true;
+      extraConfig = {
+        init.defaultBranch = "main";
+        commit.gpgSign = true;
+        diff.algorithm = "histogram";
+        gc.writeCommitGraph = true;
 
-          # Do not `git fetch && git merge` or `git fetch && git rebase`
-          # on default `git pull behavior`.
-          pull.ff = "only";
-          pull.rebase = false;
+        # Do not `git fetch && git merge` or `git fetch && git rebase`
+        # on default `git pull behavior`.
+        pull.ff = "only";
+        pull.rebase = false;
 
-          # Enable REuse REcorded REsolution for git merge conflicts.
-          rerere.enabled = true;
+        # Enable REuse REcorded REsolution for git merge conflicts.
+        rerere.enabled = true;
 
-          user.name = config.${namespace}.development.git.user.name;
-          user.email = config.${namespace}.development.git.user.email;
-          user.signingKey = config.${namespace}.development.git.user.signingKey;
-        }
-        // config.${namespace}.development.git.work.extraConfig;
+        user.name = config.${namespace}.development.git.user.name;
+        user.email = config.${namespace}.development.git.user.email;
+        user.signingKey = config.${namespace}.development.git.user.signingKey;
+      } // config.${namespace}.development.git.work.extraConfig;
 
       # Global gitignore configuration.
       ignores = [

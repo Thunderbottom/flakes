@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.core.docker = {
     enable = lib.mkEnableOption "Enable core docker configuration";
     storageDriver = lib.mkOption {
@@ -25,6 +26,6 @@
     };
 
     # Add the system user to the docker group
-    ${namespace}.user.extraGroups = ["docker"];
+    ${namespace}.user.extraGroups = [ "docker" ];
   };
 }

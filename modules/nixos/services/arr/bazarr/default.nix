@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.bazarr = {
     enable = lib.mkEnableOption "Enable bazarr deployment configuration";
   };

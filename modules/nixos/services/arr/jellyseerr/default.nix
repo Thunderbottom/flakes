@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.jellyseerr = {
     enable = lib.mkEnableOption "Enable jellyseerr deployment configuration";
   };

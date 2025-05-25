@@ -1,5 +1,4 @@
 {
-  lib,
   namespace,
   pkgs,
   userdata,
@@ -8,39 +7,43 @@
 {
   imports = [ ./hardware.nix ];
 
-  hardware.cpu.amd.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-  hardware.sensor.iio.enable = true;
+  hardware = {
+    # Update the CPU microcode for AMD processors.
+    cpu.amd.updateMicrocode = true;
+    # Enable firmware with a license allowing redistribution.
+    enableRedistributableFirmware = true;
+    # Enable orientation and ambient light sensor.
+    sensor.iio.enable = true;
+  };
 
-  networking.hostName = "zippyrus";
-  networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
-  networking.useNetworkd = true;
+  networking = {
+    hostName = "zippyrus";
 
-  networking.wireless.iwd.settings = {
-    General = {
-      RoamThreshold = -75;
-      RoamThreshold5G = -80;
-      RoamRetryInterval = 20;
+    # Improve wireless roaming stability.
+    wireless.iwd.settings = {
+      General = {
+        RoamThreshold = -75;
+        RoamThreshold5G = -80;
+        RoamRetryInterval = 20;
+      };
     };
   };
 
-  # Enable weekly btrfs auto-scrub.
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
+  services = {
+    # Enable weekly btrfs auto-scrub.
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "weekly";
+      fileSystems = [ "/" ];
+    };
+
+    # Enable G502 mouse configuration daemon.
+    ratbagd.enable = true;
   };
 
   # Power management, enable powertop and thermald.
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
-
-  services.ratbagd.enable = true;
-
-  services.xserver.videoDrivers = lib.mkForce [
-    "amdgpu"
-    "nvidia"
-  ];
 
   ${namespace} = {
     stateVersion = "24.05";
@@ -49,68 +52,62 @@
       piper
     ];
 
-    core.lanzaboote.enable = true;
-    core.docker.enable = true;
-    core.docker.storageDriver = "btrfs";
-
-    desktop.enable = true;
-    desktop.plymouth.enable = true;
-    desktop.gnome.enable = true;
-    desktop.gnome.monitors.xml = ''
-      <monitors version="2">
-        <configuration>
-          <layoutmode>logical</layoutmode>
-          <logicalmonitor>
-            <x>0</x>
-            <y>0</y>
-            <scale>1</scale>
-            <primary>yes</primary>
-            <monitor>
-              <monitorspec>
-                <connector>eDP-1</connector>
-                <vendor>SDC</vendor>
-                <product>ATNA40CU05-0 </product>
-                <serial>0x00000000</serial>
-              </monitorspec>
-              <mode>
-                <width>2880</width>
-                <height>1800</height>
-                <rate>120.000</rate>
-              </mode>
-            </monitor>
-          </logicalmonitor>
-        </configuration>
-      </monitors>
-    '';
-
-    gaming.proton.enable = true;
-    gaming.steam.enable = true;
-
-    hardware.bluetooth.enable = true;
-    hardware.yubico.enable = true;
-    hardware.graphics = {
-      amd.enable = true;
-      nvidia = {
+    core = {
+      # Enable secure boot.
+      lanzaboote.enable = true;
+      # Enable docker, use `btrfs` storage driver.
+      docker = {
         enable = true;
-        busIDs = {
-          amd = "PCI:101:0:0";
-          nvidia = "PCI:1:0:0";
+        storageDriver = "btrfs";
+      };
+      # `sysctl` configuration for gaming improvements.
+      security.sysctl.gaming.enable = true;
+    };
+
+    desktop = {
+      # Enable desktop-specific defaults.
+      enable = true;
+      # Enable GNOME desktop environment.
+      gnome.enable = true;
+    };
+
+    gaming = {
+      # Enable proton and steam.
+      proton.enable = true;
+      steam.enable = true;
+    };
+
+    hardware = {
+      bluetooth.enable = true;
+      yubico.enable = true;
+      graphics = {
+        amd.enable = true;
+        nvidia = {
+          enable = true;
+          busIDs = {
+            amd = "PCI:101:0:0";
+            nvidia = "PCI:1:0:0";
+          };
         };
       };
     };
 
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-    networking.iwd.enable = true;
-    networking.resolved.enable = true;
+    networking = {
+      firewall.enable = true;
+      networkManager.enable = true;
+      iwd.enable = true;
+      resolved.enable = true;
+    };
 
     services.asus.enable = true;
 
-    user.enable = true;
-    user.username = "chnmy";
-    user.description = "Chinmay D. Pai";
-    user.extraGroups = [ "video" ];
-    user.userPasswordAgeModule = userdata.secrets.machines.zippyrus.password;
-    user.rootPasswordAgeModule = userdata.secrets.machines.zippyrus.root-password;
+    user = {
+      enable = true;
+      username = "chnmy";
+      description = "Chinmay D. Pai";
+      extraGroups = [ "video" ];
+      userPasswordAgeModule = userdata.secrets.machines.zippyrus.password;
+      rootPasswordAgeModule = userdata.secrets.machines.zippyrus.root-password;
+    };
   };
 }

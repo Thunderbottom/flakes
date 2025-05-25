@@ -4,11 +4,15 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.hardware.graphics.intel = {
     enable = lib.mkEnableOption "Enable Intel graphics configuration";
     driver = lib.mkOption {
-      type = lib.types.enum ["i915" "xe"];
+      type = lib.types.enum [
+        "i915"
+        "xe"
+      ];
       description = "Whether to use i915 or experimental xe driver";
       default = "i915";
     };
@@ -32,6 +36,6 @@
 
     environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
-    boot.initrd.kernelModules = [config.${namespace}.hardware.graphics.intel.driver];
+    boot.initrd.kernelModules = [ config.${namespace}.hardware.graphics.intel.driver ];
   };
 }

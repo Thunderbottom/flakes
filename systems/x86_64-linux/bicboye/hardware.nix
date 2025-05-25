@@ -12,7 +12,7 @@ _: {
       ];
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/e570c2be-65df-4208-9cac-a03de08a6209";
     };
-    kernelModules = ["kvm-intel"];
+    kernelModules = [ "kvm-intel" ];
   };
 
   fileSystems = {
@@ -92,7 +92,10 @@ _: {
     "/boot" = {
       device = "/dev/disk/by-uuid/B731-09A3";
       fsType = "vfat";
-      options = ["fmask=0022" "dmask=0022"];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
 
     "/storage/media" = {
@@ -106,5 +109,5 @@ _: {
       ];
     };
   };
-  swapDevices = [];
+  swapDevices = [ ];
 }

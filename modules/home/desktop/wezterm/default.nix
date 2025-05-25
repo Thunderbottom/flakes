@@ -5,8 +5,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.desktop.wezterm.enable = lib.mkEnableOption "Enable wezterm home configuration";
+}:
+{
+  options.${namespace}.desktop.wezterm.enable =
+    lib.mkEnableOption "Enable wezterm home configuration";
 
   config = lib.mkIf config.${namespace}.desktop.wezterm.enable {
     programs.wezterm = {

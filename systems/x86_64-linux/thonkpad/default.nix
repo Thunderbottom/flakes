@@ -13,7 +13,6 @@
 
   networking.hostName = "thonkpad";
   networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
-  networking.useNetworkd = true;
 
   # Enable weekly btrfs auto-scrub.
   services.btrfs.autoScrub = {

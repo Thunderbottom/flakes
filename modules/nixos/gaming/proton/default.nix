@@ -4,8 +4,10 @@
   namespace,
   pkgs,
   ...
-}: {
-  options.${namespace}.gaming.proton.enable = lib.mkEnableOption "Enable proton and related services for gaming";
+}:
+{
+  options.${namespace}.gaming.proton.enable =
+    lib.mkEnableOption "Enable proton and related services for gaming";
 
   config = lib.mkIf config.${namespace}.gaming.proton.enable {
     # Enable gamemode.
@@ -17,9 +19,13 @@
     # heroic: launcher for epic games, gog, and other stuff
     # mangohud: shows an overlay for FPS, CPU/GPU temperatures in game.
     ${namespace} = {
-      extraPackages = with pkgs; [bottles heroic mangohud];
+      extraPackages = with pkgs; [
+        bottles
+        heroic
+        mangohud
+      ];
       # Add user to the gamemode group.
-      user.extraGroups = ["gamemode"];
+      user.extraGroups = [ "gamemode" ];
     };
   };
 }

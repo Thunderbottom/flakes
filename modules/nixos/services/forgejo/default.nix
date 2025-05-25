@@ -4,7 +4,8 @@
   namespace,
   pkgs,
   ...
-}: {
+}:
+{
   options.${namespace}.services.forgejo = {
     enable = lib.mkEnableOption "Enable forgejo service";
 
@@ -45,9 +46,10 @@
     };
   };
 
-  config = let
-    cfg = config.${namespace}.services.forgejo;
-  in
+  config =
+    let
+      cfg = config.${namespace}.services.forgejo;
+    in
     lib.mkIf cfg.enable {
       assertions = [
         {
@@ -57,15 +59,16 @@
       ];
 
       warnings =
-        if cfg.sshDomain == cfg.domain
-        then [
-          ''
-            No unique value specified for `${namespace}.services.forgejo.sshDomain`.
-            Will default to ${namespace}.services.forgejo.domain. This might cause
-            issues with SSH if the forgejo service is behind a proxy, like CloudFlare.
-          ''
-        ]
-        else [];
+        if cfg.sshDomain == cfg.domain then
+          [
+            ''
+              No unique value specified for `${namespace}.services.forgejo.sshDomain`.
+              Will default to ${namespace}.services.forgejo.domain. This might cause
+              issues with SSH if the forgejo service is behind a proxy, like CloudFlare.
+            ''
+          ]
+        else
+          [ ];
 
       age.secrets = {
         forgejo = {
@@ -127,7 +130,7 @@
       services.gitea-actions-runner = lib.mkIf cfg.actions-runner.enable {
         package = pkgs.forgejo-actions-runner;
         instances.default = {
-          enable = cfg.actions-runner.enable;
+          inherit (cfg.actions-runner) enable;
           name = config.networking.hostName;
           url = "https://${cfg.domain}";
           tokenFile = config.age.secrets.forgejo-actions-runner.path;
@@ -146,7 +149,7 @@
 
             runner = {
               capacity = 2;
-              envs = {};
+              envs = { };
               timeout = "1h";
             };
 
@@ -160,10 +163,11 @@
         };
       };
 
-      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = lib.mkIf cfg.actions-runner.enable "forgejo-runner";
+      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory =
+        lib.mkIf cfg.actions-runner.enable "forgejo-runner";
 
       networking.firewall = lib.mkIf config.networking.firewall.enable {
-        allowedTCPPorts = [cfg.sshPort];
+        allowedTCPPorts = [ cfg.sshPort ];
       };
 
       users.users.git = {
@@ -173,7 +177,7 @@
         group = "git";
         isSystemUser = true;
       };
-      users.groups.git = {};
+      users.groups.git = { };
 
       services.nginx = {
         virtualHosts = {

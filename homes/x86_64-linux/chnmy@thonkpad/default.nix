@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   snowfallorg.user.enable = true;
   snowfallorg.user.name = "chnmy";
 

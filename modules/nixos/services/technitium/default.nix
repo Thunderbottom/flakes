@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.services.technitium = {
     enable = lib.mkEnableOption "Enable technitium dns server";
   };
