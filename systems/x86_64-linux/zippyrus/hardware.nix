@@ -46,7 +46,6 @@
       fsType = "btrfs";
       options = [
         "defaults"
-        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
@@ -60,7 +59,6 @@
       fsType = "btrfs";
       options = [
         "defaults"
-        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
@@ -85,7 +83,6 @@
       fsType = "btrfs";
       options = [
         "defaults"
-        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
@@ -98,7 +95,6 @@
       fsType = "btrfs";
       options = [
         "defaults"
-        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
@@ -123,7 +119,6 @@
       fsType = "btrfs";
       options = [
         "defaults"
-        "autodefrag"
         "compress-force=zstd"
         "noatime"
         "ssd"
