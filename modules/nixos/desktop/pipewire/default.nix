@@ -31,7 +31,7 @@
       extraConfig.pipewire = lib.mkIf config.${namespace}.desktop.pipewire.enableLowLatency {
         "99-playback-96khz.conf" = {
           "context.properties" = {
-            "default.clock.rate" = 192000;
+            "default.clock.rate" = 48000;
             "default.clock.allowed-rates" = [
               44100
               48000
@@ -40,9 +40,9 @@
               176400
               192000
             ];
-            "default.clock.quantum" = 352;
-            "default.clock.min-quantum" = 32;
-            "default.clock.max-quantum" = 2048;
+            "default.clock.quantum" = 256;
+            "default.clock.min-quantum" = 64;
+            "default.clock.max-quantum" = 512;
             "default.clock.quantum-limit" = 8192;
           };
         };
