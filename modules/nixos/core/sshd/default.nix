@@ -3,7 +3,8 @@
   lib,
   namespace,
   ...
-}: {
+}:
+{
   options.${namespace}.core.sshd = {
     enable = lib.mkEnableOption "Enable core sshd configuration";
   };
@@ -21,6 +22,7 @@
         MaxAuthTries = 3;
         ChallengeResponseAuthentication = false;
         AllowTcpForwarding = "yes";
+        X11Forwarding = false;
       };
       openFirewall = true;
     };
