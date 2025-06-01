@@ -105,7 +105,7 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
-    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/astro-test.tar.gz";
+    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/9ba597d5115c0bea73b85c93d74f0ee6292a6b57.tar.gz";
     maych-in.inputs.nixpkgs.follows = "nixpkgs";
 
     nil.url = "github:oxalica/nil";
