@@ -16,7 +16,7 @@
   };
 
   config = lib.mkIf config.${namespace}.desktop.gnome.enable {
-    services.xserver = {
+    services = {
       displayManager.gdm = {
         enable = true;
         wayland = true;
