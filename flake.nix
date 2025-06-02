@@ -22,7 +22,6 @@
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.age
         disko.nixosModules.disko
-        srvos.nixosModules.common
         inputs.lanzaboote.nixosModules.lanzaboote
       ];
 
