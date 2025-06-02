@@ -7,6 +7,7 @@
 {
   options.${namespace}.core.docker = {
     enable = lib.mkEnableOption "Enable core docker configuration";
+    enableOnBoot = lib.mkEnableOption "Enable docker on boot";
     storageDriver = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -18,7 +19,7 @@
     virtualisation.docker = {
       enable = true;
       # Required for containers with `--restart=always`.
-      enableOnBoot = true;
+      enableOnBoot = config.${namespace}.core.docker.enableOnBoot;
       autoPrune = {
         enable = true;
       };
