@@ -47,6 +47,8 @@
         term = "xterm-256color";
         window-padding-x = 2;
         window-padding-y = 2;
+
+        gtk-single-instance = true;
       };
     };
   };
