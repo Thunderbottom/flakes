@@ -14,7 +14,7 @@
       "org/gnome/shell" = {
         favorite-apps = [
           "obsidian.desktop"
-          "firefox.desktop"
+          "firefox-nightly.desktop"
           "com.mitchellh.ghostty.desktop"
         ];
         disable-user-extensions = false;
@@ -27,6 +27,10 @@
           just-perfection.extensionUuid
           blur-my-shell.extensionUuid
         ];
+      };
+
+      "org/gnome/desktop/break-reminders" = {
+        selected-breaks = [ "eyesight" ];
       };
 
       "org/gnome/desktop/wm/preferences" = {

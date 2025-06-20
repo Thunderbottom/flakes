@@ -36,6 +36,7 @@
     environment = {
       gnome.excludePackages = with pkgs; [
         atomix # puzzle game
+        baobab
         cheese # webcam tool
         epiphany # web browser
         evince # document viewer
@@ -47,14 +48,19 @@
         gnome-contacts
         gnome-font-viewer
         gnome-initial-setup
+        gnome-logs
         gnome-maps
         gnome-music
         gnome-photos
         gnome-shell-extensions
+        gnome-software
         gnome-text-editor
         gnome-tour
+        gnome-user-docs
         hitori # sudoku game
         iagno # go game
+        orca
+        simple-scan
         snapshot
         tali # poker game
         totem # video player
@@ -68,6 +74,7 @@
         bibata-cursors
         dconf-editor
         gnome-tweaks
+        gnome-themes-extra
         nautilus-python
         nautilus-open-any-terminal
         wl-clipboard
@@ -80,6 +87,10 @@
         gnomeExtensions.blur-my-shell
       ];
     };
+
+    xdg.portal.extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+    ];
 
     systemd.tmpfiles.rules =
       let
