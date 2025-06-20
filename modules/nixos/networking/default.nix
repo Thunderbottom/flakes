@@ -4,6 +4,32 @@
   namespace,
   ...
 }:
+let
+  cfg = config.${namespace}.networking;
+
+  # Helper function to create a standard WiFi profile
+  mkWifiProfile = ssid: psk: {
+    connection = {
+      id = ssid;
+      type = "wifi";
+    };
+    ipv4 = {
+      method = "auto";
+    };
+    ipv6 = {
+      addr-gen-mode = "stable-privacy";
+      method = "auto";
+    };
+    wifi = {
+      mode = "infrastructure";
+      ssid = ssid;
+    };
+    wifi-security = {
+      key-mgmt = "wpa-psk";
+      psk = psk;
+    };
+  };
+in
 {
   options.${namespace}.networking = {
     iwd.enable = lib.mkEnableOption "Enable iwd backend for network manager";
@@ -11,6 +37,72 @@
     networkManager.enable = lib.mkEnableOption "Enable network-manager";
     resolved.enable = lib.mkEnableOption "Enable systemd-resolved";
     firewall.enable = lib.mkEnableOption "Enable system firewall";
+
+    wifiProfiles = {
+      enable = lib.mkEnableOption "Enable WiFi profile management";
+
+      environmentFiles = lib.mkOption {
+        type = lib.types.listOf lib.types.path;
+        default = [];
+        description = "List of environment files containing WiFi credentials";
+      };
+
+      networks = lib.mkOption {
+        type = lib.types.attrsOf lib.types.str;
+        default = {};
+        example = {
+          "My Network" = "$MY_NETWORK_PSK";
+          "Office WiFi" = "$OFFICE_PSK";
+        };
+        description = "Map of WiFi SSIDs to their PSK environment variables";
+      };
+
+      customProfiles = lib.mkOption {
+        type = lib.types.attrs;
+        default = {};
+        example = {
+          "Enterprise-Network" = {
+            connection = {
+              id = "Enterprise Network";
+              type = "wifi";
+            };
+            ipv4.method = "auto";
+            ipv6 = {
+              addr-gen-mode = "stable-privacy";
+              method = "auto";
+            };
+            wifi = {
+              mode = "infrastructure";
+              ssid = "Enterprise WiFi";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-eap";
+              eap = "peap";
+              identity = "$ENTERPRISE_USERNAME";
+              password = "$ENTERPRISE_PASSWORD";
+            };
+          };
+          "Guest-Hotspot" = {
+            connection = {
+              id = "Guest Hotspot";
+              type = "wifi";
+            };
+            ipv4.method = "auto";
+            ipv6.method = "ignore";
+            wifi = {
+              mode = "infrastructure";
+              ssid = "Guest-Network";
+            };
+            # Open network with no security
+          };
+        };
+        description = ''
+          Additional custom NetworkManager profiles that don't follow the standard template.
+          Use this for networks requiring special configuration like enterprise authentication,
+          static IP addresses, or custom security settings.
+        '';
+      };
+    };
   };
 
   config = lib.mkMerge [
@@ -26,20 +118,16 @@
         enable = true;
         settings = {
           General = {
-            AddressRandomization = "network";
-            AddressRandomizationRange = "full";
             EnableNetworkConfiguration = true;
-            RoamRetryInterval = 20;
           };
           Network = {
             EnableIPv6 = true;
             RoutePriorityOffset = 300;
+            NameResolvingService = "systemd";
           };
           Settings = {
             AutoConnect = true;
           };
-          # Prioritize connection to 5GHz.
-          Rank.BandModifier5Ghz = 2.0;
           Scan.DisablePeriodicScan = true;
         };
       };
@@ -60,6 +148,22 @@
       services.resolved = {
         inherit (config.${namespace}.networking.resolved) enable;
       };
+    })
+
+    (lib.mkIf cfg.wifiProfiles.enable {
+      networking.networkmanager.ensureProfiles =
+        let
+          # Generate profiles from the networks map
+          generatedProfiles = builtins.listToAttrs (
+            lib.mapAttrsToList (ssid: psk: {
+              name = builtins.replaceStrings [" " "." ":"] ["-" "-" "-"] ssid;
+              value = mkWifiProfile ssid psk;
+            }) cfg.wifiProfiles.networks
+          );
+        in {
+          environmentFiles = cfg.wifiProfiles.environmentFiles;
+          profiles = generatedProfiles // cfg.wifiProfiles.customProfiles;
+        };
     })
 
     (lib.mkIf config.${namespace}.networking.networkd.enable {

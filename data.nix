@@ -23,6 +23,7 @@
         password.file = ./secrets/monitoring/grafana/password.age;
       };
     };
+    network-manager.passphrase.file = ./secrets/network-manager/passphrase.age;
     nginx.ssl-environment.file = ./secrets/services/bluesky-pds/ssl-environment.age;
     services = {
       backups = {

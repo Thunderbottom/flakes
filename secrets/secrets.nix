@@ -33,6 +33,7 @@ in
   "machines/smolboye/password.age".publicKeys = thunderbottom ++ smolboye;
   "machines/smolboye/root-password.age".publicKeys = thunderbottom ++ smolboye;
   "monitoring/grafana/password.age".publicKeys = thunderbottom ++ bicboye;
+  "network-manager/passphrase.age".publicKeys = thunderbottom ++ zippyrus;
   "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/bluesky-pds/environment.age".publicKeys = thunderbottom ++ bicboye;
