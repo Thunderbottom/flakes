@@ -137,5 +137,8 @@
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
     wezterm.inputs.rust-overlay.follows = "rust-overlay";
+
+    zed.url = "github:zed-industries/zed?ref=v0.190.6";
+    zed.inputs.nixpkgs.follows = "nixpkgs";
   };
 }

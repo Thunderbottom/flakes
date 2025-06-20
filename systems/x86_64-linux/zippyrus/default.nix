@@ -1,4 +1,6 @@
 {
+  config,
+  inputs,
   namespace,
   pkgs,
   userdata,
@@ -14,6 +16,12 @@
     enableRedistributableFirmware = true;
     # Enable orientation and ambient light sensor.
     sensor.iio.enable = true;
+  };
+
+  age.secrets.network-manager-psk = {
+    file = userdata.secrets.network-manager.passphrase.file;
+    owner = "root";
+    group = "root";
   };
 
   networking = {
@@ -47,10 +55,15 @@
 
   ${namespace} = {
     stateVersion = "24.05";
-    extraPackages = with pkgs; [
-      obsidian
-      piper
-    ];
+    extraPackages =
+      with pkgs;
+      [
+        obsidian
+        piper
+      ]
+      ++ [
+        inputs.zed.packages.${system}.default
+      ];
 
     core = {
       # Enable secure boot.
@@ -62,6 +75,7 @@
       };
       # `sysctl` configuration for gaming improvements.
       security.sysctl.gaming.enable = true;
+      # security.sysctl.performance.enable = true;
     };
 
     desktop = {
@@ -97,6 +111,16 @@
       networkManager.enable = true;
       iwd.enable = true;
       resolved.enable = true;
+
+      wifiProfiles = {
+        enable = true;
+        environmentFiles = [ config.age.secrets.network-manager-psk.path ];
+        networks = {
+          "The Y-Fi" = "$THE_YFI_PSK";
+          "The Y-Fi 2.4" = "$THE_YFI_PSK";
+          "The Y-Fi Inside" = "$THE_YFI_PSK";
+        };
+      };
     };
 
     services.asus.enable = true;
