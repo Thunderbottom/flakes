@@ -53,6 +53,12 @@
       ];
     };
 
+    environment.variables = {
+      GBM_BACKEND = "nvidia-drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      WLR_NO_HARDWARE_CURSORS = "1";
+    };
+
     hardware.nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
@@ -62,7 +68,7 @@
       powerManagement.enable = true;
       powerManagement.finegrained = true;
 
-      open = false;
+      open = true;
 
       prime = {
         offload = {
@@ -80,6 +86,7 @@
     boot.blacklistedKernelModules = [ "nouveau" ];
     boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
+    services.xserver.videoDrivers = [ "nvidia" ];
     systemd = {
       services."gnome-suspend" = {
         description = "suspend gnome shell";

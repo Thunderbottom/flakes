@@ -26,6 +26,7 @@
       RADV_PERFTEST = "gpl";
     };
 
+    services.xserver.videoDrivers = [ "amdgpu" ];
     boot.initrd.kernelModules = [ "amdgpu" ];
   };
 }
