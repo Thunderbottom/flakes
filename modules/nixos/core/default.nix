@@ -159,6 +159,8 @@
     # Use a high-performance implementation for DBus
     services.dbus.implementation = "broker";
 
+    services.fstrim.enable = true;
+
     services.smartd = {
       enable = true;
       autodetect = true;
