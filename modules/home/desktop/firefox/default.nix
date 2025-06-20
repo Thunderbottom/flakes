@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   namespace,
   pkgs,
@@ -12,25 +13,37 @@
   config = lib.mkIf config.${namespace}.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
+      package = inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin;
       policies = {
+        AppAutoUpdate = false;
+        AutofillCreditCardEnabled = false;
+        DisableAppUpdate = true;
+        DisableFirefoxAccounts = true;
         DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisplayBookmarksToolbar = "never";
+        DisplayMenuBar = "default-off";
+        DontCheckDefaultBrowser = true;
         EnableTrackingProtection = {
           Value = true;
           Locked = true;
           Cryptomining = true;
           Fingerprinting = true;
         };
+        NoDefaultBookmarks = true;
         OfferToSaveLoginsDefault = false;
-        DisableTelemetry = true;
-        DisablePocket = true;
-        DisableFirefoxAccounts = true;
         OverrideFirstRunPage = "";
         OverridePostUpdatePage = "";
-        DontCheckDefaultBrowser = true;
-        DisplayMenuBar = "default-off";
         SearchBar = "unified";
-        NoDefaultBookmarks = true;
-        DisplayBookmarksToolbar = "never";
+        UserMessaging = {
+          ExtensionRecommendations = false;
+          FeatureRecommendations = false;
+          UrlbarInterventions = false;
+          SkipOnboarding = true;
+          MoreFromMozilla = false;
+          Locked = true;
+        };
         Preferences =
           let
             lock-false = {
@@ -85,6 +98,7 @@
           consent-o-matic
           duckduckgo-privacy-essentials
           reddit-enhancement-suite
+          return-youtube-dislikes
           sponsorblock
           ublock-origin
         ];
@@ -134,6 +148,7 @@
           "browser.discovery.enabled" = false;
           "browser.newtabpage.activity-stream.feeds.telemetry" = false;
           "browser.newtabpage.activity-stream.telemetry" = false;
+          "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
           "browser.ping-centre.telemetry" = false;
           "datareporting.healthreport.service.enabled" = false;
           "datareporting.healthreport.uploadEnabled" = false;
@@ -161,18 +176,14 @@
           "signon.rememberSignons" = false;
           # Harden
           "privacy.trackingprotection.enabled" = true;
+          "privacy.donottrackheader.enabled" = true;
+          "privacy.globalprivacycontrol.enabled" = true;
+          "privacy.globalprivacycontrol.was_ever_enabled" = true;
           "dom.security.https_only_mode" = true;
           "browser.tabs.loadInBackground" = true;
-          "gfx.canvas.accelerated" = true;
           "gfx.webrender.enabled" = true;
-          "gfx.x11-egl.force-enabled" = true;
-          "layers.acceleration.force-enabled" = true;
-          "media.av1.enabled" = false;
-          "media.ffmpeg.vaapi.enabled" = true;
-          "media.hardware-video-decoding.force-enabled" = true;
-          "media.rdd-ffmpeg.enabled" = true;
-          "widget.dmabuf.force-enabled" = true;
-          "svg.context-properties.content.enabled" = true;
+          "media.eme.enabled" = true;
+          "media.hardware-video-decoding.enabled" = true;
         };
       };
     };
