@@ -13,7 +13,7 @@
   config = lib.mkIf config.${namespace}.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
-      package = inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin;
+      package = pkgs.firefox;
       policies = {
         AppAutoUpdate = false;
         AutofillCreditCardEnabled = false;
@@ -103,6 +103,7 @@
           ublock-origin
         ];
         bookmarks = { };
+        # extraConfig = builtins.readFile "${inputs.betterfox}/user.js";
         settings = {
           "browser.startup.homepage" = "about:home";
 

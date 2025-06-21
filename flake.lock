@@ -25,6 +25,22 @@
         "type": "github"
       }
     },
+    "betterfox": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1750480196,
+        "narHash": "sha256-Kkk3mqfQCXf/J+SoAKki46e4OoD6ZPHTlXT+yezj6gU=",
+        "owner": "yokoffing",
+        "repo": "Betterfox",
+        "rev": "e66de491acd5e87f53abc3dfe9622f7ce5e2a101",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yokoffing",
+        "repo": "Betterfox",
+        "type": "github"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -832,6 +848,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "betterfox": "betterfox",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "firefox": "firefox",

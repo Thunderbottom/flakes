@@ -84,6 +84,9 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
 
+    betterfox.url = "github:yokoffing/Betterfox";
+    betterfox.flake = false;
+
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 

@@ -14,7 +14,7 @@
       "org/gnome/shell" = {
         favorite-apps = [
           "obsidian.desktop"
-          "firefox-nightly.desktop"
+          "firefox.desktop"
           "com.mitchellh.ghostty.desktop"
         ];
         disable-user-extensions = false;
