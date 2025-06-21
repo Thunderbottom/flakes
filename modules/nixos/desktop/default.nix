@@ -29,8 +29,6 @@
     # Enable ADB for Android devices.
     programs.adb.enable = true;
     programs.dconf.enable = true;
-    # Start the ssh agent if enabled.
-    programs.ssh.startAgent = config.${namespace}.core.sshd.enable;
 
     # Enable fingerprint authentication.
     # Requires fingerprint registered using `fprint-enroll` to work.
