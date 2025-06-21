@@ -101,6 +101,11 @@
     nginx.wildcard-ssl.sslEnvironmentFile = userdata.secrets.nginx.ssl-environment;
 
     services = {
+      actual = {
+        enable = true;
+        domain = "actual.deku.moe";
+      };
+
       arr.enable = true;
 
       backups = {
