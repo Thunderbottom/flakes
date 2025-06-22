@@ -124,7 +124,6 @@
       ];
     };
 
-    # TODO: setup swap
     # ref: https://sawyershepherd.org/post/hibernating-to-an-encrypted-swapfile-on-btrfs-with-nixos/
     # "/swap" = {
     #   device = "/dev/disk/by-uuid/da17b8ca-aefe-4b97-b493-694db0fa0972";

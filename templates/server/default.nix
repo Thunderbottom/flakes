@@ -63,7 +63,7 @@ in
     ];
   };
 
-  # TODO: replace email with an actual email for letsencrypt
+  # NOTE: replace email with an actual email for letsencrypt
   security.acme.defaults.email = "server@mail.com";
 
   snowflake = {

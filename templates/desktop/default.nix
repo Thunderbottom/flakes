@@ -4,7 +4,7 @@
   ...
 }:
 let
-  # TODO: Update the hostname
+  # NOTE: Update the hostname
   hostname = "desktop";
 in
 {
@@ -86,7 +86,7 @@ in
     networking.resolved.enable = true;
 
     # User configuration.
-    # TODO: change the username and the description for the user.
+    # NOTE: change the username and the description for the user.
     user.enable = true;
     user.username = "user";
     user.description = "User McUserface";
