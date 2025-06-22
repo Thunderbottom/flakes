@@ -79,6 +79,7 @@
         enable = true;
         fqdn = "mail.deku.moe";
         domains = [ "deku.moe" ];
+        postfixBindIPv6 = "2a01:4f8:1c1c:90b::";
         loginAccounts = {
           "watashi@deku.moe" = {
             hashedPasswordFile = config.age.secrets.mailserver-watashi.path;

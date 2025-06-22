@@ -51,6 +51,11 @@
       default = { };
       description = "Login accounts for the domain. Every account is mapped to a unix user";
     };
+
+    postfixBindIPv6 = lib.mkOption {
+      type = lib.types.str;
+      description = "The IPv6 bind address to use for postfix SMTP. Sets `smtp_bind_address6`";
+    };
   };
 
   config =
@@ -103,12 +108,10 @@
         };
       };
 
-      # Prefer using ipv4 and use correct ipv6 address
-      # to avoid rDNS issues
-      # NOTE: this needs to be changed on every new system.
-      # TODO: figure out how to handle this case better.
+      # Prefer using ipv4 and use correct ipv6
+      # address to avoid rDNS issues
       services.postfix.extraConfig = ''
-        smtp_bind_address6 = 2a01:4f8:1c1c:90b::
+        smtp_bind_address6 = ${cfg.postfixBindIPv6}
         smtp_address_preference = ipv4
       '';
 
