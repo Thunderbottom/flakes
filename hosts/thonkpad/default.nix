@@ -1,7 +1,5 @@
 {
   inputs,
-  lib,
-
   pkgs,
   userdata,
   ...
@@ -13,8 +11,6 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-
-  networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
 
   snowflake = {
     extraPackages = with pkgs; [

@@ -17,7 +17,6 @@
   hardware.enableRedistributableFirmware = true;
 
   networking = {
-    useDHCP = lib.mkDefault false;
     interfaces.enp2s0 = {
       useDHCP = lib.mkDefault true;
       wakeOnLan.enable = true;

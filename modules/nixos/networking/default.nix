@@ -110,6 +110,8 @@ in
       networking.firewall.enable = lib.mkDefault config.snowflake.networking.firewall.enable;
       # use nftables for firewall
       networking.nftables.enable = true;
+      # Disable DHCP by default
+      networking.useDHCP = lib.mkDefault false;
     }
 
     (lib.mkIf config.snowflake.networking.iwd.enable {

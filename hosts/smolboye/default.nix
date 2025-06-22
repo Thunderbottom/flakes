@@ -38,7 +38,6 @@
 
   networking = {
     nameservers = [ "1.1.1.1" ];
-    useDHCP = lib.mkDefault false;
     interfaces.enp1s0 = {
       useDHCP = lib.mkDefault true;
       ipv6.addresses = [
