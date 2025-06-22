@@ -70,7 +70,7 @@
           ;
 
         # Set the state version for nixos-mailserver
-        stateVersion = 4;
+        stateVersion = 3;
 
         # Spin up a stripped-down nginx instance on
         # port 80 to generate a certificate automatically.
