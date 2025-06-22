@@ -19,9 +19,6 @@
     };
   };
 
-  # TODO: when upgrading stateVersion to 24.11, the data directory will
-  # change from /var/lib/bitwarden_rs to /var/lib/vaultwarden.
-  # We need to move the data and then change the backup service directory.
   config =
     let
       cfg = config.snowflake.services.vaultwarden;
@@ -77,7 +74,7 @@
       };
 
       snowflake.services.backups.config.vaultwarden.paths = [
-        "/var/lib/bitwarden_rs"
+        "/var/lib/vaultwarden"
       ];
 
       environment.etc = {
