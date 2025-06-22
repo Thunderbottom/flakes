@@ -1,11 +1,11 @@
-_: _self: super:
+_final: prev:
 let
   version = "24.3.1";
 in
 {
-  cloud-init = super.cloud-init.overridePythonAttrs (_oldAttrs: {
+  cloud-init = prev.cloud-init.overridePythonAttrs (_oldAttrs: {
     inherit version;
-    src = super.fetchFromGitHub {
+    src = prev.fetchFromGitHub {
       owner = "canonical";
       repo = "cloud-init";
       rev = "refs/tags/${version}";

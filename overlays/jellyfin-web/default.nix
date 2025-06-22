@@ -1,7 +1,7 @@
 # Add support for intro-skipper-button
 # Ref: https://wiki.nixos.org/wiki/Jellyfin#Intro_Skipper_plugin
-_: _self: super: {
-  jellyfin-web = super.jellyfin-web.overrideAttrs (
+_final: prev: {
+  jellyfin-web = prev.jellyfin-web.overrideAttrs (
     _finalAttrs: _previousAttrs: {
       installPhase = ''
         runHook preInstall

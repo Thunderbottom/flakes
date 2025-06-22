@@ -2,15 +2,15 @@
 {
   config,
   lib,
-  namespace,
+
   ...
 }:
 let
-  cfg = config.${namespace}.services.myModule;
+  cfg = config.snowflake.services.myModule;
 in
 {
   options = {
-    ${namespace}.services.myModule = {
+    snowflake.services.myModule = {
       enable = lib.mkEnableOption "Enables this example module.";
       attributes = lib.mkOption {
         default = { };

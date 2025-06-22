@@ -1,82 +1,42 @@
 {
+
   outputs =
-    inputs:
-    let
-      lib = inputs.snowfall-lib.mkLib {
-        inherit inputs;
-        src = ./.;
-        snowfall = {
-          namespace = "snowflake";
-          meta = {
-            name = "nix-snowflake";
-            title = "NixOS Flake configuration for snowflakes";
+    { self, flake-parts, ... }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+
+      imports = [
+        ./hosts
+        ./modules
+        ./overlays
+        ./packages
+        ./templates
+        inputs.treefmt-nix.flakeModule
+      ];
+
+      perSystem =
+        { pkgs, system, ... }:
+        {
+          devShells = {
+            default = pkgs.mkShell {
+              packages = [
+                pkgs.nh
+                inputs.deploy-rs.packages.${system}.default
+              ];
+            };
+
+            sops = pkgs.mkShell {
+              packages = [
+                pkgs.sops
+                pkgs.age
+                pkgs.ssh-to-age
+              ];
+            };
           };
+
+          treefmt = import "${self}/treefmt.nix";
+          # formatter = (inputs.treefmt-nix.lib.evalModule pkgs "${self}/treefmt.nix").config.build.wrapper;
         };
-      };
-      userdata = import ./data.nix;
-    in
-    lib.mkFlake {
-      inherit inputs;
-      src = ./.;
-
-      systems.modules.nixos = with inputs; [
-        agenix.nixosModules.age
-        disko.nixosModules.disko
-        inputs.lanzaboote.nixosModules.lanzaboote
-      ];
-
-      systems.hosts.thonkpad.modules = [
-        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-12th-gen
-      ];
-      systems.hosts.thonkpad.specialArgs = {
-        inherit userdata;
-      };
-      systems.hosts.zippyrus.modules = [ ];
-      systems.hosts.zippyrus.specialArgs = {
-        inherit userdata;
-      };
-
-      # TODO: setup atticd
-      systems.hosts.bicboye.modules = [
-        inputs.srvos.nixosModules.server
-        inputs.srvos.nixosModules.mixins-systemd-boot
-      ];
-      systems.hosts.bicboye.specialArgs = {
-        inherit userdata;
-      };
-      systems.hosts.smolboye.modules = [
-        inputs.nixos-hardware.nixosModules.common-cpu-intel
-        inputs.srvos.nixosModules.hardware-hetzner-cloud
-      ];
-      systems.hosts.smolboye.specialArgs = {
-        inherit userdata;
-      };
-
-      homes.modules = with inputs; [
-        nur.modules.homeManager.default
-      ];
-
-      overlays = [
-        (_: prev: {
-          inherit (inputs.maych-in.packages.${prev.system}) maych-in;
-          inherit (inputs.toasters.packages.${prev.system}) toaste-rs;
-          inherit (inputs.nur.legacyPackages.${prev.system}.repos.rycee) firefox-addons;
-        })
-      ];
-
-      channels-config.allowUnfree = true;
-
-      outputs-builder = channels: {
-        formatter = (inputs.treefmt-nix.lib.evalModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
-      };
-
-      deploy = lib.mkDeploy { inherit (inputs) self; };
-
-      templates = {
-        module.description = "Flake template for creating a new nix module";
-        desktop.description = "Flake template for creating a new desktop configuration";
-        server.description = "Flake template for creating a new server configuration";
-      };
     };
 
   inputs = {
@@ -95,6 +55,12 @@
 
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
+
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     ghostty.url = "github:ghostty-org/ghostty";
 
@@ -119,14 +85,8 @@
     nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     nixos-mailserver.inputs.nixpkgs.follows = "nixpkgs";
 
-    nur.url = "github:nix-community/nur";
-    nur.inputs.nixpkgs.follows = "nixpkgs";
-
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
-    snowfall-lib.url = "github:snowfallorg/lib";
-    snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
 
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";

@@ -1,32 +1,22 @@
 {
+  inputs,
   lib,
-  namespace,
+
   pkgs,
   userdata,
   ...
 }:
 {
-  imports = [ ./hardware.nix ];
+  imports = [
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-12th-gen
+  ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  networking.hostName = "thonkpad";
   networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
 
-  # Enable weekly btrfs auto-scrub.
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
-  services.thermald.enable = true;
-
-  ${namespace} = {
-    stateVersion = "24.05";
+  snowflake = {
     extraPackages = with pkgs; [
       easyeffects
       glibc
@@ -34,7 +24,6 @@
     ];
 
     core.lanzaboote.enable = true;
-
     core.docker.enable = true;
     core.docker.storageDriver = "btrfs";
 
@@ -50,10 +39,7 @@
       enable = true;
     };
 
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
     networking.iwd.enable = true;
-    networking.resolved.enable = true;
     networking.netbird.enable = true;
 
     user.enable = true;

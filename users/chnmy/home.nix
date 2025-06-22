@@ -1,12 +1,5 @@
+{ pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}:
-{
-  snowfallorg.user.enable = true;
-  snowfallorg.user.name = "chnmy";
-
   snowflake.desktop.firefox.enable = true;
   snowflake.desktop.ghostty.enable = true;
   snowflake.desktop.gnome-dconf.enable = true;
@@ -17,15 +10,6 @@
     email = "chinmaydpai@gmail.com";
     signingKey = "75507BE256F40CED";
   };
-  snowflake.development.git.work = {
-    enable = true;
-    email = "chinmay.pai@zerodha.com";
-    path = "/home/${config.snowfallorg.user.name}/Documents/Repositories/gitlab.zerodha.tech";
-    extraConfig = {
-      url."ssh://git@gitlab.zerodha.tech:2280".insteadOf = "https://gitlab.zerodha.tech";
-      url."ssh://git@gitlab.zerodha.tech:2280/".insteadOf = "git@gitlab.zerodha.tech:";
-    };
-  };
 
   snowflake.development.helix.enable = true;
   snowflake.development.tmux.enable = true;
@@ -35,6 +19,4 @@
   home.packages = [
     pkgs.mpv
   ];
-
-  home.stateVersion = "24.05";
 }

@@ -1,7 +1,5 @@
 {
   lib,
-  namespace,
-  pkgs,
   userdata,
   ...
 }:
@@ -27,7 +25,7 @@ in
   # Power management, enable powertop and thermald.
   powerManagement.powertop.enable = true;
 
-  ${namespace} = {
+  snowflake = {
     # NOTE: Since the system runs on nixos-unstable, this should be
     # set to the latest version as of the installation time. Can also
     # be left as-is.

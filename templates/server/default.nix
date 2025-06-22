@@ -1,6 +1,6 @@
 {
   lib,
-  namespace,
+
   userdata,
   ...
 }:
@@ -66,7 +66,7 @@ in
   # TODO: replace email with an actual email for letsencrypt
   security.acme.defaults.email = "server@mail.com";
 
-  ${namespace} = {
+  snowflake = {
     stateVersion = "24.11";
     bootloader = "grub";
 

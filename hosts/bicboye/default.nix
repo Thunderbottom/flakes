@@ -1,19 +1,22 @@
 {
   config,
+  inputs,
   lib,
-  namespace,
+
   pkgs,
   userdata,
   ...
 }:
 {
-  imports = [ ./hardware.nix ];
+  imports = [
+    inputs.srvos.nixosModules.server
+    inputs.srvos.nixosModules.mixins-systemd-boot
+  ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
   networking = {
-    hostName = "bicboye";
     useDHCP = lib.mkDefault false;
     interfaces.enp2s0 = {
       useDHCP = lib.mkDefault true;
@@ -25,20 +28,7 @@
     ];
   };
 
-  # Enable weekly btrfs auto-scrub.
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
-  services.thermald.enable = true;
-
-  ${namespace} = {
-    stateVersion = "24.05";
-
+  snowflake = {
     extraPackages = with pkgs; [
       nmap
       recyclarr
@@ -47,10 +37,6 @@
     core.docker.enable = true;
     core.docker.storageDriver = "btrfs";
     core.security.sysctl.enable = lib.mkForce false;
-
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-    networking.resolved.enable = true;
 
     hardware.graphics.intel.enable = true;
     hardware.initrd-luks = {

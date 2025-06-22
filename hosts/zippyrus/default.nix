@@ -1,14 +1,11 @@
 {
   config,
   inputs,
-  namespace,
   pkgs,
   userdata,
   ...
 }:
 {
-  imports = [ ./hardware.nix ];
-
   hardware = {
     # Update the CPU microcode for AMD processors.
     cpu.amd.updateMicrocode = true;
@@ -19,14 +16,12 @@
   };
 
   age.secrets.network-manager-psk = {
-    file = userdata.secrets.network-manager.passphrase.file;
+    inherit (userdata.secrets.network-manager.passphrase) file;
     owner = "root";
     group = "root";
   };
 
   networking = {
-    hostName = "zippyrus";
-
     # Improve wireless roaming stability.
     wireless.iwd.settings = {
       General = {
@@ -38,23 +33,11 @@
   };
 
   services = {
-    # Enable weekly btrfs auto-scrub.
-    btrfs.autoScrub = {
-      enable = true;
-      interval = "weekly";
-      fileSystems = [ "/" ];
-    };
-
     # Enable G502 mouse configuration daemon.
     ratbagd.enable = true;
   };
 
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
-  services.thermald.enable = true;
-
-  ${namespace} = {
-    stateVersion = "24.05";
+  snowflake = {
     extraPackages =
       with pkgs;
       [
@@ -62,7 +45,7 @@
         piper
       ]
       ++ [
-        inputs.zed.packages.${system}.default
+        inputs.zed.packages.${pkgs.system}.default
       ];
 
     core = {
@@ -107,10 +90,7 @@
     };
 
     networking = {
-      firewall.enable = true;
-      networkManager.enable = true;
       iwd.enable = true;
-      resolved.enable = true;
 
       wifiProfiles = {
         enable = true;

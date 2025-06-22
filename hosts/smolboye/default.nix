@@ -1,12 +1,16 @@
 {
   config,
+  inputs,
   lib,
-  namespace,
+
   userdata,
   ...
 }:
 {
-  imports = [ ./disk-config.nix ];
+  imports = [
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
+    inputs.srvos.nixosModules.hardware-hetzner-cloud
+  ];
 
   boot = {
     initrd.availableKernelModules = [
@@ -33,7 +37,6 @@
   hardware.enableRedistributableFirmware = true;
 
   networking = {
-    hostName = "smolboye";
     nameservers = [ "1.1.1.1" ];
     useDHCP = lib.mkDefault false;
     interfaces.enp1s0 = {
@@ -55,13 +58,6 @@
     ];
   };
 
-  # Enable weekly btrfs auto-scrub.
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
   security.acme.defaults.email = "chinmaydpai@gmail.com";
 
   age.secrets = {
@@ -69,15 +65,10 @@
     mailserver-noreply.file = userdata.secrets.services.mailserver.noreply.password.file;
   };
 
-  ${namespace} = {
-    stateVersion = "24.11";
+  snowflake = {
     bootloader = "grub";
 
     core.security.sysctl.enable = lib.mkForce false;
-
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-    networking.resolved.enable = true;
 
     services = {
       fail2ban.enable = true;
