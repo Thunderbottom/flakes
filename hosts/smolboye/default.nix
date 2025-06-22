@@ -60,6 +60,9 @@
 
   security.acme.defaults.email = "chinmaydpai@gmail.com";
 
+  # Disable smartd, not required for VPS
+  services.smartd.enable = lib.mkForce false;
+
   age.secrets = {
     mailserver-watashi.file = userdata.secrets.services.mailserver.watashi.password.file;
     mailserver-noreply.file = userdata.secrets.services.mailserver.noreply.password.file;
