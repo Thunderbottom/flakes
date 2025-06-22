@@ -11,7 +11,7 @@ This repository contains modularized NixOS configurations, carefully compiled an
 
 ## Highlights
 
-- Modular flake setup based on [Snowfall Lib](https://github.com/snowfallorg/lib)
+- Modular flake setup based on [flake-parts](https://flake.parts/)
 - Secret management based on [Agenix](https://github.com/ryantm/agenix)
 - Single flake setup for NixOS and Home Manager
 - Modules for servers, workstation, and mailserver
@@ -19,109 +19,83 @@ This repository contains modularized NixOS configurations, carefully compiled an
 
 ## Structure
 
-The repository follows the standard Snowfall Lib [flake structure](https://snowfall.org/reference/lib/#flake-structure):
-
 ```
 .
-├── checks
-│   └── deploy-rs
-├── homes
-│   └── x86_64-linux
-│       ├── chnmy@thonkpad
-│       ├── server@bicboye
-│       └── server@smolboye
-├── lib
-│   └── deploy-rs
+├── hosts
+│   ├── bicboye
+│   ├── smolboye
+│   ├── thonkpad
+│   └── zippyrus
 ├── modules
 │   ├── home
 │   │   ├── desktop
-│   │   │   ├── firefox
-│   │   │   └── wezterm
 │   │   ├── development
-│   │   │   ├── git
-│   │   │   ├── helix
-│   │   │   └── tmux
-│   │   ├── shell
-│   │   │   └── fish
-│   │   └── user
+│   │   └── shell
 │   └── nixos
 │       ├── core
-│       │   ├── docker
-│       │   ├── fish
-│       │   ├── gnupg
-│       │   ├── lanzaboote
-│       │   ├── nix
-│       │   ├── security
-│       │   └── sshd
 │       ├── desktop
-│       │   ├── fonts
-│       │   ├── gnome
-│       │   ├── hyprland
-│       │   ├── kde
-│       │   └── pipewire
 │       ├── gaming
-│       │   └── steam
 │       ├── hardware
-│       │   ├── bluetooth
-│       │   ├── initrd-luks
-│       │   └── yubico
 │       ├── monitoring
-│       │   ├── exporter
-│       │   ├── grafana
-│       │   └── victoriametrics
 │       ├── networking
-│       │   ├── mullvad
-│       │   └── netbird
 │       ├── services
-│       │   ├── arr
-│       │   ├── backup
-│       │   ├── fail2ban
-│       │   ├── forgejo
-│       │   ├── homebridge
-│       │   ├── immich
-│       │   ├── mailserver
-│       │   ├── maych-in
-│       │   ├── miniflux
-│       │   ├── nginx
-│       │   ├── ntfy-sh
-│       │   ├── paperless
-│       │   ├── postgresql
-│       │   ├── unifi-controller
-│       │   └── vaultwarden
 │       └── user
 ├── overlays
+│   ├── cloud-init
 │   ├── jellyfin-web
-│   └── netbird
+│   ├── lttng-tools
+│   ├── netbird
+│   └── paperless-ngx
 ├── packages
 │   └── vuetorrent
 ├── secrets
 │   ├── machines
+│   │   ├── bicboye
+│   │   ├── smolboye
+│   │   ├── thonkpad
+│   │   └── zippyrus
 │   ├── monitoring
+│   │   └── grafana
+│   ├── network-manager
 │   └── services
-├── systems
-│   └── x86_64-linux
+│       ├── backups
+│       ├── bluesky-pds
+│       ├── forgejo
+│       ├── maddy
+│       ├── mailserver
+│       ├── miniflux
+│       ├── paperless
+│       ├── unifi-unpoller
+│       └── vaultwarden
+├── templates
+│   ├── desktop
+│   ├── module
+│   └── server
+├── users
+│   ├── chnmy
+│   │   ├── thonkpad
+│   │   └── zippyrus
+│   └── server
 │       ├── bicboye
-│       ├── smolboye
-│       └── thonkpad
+│       └── smolboye
 ├── flake.nix
 └── data.nix
 ```
 
 - `flake.nix`: Entrypoint for the NixOS configurations
 - `data.nix`: Mappings for Agenix secrets, passed as `specialArgs` in `flake.nix` and referenced inside the configurations.
-- `checks`: Flake check configuration for deploy-rs
-- `homes`: Home configuration for the flakes, structured as `<architecture>/<username>@<system>`
-- `lib`: Custom library helper functions for the configuration, currently containing generator for deploy-rs
+- `users`: Home user configuration for the flakes, structured as `<username>/<system>`
 - `modules`: Platform-based opinionated NixOS modules, containing `home` and `nixos`
   - `home`: Home Manager configuration options programs and services
   - `nixos`: NixOS configuration options for services, programs, and system setup
 - `overlays`: Customized nix package builds for existing packages
 - `packages`: Custom packages for NixOS
+- `templates`: Flake templates for generating Nix configurations
 - `secrets`: Agenix deployment secrets, referenced in `data.nix`
 
 ## Modules
 
-All modules are available under the `modules/` directory, for both Home manager and NixOS, with the options listed under `${namespace}.*`. These modules makes deploying complex configurations quite simple. For example: A full-fledged, minimal, KDE Plasma desktop can be enabled by adding `${namespace}.desktop.kde.enable = true` to your system configuration.
+All modules are available under the `modules/` directory, for both Home manager and NixOS, with the options listed under `snowflake.*`. These modules makes deploying complex configurations quite simple. For example: A full-fledged, minimal, KDE Plasma desktop can be enabled by adding `snowflake.desktop.kde.enable = true` to your system configuration.
 
 The modular configuration also allows for efficient reusability and config de-duplication between machines. Most of the configuration is tailored to my needs, but is still highly-customizable except for the security defaults.
 
@@ -141,7 +115,7 @@ As an example, to deploy a new workstation with a desktop environment:
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
 
-  ${namespace} = {
+  snowflake = {
     stateVersion = "24.05";
 
     core.lanzaboote.enable = true;
@@ -167,7 +141,7 @@ As an example, to deploy a new workstation with a desktop environment:
     user.extraGroups = ["video"];
 
     # NOTE: this requires adding an agenix secret to `secrets/secrets.nix`
-    # and an entry in `data.nix` to work. Refer these files for more details.
+    # and an entry in `data.nix` to work. Refer those files for more details.
     user.userPasswordAgeModule = userdata.secrets.machines.workstation.password;
     user.rootPasswordAgeModule = userdata.secrets.machines.workstation.root-password;
   }
@@ -176,7 +150,8 @@ As an example, to deploy a new workstation with a desktop environment:
 
 ## Systems
 
-- `thonkpad`: Primary workstation on Lenovo X1 Carbon 12th Gen - Intel Core Ultra 7 155H, 32GB RAM
+- `zippyrus`: Primary workstation on ASUS Zephyrus GA403UI - AMD Ryzen 9 8945HS, 32GB RAM, Nvidia 4070
+- `thonkpad`: Work provisioned Lenovo X1 Carbon 12th Gen - Intel Core Ultra 7 155H, 32GB RAM
 - `bicboye`: A custom-built Homelab running Intel Core i5 12600K, 32GB RAM, 16TB storage
 - `smolboye`: Hetzner Cloud VPS Running a dual-core Intel Xeon, 4GB RAM
 
@@ -282,7 +257,7 @@ Disko is a helper tool that lets you declaratively specify disk partitions for y
 A sample disko configuration for a VPS set up using `nixos-anywhere`:
 
 ```nix
-# systems/x86_64-linux/smolboye/disk-config.nix
+# hosts/smolboye/disk-config.nix
 {
   disko.devices = {
     disk = {
@@ -345,7 +320,7 @@ A sample disko configuration for a VPS set up using `nixos-anywhere`:
 To partition the disks in live USB:
 
 ```shell
-# nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./systems/x86_64-linux/smolboye/disk-config.nix
+# nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./hosts/smolboye/disk-config.nix
 ```
 
 Alternatively, running `nixos-install` should take care of the partitioning for you.
