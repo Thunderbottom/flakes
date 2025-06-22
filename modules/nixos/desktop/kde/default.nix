@@ -1,16 +1,15 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.kde = {
+  options.snowflake.desktop.kde = {
     enable = lib.mkEnableOption "Enable the KDE Plasma Desktop Environment";
   };
 
-  config = lib.mkIf config.${namespace}.desktop.kde.enable {
+  config = lib.mkIf config.snowflake.desktop.kde.enable {
     services = {
       displayManager.sddm = {
         enable = true;
@@ -38,7 +37,7 @@
       xdg-desktop-portal-gtk
     ];
 
-    ${namespace}.user.extraGroups = [
+    snowflake.user.extraGroups = [
       "audio"
       "input"
       "video"

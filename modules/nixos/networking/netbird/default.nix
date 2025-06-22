@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.networking.netbird.enable = lib.mkEnableOption "Enable Netbird VPN client";
+  options.snowflake.networking.netbird.enable = lib.mkEnableOption "Enable Netbird VPN client";
 
-  config = lib.mkIf config.${namespace}.networking.netbird.enable {
+  config = lib.mkIf config.snowflake.networking.netbird.enable {
     networking = {
       firewall = {
         checkReversePath = "loose";
@@ -24,6 +23,6 @@
     services.netbird.enable = true;
     # Unmanage the `wt0` interface rules to allow reconnection after suspend.
     systemd.network.config.networkConfig.ManageForeignRoutingPolicyRules = lib.mkDefault false;
-    ${namespace}.extraPackages = [ pkgs.netbird-ui ];
+    snowflake.extraPackages = [ pkgs.netbird-ui ];
   };
 }

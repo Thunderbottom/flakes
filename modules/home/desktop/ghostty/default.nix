@@ -2,15 +2,13 @@
   config,
   inputs,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.ghostty.enable =
-    lib.mkEnableOption "Enable ghostty home configuration";
+  options.snowflake.desktop.ghostty.enable = lib.mkEnableOption "Enable ghostty home configuration";
 
-  config = lib.mkIf config.${namespace}.desktop.ghostty.enable {
+  config = lib.mkIf config.snowflake.desktop.ghostty.enable {
     programs.ghostty = {
       enable = true;
       package = inputs.ghostty.packages.${pkgs.system}.default;

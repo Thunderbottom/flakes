@@ -1,17 +1,16 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.pipewire = {
+  options.snowflake.desktop.pipewire = {
     enable = lib.mkEnableOption "Enable pipewire configuration";
     enableLowLatency = lib.mkEnableOption "Enable low-latency audio (might cause crackling)";
   };
 
-  config = lib.mkIf config.${namespace}.desktop.pipewire.enable {
+  config = lib.mkIf config.snowflake.desktop.pipewire.enable {
     # Enable sound.
     # sound.enable = true;
 
@@ -28,7 +27,7 @@
       pulse.enable = true;
       wireplumber.enable = true;
 
-      extraConfig.pipewire = lib.mkIf config.${namespace}.desktop.pipewire.enableLowLatency {
+      extraConfig.pipewire = lib.mkIf config.snowflake.desktop.pipewire.enableLowLatency {
         "99-playback-96khz.conf" = {
           "context.properties" = {
             "default.clock.rate" = 48000;

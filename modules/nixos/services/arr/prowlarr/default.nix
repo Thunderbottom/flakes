@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.prowlarr = {
+  options.snowflake.services.prowlarr = {
     enable = lib.mkEnableOption "Enable prowlarr deployment configuration";
   };
 
-  config = lib.mkIf config.${namespace}.services.prowlarr.enable {
+  config = lib.mkIf config.snowflake.services.prowlarr.enable {
     services.prowlarr.enable = true;
     services.prowlarr.openFirewall = true;
   };

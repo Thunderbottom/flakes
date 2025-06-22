@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.ntfy-sh = {
+  options.snowflake.services.ntfy-sh = {
     enable = lib.mkEnableOption "Enable ntfy-sh service";
 
     domain = lib.mkOption {
@@ -23,7 +22,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.ntfy-sh;
+      cfg = config.snowflake.services.ntfy-sh;
     in
     lib.mkIf cfg.enable {
       services.ntfy-sh.enable = true;

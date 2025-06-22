@@ -2,15 +2,13 @@
   config,
   inputs,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.firefox.enable =
-    lib.mkEnableOption "Enable firefox home configuration";
+  options.snowflake.desktop.firefox.enable = lib.mkEnableOption "Enable firefox home configuration";
 
-  config = lib.mkIf config.${namespace}.desktop.firefox.enable {
+  config = lib.mkIf config.snowflake.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
       package = pkgs.firefox;
@@ -92,7 +90,7 @@
           };
       };
       profiles.ff = {
-        extensions.packages = with pkgs.firefox-addons; [
+        extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
           bitwarden
           clearurls
           consent-o-matic

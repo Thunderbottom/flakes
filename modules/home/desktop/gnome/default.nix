@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.gnome-dconf.enable =
+  options.snowflake.desktop.gnome-dconf.enable =
     lib.mkEnableOption "Enable gnome dconf home configuration";
 
-  config = lib.mkIf config.${namespace}.desktop.gnome-dconf.enable {
+  config = lib.mkIf config.snowflake.desktop.gnome-dconf.enable {
     dconf.settings = {
       "org/gnome/shell" = {
         favorite-apps = [

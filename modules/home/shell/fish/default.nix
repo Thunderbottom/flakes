@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.shell.fish.enable = lib.mkEnableOption "Enable fish shell home configuration";
+  options.snowflake.shell.fish.enable = lib.mkEnableOption "Enable fish shell home configuration";
 
-  config = lib.mkIf config.${namespace}.shell.fish.enable {
+  config = lib.mkIf config.snowflake.shell.fish.enable {
     programs.fish.enable = true;
     programs.fish.interactiveShellInit = ''
       set fish_greeting

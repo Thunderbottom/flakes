@@ -1,37 +1,31 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  namespace,
-  ...
-}:
-with lib;
-{
-  options.${namespace}.services.backups = {
-    enable = mkEnableOption "Enable restic backup service";
+  options.snowflake.services.backups = {
+    enable = lib.mkEnableOption "Enable restic backup service";
 
-    resticEnvironmentFile = mkOption {
+    resticEnvironmentFile = lib.mkOption {
       description = "Age module containing the restic environment details";
     };
 
-    resticPasswordFile = mkOption {
+    resticPasswordFile = lib.mkOption {
       description = "Age module containing the restic password";
     };
 
-    repository = mkOption {
+    repository = lib.mkOption {
       description = "Repository to use as the restic endpoint. Must be in the form of <provider>:<repository>";
-      type = types.str;
+      type = lib.types.str;
       example = "b2:nix-backup-repository";
     };
 
-    config = mkOption {
+    config = lib.mkOption {
       default = { };
-      type = types.attrsOf (
-        types.submodule (
+      type = lib.types.attrsOf (
+        lib.types.submodule (
           { lib, ... }:
           {
             options = {
-              dynamicFilesFrom = mkOption {
-                type = types.nullOr types.str;
+              dynamicFilesFrom = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
                 default = null;
                 description = ''
                   A script that produces a list of files to back up.
@@ -40,8 +34,8 @@ with lib;
                 example = "find /home/user/repository -type d -name .git";
               };
 
-              paths = mkOption {
-                type = types.nullOr (types.listOf types.str);
+              paths = lib.mkOption {
+                type = lib.types.nullOr (lib.types.listOf lib.types.str);
                 default = null;
                 description = ''
                   List of paths to bck up. If null or an empty array,
@@ -54,8 +48,8 @@ with lib;
                 ];
               };
 
-              user = mkOption {
-                type = types.str;
+              user = lib.mkOption {
+                type = lib.types.str;
                 default = "root";
                 description = ''
                   The user under which the backup should run.
@@ -63,7 +57,7 @@ with lib;
                 example = "postgresql";
               };
 
-              timerConfig = mkOption {
+              timerConfig = lib.mkOption {
                 default = {
                   OnCalendar = "daily";
                 };
@@ -84,17 +78,17 @@ with lib;
 
   config =
     let
-      cfg = config.${namespace}.services.backups;
+      cfg = config.snowflake.services.backups;
     in
-    mkIf cfg.enable {
+    lib.mkIf cfg.enable {
       age.secrets = {
         restic-environment.file = cfg.resticEnvironmentFile.file;
         restic-password.file = cfg.resticPasswordFile.file;
       };
 
-      services.restic.backups = mapAttrs' (
+      services.restic.backups = lib.mapAttrs' (
         name: value:
-        nameValuePair name (
+        lib.nameValuePair name (
           {
             initialize = true;
 

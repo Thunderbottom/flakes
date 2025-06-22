@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.homebridge.enable =
+  options.snowflake.services.homebridge.enable =
     lib.mkEnableOption "Enable homebridge service for Apple HomeKit";
 
-  config = lib.mkIf config.${namespace}.services.homebridge.enable {
+  config = lib.mkIf config.snowflake.services.homebridge.enable {
     networking.firewall = lib.mkIf config.networking.firewall.enable {
       allowedTCPPorts = [
         5353

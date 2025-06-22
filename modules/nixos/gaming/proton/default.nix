@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.gaming.proton.enable =
+  options.snowflake.gaming.proton.enable =
     lib.mkEnableOption "Enable proton and related services for gaming";
 
-  config = lib.mkIf config.${namespace}.gaming.proton.enable {
+  config = lib.mkIf config.snowflake.gaming.proton.enable {
     # Enable gamemode.
     # Adds optimizations for games that run through wine/proton.
     programs.gamemode.enable = true;
@@ -18,7 +17,7 @@
     # Bottles: run games like on native windowss
     # heroic: launcher for epic games, gog, and other stuff
     # mangohud: shows an overlay for FPS, CPU/GPU temperatures in game.
-    ${namespace} = {
+    snowflake = {
       extraPackages = with pkgs; [
         bottles
         heroic

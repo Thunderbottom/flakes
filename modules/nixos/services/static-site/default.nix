@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.static-sites = {
+  options.snowflake.services.static-sites = {
     sites = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
@@ -42,6 +41,6 @@
         root = site.package;
       }
       // site.extraConfig
-    ) (lib.filterAttrs (_name: site: site.enable) config.${namespace}.services.static-sites.sites);
+    ) (lib.filterAttrs (_name: site: site.enable) config.snowflake.services.static-sites.sites);
   };
 }

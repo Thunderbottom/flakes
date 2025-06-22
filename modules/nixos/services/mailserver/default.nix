@@ -2,13 +2,12 @@
   config,
   inputs,
   lib,
-  namespace,
   ...
 }:
 {
   imports = [ inputs.nixos-mailserver.nixosModules.mailserver ];
 
-  options.${namespace}.services.mailserver = {
+  options.snowflake.services.mailserver = {
     enable = lib.mkEnableOption "Enable mailserver service";
 
     fqdn = lib.mkOption {
@@ -23,13 +22,40 @@
     };
 
     loginAccounts = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            hashedPasswordFile = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = "Path to file containing the hashed password";
+            };
+            aliases = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of aliases for this account";
+            };
+            catchAll = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of domains for which this account should catch all emails";
+            };
+            sendOnly = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = "Whether this account can only send emails";
+            };
+          };
+        }
+      );
+      default = { };
       description = "Login accounts for the domain. Every account is mapped to a unix user";
     };
   };
 
   config =
     let
-      cfg = config.${namespace}.services.mailserver;
+      cfg = config.snowflake.services.mailserver;
     in
     lib.mkIf cfg.enable {
       # Ref: https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/issues/275
@@ -42,6 +68,9 @@
           domains
           loginAccounts
           ;
+
+        # Set the state version for nixos-mailserver
+        stateVersion = 4;
 
         # Spin up a stripped-down nginx instance on
         # port 80 to generate a certificate automatically.

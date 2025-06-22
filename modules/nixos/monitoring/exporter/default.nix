@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.monitoring.exporter = {
+  options.snowflake.monitoring.exporter = {
     collectd.enable = lib.mkEnableOption "Enable collectd exporter service";
     node.enable = lib.mkEnableOption "Enable node-exporter service";
     systemd.enable = lib.mkEnableOption "Enable systemd exporter service";
@@ -13,7 +12,7 @@
 
   config =
     let
-      cfg = config.${namespace}.monitoring.exporter;
+      cfg = config.snowflake.monitoring.exporter;
     in
     {
       services.prometheus.exporters = {

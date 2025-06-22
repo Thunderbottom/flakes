@@ -1,18 +1,17 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop = {
+  options.snowflake.desktop = {
     enable = lib.mkEnableOption "Enable core Desktop Environment configuration";
     fingerprint.enable = lib.mkEnableOption "Enable fingerprint support for Desktop Environments";
   };
 
-  config = lib.mkIf config.${namespace}.desktop.enable {
-    ${namespace} = {
+  config = lib.mkIf config.snowflake.desktop.enable {
+    snowflake = {
       # Enable the fonts module.
       desktop.fonts.enable = true;
       # Enable the pipewire module.
@@ -22,7 +21,7 @@
       };
 
       # Add user to networkmanager and adbusers group.
-      # Works only when ${namespace}.user.enable is true.
+      # Works only when snowflake.user.enable is true.
       user.extraGroups = [ "adbusers" ];
     };
 
@@ -32,7 +31,7 @@
 
     # Enable fingerprint authentication.
     # Requires fingerprint registered using `fprint-enroll` to work.
-    services.fprintd.enable = config.${namespace}.desktop.fingerprint.enable;
+    services.fprintd.enable = config.snowflake.desktop.fingerprint.enable;
     services.libinput.enable = true;
 
     # Enable printing support.

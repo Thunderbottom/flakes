@@ -2,15 +2,13 @@
   config,
   inputs,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.wezterm.enable =
-    lib.mkEnableOption "Enable wezterm home configuration";
+  options.snowflake.desktop.wezterm.enable = lib.mkEnableOption "Enable wezterm home configuration";
 
-  config = lib.mkIf config.${namespace}.desktop.wezterm.enable {
+  config = lib.mkIf config.snowflake.desktop.wezterm.enable {
     programs.wezterm = {
       enable = true;
       package = inputs.wezterm.packages.${pkgs.system}.default;

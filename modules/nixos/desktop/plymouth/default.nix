@@ -1,16 +1,15 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.plymouth = {
+  options.snowflake.desktop.plymouth = {
     enable = lib.mkEnableOption "Enable Plymouth for graphical boot animation";
   };
 
-  config = lib.mkIf config.${namespace}.desktop.plymouth.enable {
+  config = lib.mkIf config.snowflake.desktop.plymouth.enable {
     boot = {
       plymouth = {
         enable = true;

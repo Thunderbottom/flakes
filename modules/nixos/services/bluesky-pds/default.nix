@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.bluesky-pds = {
+  options.snowflake.services.bluesky-pds = {
     enable = lib.mkEnableOption "Enable Bluesky PDS";
     domain = lib.mkOption {
       type = lib.types.str;
@@ -16,10 +15,10 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.services.bluesky-pds.enable {
+  config = lib.mkIf config.snowflake.services.bluesky-pds.enable {
     age.secrets = {
       bluesky-pds = {
-        inherit (config.${namespace}.services.bluesky-pds.environmentFile) file;
+        inherit (config.snowflake.services.bluesky-pds.environmentFile) file;
         owner = "pds";
         inherit (config.users.users.pds) group;
         mode = "0440";
@@ -33,13 +32,13 @@
       ];
 
       settings = {
-        PDS_HOSTNAME = config.${namespace}.services.bluesky-pds.domain;
+        PDS_HOSTNAME = config.snowflake.services.bluesky-pds.domain;
       };
     };
     services.nginx = {
       virtualHosts = {
-        "${config.${namespace}.services.bluesky-pds.domain}" = {
-          serverName = config.${namespace}.services.bluesky-pds.domain;
+        "${config.snowflake.services.bluesky-pds.domain}" = {
+          serverName = config.snowflake.services.bluesky-pds.domain;
           forceSSL = true;
 
           locations."~ ^(/xrpc|/.well-known/atproto-did)" = {
@@ -51,9 +50,9 @@
       };
     };
 
-    ${namespace}.nginx.wildcard-ssl = {
+    snowflake.nginx.wildcard-ssl = {
       enable = true;
-      domains."${config.${namespace}.services.bluesky-pds.domain}".enable = true;
+      domains."${config.snowflake.services.bluesky-pds.domain}".enable = true;
     };
   };
 }

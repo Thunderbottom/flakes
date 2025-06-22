@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 let
@@ -18,7 +17,7 @@ let
     attrsOf supersectionType;
 in
 {
-  options.${namespace}.development.git = {
+  options.snowflake.development.git = {
     enable = lib.mkEnableOption "Enable development git configuration";
 
     user.name = lib.mkOption {
@@ -50,7 +49,7 @@ in
     };
   };
 
-  config = lib.mkIf config.${namespace}.development.git.enable {
+  config = lib.mkIf config.snowflake.development.git.enable {
     programs.git = {
       enable = true;
 
@@ -77,17 +76,17 @@ in
         # Enable REuse REcorded REsolution for git merge conflicts.
         rerere.enabled = true;
 
-        user.name = config.${namespace}.development.git.user.name;
-        user.email = config.${namespace}.development.git.user.email;
-        user.signingKey = config.${namespace}.development.git.user.signingKey;
-      } // config.${namespace}.development.git.work.extraConfig;
+        user.name = config.snowflake.development.git.user.name;
+        user.email = config.snowflake.development.git.user.email;
+        user.signingKey = config.snowflake.development.git.user.signingKey;
+      } // config.snowflake.development.git.work.extraConfig;
 
       # Global gitignore configuration.
       ignores = [
         "*~"
         ".#*"
       ];
-      includes = lib.mkIf config.${namespace}.development.git.work.enable [
+      includes = lib.mkIf config.snowflake.development.git.work.enable [
         # Enable work git configuration in specific directories.
         # This allows existence of two different gitconfigs based on directories.
         # For this, structuring the git repositories into directories based on
@@ -95,16 +94,16 @@ in
         # Example:
         # ~/workspace/github.com: personal git workflow.
         # ~/workspace/git.work.example: $WORK git workflow.
-        # Setting config.${namespace}.work.git.workpath = "~/workspace/git.work.example"
+        # Setting config.snowflake.work.git.workpath = "~/workspace/git.work.example"
         # would apply the following configuration to only
         # the ~/workspace.git.work.example folder.
         {
-          condition = "gitdir:${config.${namespace}.development.git.work.path}";
+          condition = "gitdir:${config.snowflake.development.git.work.path}";
           contents = {
             commit.gpgSign = true;
-            user.email = config.${namespace}.development.git.work.email;
-            user.name = config.${namespace}.development.git.user.name;
-            user.signingKey = config.${namespace}.development.git.user.signingKey;
+            user.email = config.snowflake.development.git.work.email;
+            user.name = config.snowflake.development.git.user.name;
+            user.signingKey = config.snowflake.development.git.user.signingKey;
           };
         }
       ];

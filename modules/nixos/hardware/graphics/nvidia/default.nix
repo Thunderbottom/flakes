@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.hardware.graphics.nvidia = {
+  options.snowflake.hardware.graphics.nvidia = {
     enable = lib.mkEnableOption "Enable Nvidia graphics configuration";
     busIDs = {
       amd = lib.mkOption {
@@ -30,16 +29,16 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.hardware.graphics.nvidia.enable {
+  config = lib.mkIf config.snowflake.hardware.graphics.nvidia.enable {
     assertions = [
       {
-        assertion = config.${namespace}.hardware.graphics.nvidia.busIDs.nvidia != "";
+        assertion = config.snowflake.hardware.graphics.nvidia.busIDs.nvidia != "";
         message = "You need to define a bus ID for your Nvidia GPU. To learn how to find the bus ID, see https://wiki.nixos.org/wiki/Nvidia#Configuring_Optimus_PRIME:_Bus_ID_Values_.28Mandatory.29.";
       }
       {
         assertion =
-          config.${namespace}.hardware.graphics.nvidia.busIDs.intel != ""
-          || config.${namespace}.hardware.graphics.nvidia.busIDs.amd != "";
+          config.snowflake.hardware.graphics.nvidia.busIDs.intel != ""
+          || config.snowflake.hardware.graphics.nvidia.busIDs.amd != "";
         message = "You need to define a bus ID for your non-Nvidia GPU. To learn how to find your bus ID, see https://wiki.nixos.org/wiki/Nvidia#Configuring_Optimus_PRIME:_Bus_ID_Values_.28Mandatory.29.";
       }
     ];
@@ -62,7 +61,7 @@
     hardware.nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
-      nvidiaSettings = config.${namespace}.desktop.enable;
+      nvidiaSettings = config.snowflake.desktop.enable;
       dynamicBoost.enable = true;
 
       powerManagement.enable = true;
@@ -75,8 +74,8 @@
           enable = true;
           enableOffloadCmd = true;
         };
-        amdgpuBusId = config.${namespace}.hardware.graphics.nvidia.busIDs.amd;
-        nvidiaBusId = config.${namespace}.hardware.graphics.nvidia.busIDs.nvidia;
+        amdgpuBusId = config.snowflake.hardware.graphics.nvidia.busIDs.amd;
+        nvidiaBusId = config.snowflake.hardware.graphics.nvidia.busIDs.nvidia;
       };
     };
 

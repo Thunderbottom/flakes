@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.miniflux = {
+  options.snowflake.services.miniflux = {
     enable = lib.mkEnableOption "Enable miniflux service";
 
     domain = lib.mkOption {
@@ -27,7 +26,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.miniflux;
+      cfg = config.snowflake.services.miniflux;
     in
     lib.mkIf cfg.enable {
       age.secrets.miniflux = {

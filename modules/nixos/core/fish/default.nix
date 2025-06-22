@@ -1,18 +1,17 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.core.fish.enable = lib.mkEnableOption "Enable core fish configuration";
+  options.snowflake.core.fish.enable = lib.mkEnableOption "Enable core fish configuration";
 
-  config = lib.mkIf config.${namespace}.core.fish.enable {
+  config = lib.mkIf config.snowflake.core.fish.enable {
     environment.systemPackages = [ pkgs.starship ];
     programs.fish.enable = true;
 
-    users.users.${config.${namespace}.user.username} = lib.mkIf config.${namespace}.user.enable {
+    users.users.${config.snowflake.user.username} = lib.mkIf config.snowflake.user.enable {
       shell = pkgs.fish;
     };
 

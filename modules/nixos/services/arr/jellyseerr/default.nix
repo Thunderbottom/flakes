@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.jellyseerr = {
+  options.snowflake.services.jellyseerr = {
     enable = lib.mkEnableOption "Enable jellyseerr deployment configuration";
   };
 
-  config = lib.mkIf config.${namespace}.services.jellyseerr.enable {
+  config = lib.mkIf config.snowflake.services.jellyseerr.enable {
     services.jellyseerr.enable = true;
     services.jellyseerr.openFirewall = true;
     services.nginx = {

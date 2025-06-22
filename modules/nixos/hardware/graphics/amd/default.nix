@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.hardware.graphics.amd.enable =
+  options.snowflake.hardware.graphics.amd.enable =
     lib.mkEnableOption "Enable AMD graphics configuration";
 
-  config = lib.mkIf config.${namespace}.hardware.graphics.amd.enable {
+  config = lib.mkIf config.snowflake.hardware.graphics.amd.enable {
     hardware.amdgpu.initrd.enable = lib.mkDefault true;
 
     # Add opengl hardware support.

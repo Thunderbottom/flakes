@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.desktop.gnome = {
+  options.snowflake.desktop.gnome = {
     enable = lib.mkEnableOption "Enable the Gnome Desktop Environment";
     monitors.xml = lib.mkOption {
       default = "";
@@ -15,7 +14,7 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.desktop.gnome.enable {
+  config = lib.mkIf config.snowflake.desktop.gnome.enable {
     services = {
       displayManager.gdm = {
         enable = true;
@@ -94,14 +93,14 @@
 
     systemd.tmpfiles.rules =
       let
-        monitors.xml = pkgs.writeText "monitors.xml" config.${namespace}.desktop.gnome.monitors.xml;
+        monitors.xml = pkgs.writeText "monitors.xml" config.snowflake.desktop.gnome.monitors.xml;
       in
       [ "d ${config.users.users.gdm.home}/.config 0711 gdm gdm" ]
       ++ (lib.optional (
-        config.${namespace}.desktop.gnome.monitors.xml != ""
+        config.snowflake.desktop.gnome.monitors.xml != ""
       ) "L+ ${config.users.users.gdm.home}/.config/monitors.xml - gdm gdm - ${monitors.xml}");
 
-    ${namespace}.user.extraGroups = [
+    snowflake.user.extraGroups = [
       "audio"
       "input"
       "video"

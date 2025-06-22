@@ -1,17 +1,16 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.core.security = {
+  options.snowflake.core.security = {
     enable = lib.mkEnableOption "Enable core security configuration";
     sysctl.enable = lib.mkEnableOption "Enable sysctl security configuration";
     sysctl.gaming.enable = lib.mkEnableOption "Enable sysctl gaming configuration";
   };
 
-  config = lib.mkIf config.${namespace}.core.security.enable {
+  config = lib.mkIf config.snowflake.core.security.enable {
     boot = lib.mkMerge [
       {
         # Disable console logging.
@@ -29,7 +28,7 @@
         kernelModules = [ "tcp_bbr" ];
       }
 
-      (lib.mkIf config.${namespace}.core.security.sysctl.enable {
+      (lib.mkIf config.snowflake.core.security.sysctl.enable {
         kernel.sysctl = {
           # The Magic SysRq key is a key combo that allows users connected to the
           # system console of a Linux kernel to perform some low-level commands.
@@ -70,7 +69,7 @@
         };
       })
 
-      (lib.mkIf config.${namespace}.core.security.sysctl.gaming.enable {
+      (lib.mkIf config.snowflake.core.security.sysctl.gaming.enable {
         kernel.sysctl = {
           # Better memory management for gaming
           "vm.swappiness" = 10;

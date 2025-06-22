@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.core.sshd = {
+  options.snowflake.core.sshd = {
     enable = lib.mkEnableOption "Enable core sshd configuration";
   };
 
-  config = lib.mkIf config.${namespace}.core.sshd.enable {
+  config = lib.mkIf config.snowflake.core.sshd.enable {
     services.openssh = {
       enable = true;
       settings = {

@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.services.paperless = {
+  options.snowflake.services.paperless = {
     enable = lib.mkEnableOption "Enable paperless service";
 
     domain = lib.mkOption {
@@ -27,7 +26,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.paperless;
+      cfg = config.snowflake.services.paperless;
     in
     lib.mkIf cfg.enable {
       age.secrets.paperless = {
@@ -67,7 +66,7 @@
         };
       };
 
-      ${namespace}.services.backups.config.paperless = {
+      snowflake.services.backups.config.paperless = {
         dynamicFilesFrom =
           let
             path = config.services.paperless.dataDir;

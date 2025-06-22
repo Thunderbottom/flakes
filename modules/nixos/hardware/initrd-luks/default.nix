@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.hardware.initrd-luks = {
+  options.snowflake.hardware.initrd-luks = {
     enable = lib.mkEnableOption "Enable initrd-luks hardware configuration";
 
     sshPort = lib.mkOption {
@@ -35,7 +34,7 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.hardware.initrd-luks.enable {
+  config = lib.mkIf config.snowflake.hardware.initrd-luks.enable {
     # Enable remote LUKS unlocking.
     # This allows remote SSH to unlock LUKS encrypted root.
     # $ ssh root@<ip>
@@ -47,14 +46,14 @@
         enable = true;
         ssh = {
           enable = true;
-          port = config.${namespace}.hardware.initrd-luks.sshPort;
-          inherit (config.${namespace}.hardware.initrd-luks) hostKeys;
-          inherit (config.${namespace}.hardware.initrd-luks) authorizedKeys;
+          port = config.snowflake.hardware.initrd-luks.sshPort;
+          inherit (config.snowflake.hardware.initrd-luks) hostKeys;
+          inherit (config.snowflake.hardware.initrd-luks) authorizedKeys;
         };
       };
       # Required for the network card that
       # requires a kernel module to work.
-      initrd.availableKernelModules = config.${namespace}.hardware.initrd-luks.availableKernelModules;
+      initrd.availableKernelModules = config.snowflake.hardware.initrd-luks.availableKernelModules;
       # Use DHCP to figure out the IP address.
       kernelParams = [ "ip=dhcp" ];
     };

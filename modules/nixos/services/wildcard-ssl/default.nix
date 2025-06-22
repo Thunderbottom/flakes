@@ -1,16 +1,15 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 let
-  cfg = config.${namespace}.nginx.wildcard-ssl;
+  cfg = config.snowflake.nginx.wildcard-ssl;
   wildcardAlias = domain: "~^(?<sub>.+)\\.${lib.strings.escape [ "." ] domain}$";
 in
 {
   options = with lib; {
-    ${namespace}.nginx.wildcard-ssl = {
+    snowflake.nginx.wildcard-ssl = {
       enable = mkEnableOption "Enable wildcard certificate generation for nginx";
       domains = mkOption {
         type = types.attrsOf (
@@ -23,7 +22,7 @@ in
         default = { };
         example = literalExpression ''
           {
-            ${namespace}.nginx.wildcard-ssl.domains."example.com".enable = true;
+            snowflake.nginx.wildcard-ssl.domains."example.com".enable = true;
           }
         '';
       };
@@ -35,7 +34,7 @@ in
   config = lib.mkIf cfg.enable {
     age.secrets = {
       nginx-wildcard-ssl = {
-        inherit (config.${namespace}.nginx.wildcard-ssl.sslEnvironmentFile) file;
+        inherit (config.snowflake.nginx.wildcard-ssl.sslEnvironmentFile) file;
         owner = "pds";
         inherit (config.users.users.pds) group;
         mode = "0440";

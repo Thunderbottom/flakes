@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.hardware.yubico.enable = lib.mkEnableOption "Enable yubico hardware support";
+  options.snowflake.hardware.yubico.enable = lib.mkEnableOption "Enable yubico hardware support";
 
-  config = lib.mkIf config.${namespace}.hardware.yubico.enable {
+  config = lib.mkIf config.snowflake.hardware.yubico.enable {
     # Enable FIDO authentication support.
     # ref: https://nixos.wiki/wiki/Yubikey
     security.pam = {

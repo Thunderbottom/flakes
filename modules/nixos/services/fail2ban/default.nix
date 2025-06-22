@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.fail2ban = {
+  options.snowflake.services.fail2ban = {
     enable = lib.mkEnableOption "Enable fail2ban service";
 
     extraIgnoreIPs = lib.mkOption {
@@ -17,7 +16,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.fail2ban;
+      cfg = config.snowflake.services.fail2ban;
     in
     lib.mkIf cfg.enable {
       services.fail2ban = {

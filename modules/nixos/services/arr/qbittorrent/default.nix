@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.services.qbittorrent-nox = {
+  options.snowflake.services.qbittorrent-nox = {
     enable = lib.mkEnableOption "Enable qbittorrent-nox service configuration";
 
     package = lib.mkPackageOption pkgs "qbittorrent-nox" { };
@@ -32,7 +31,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.qbittorrent-nox;
+      cfg = config.snowflake.services.qbittorrent-nox;
     in
     lib.mkIf cfg.enable {
       networking.firewall.allowedTCPPorts =
@@ -61,7 +60,7 @@
         # required for reverse proxying
         preStart = ''
           rm -rf /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
-          ln -sf ${pkgs.${namespace}.vuetorrent} /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
+          ln -sf ${pkgs.vuetorrent} /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
 
           if [[ ! -f /var/lib/qbittorrent-nox/qBittorrent/config/qBittorrent.conf ]]; then
             mkdir -p /var/lib/qbittorrent-nox/qBittorrent/config

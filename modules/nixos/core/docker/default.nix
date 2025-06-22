@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.core.docker = {
+  options.snowflake.core.docker = {
     enable = lib.mkEnableOption "Enable core docker configuration";
     enableOnBoot = lib.mkEnableOption "Enable docker on boot";
     storageDriver = lib.mkOption {
@@ -15,18 +14,18 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.core.docker.enable {
+  config = lib.mkIf config.snowflake.core.docker.enable {
     virtualisation.docker = {
       enable = true;
       # Required for containers with `--restart=always`.
-      enableOnBoot = config.${namespace}.core.docker.enableOnBoot;
+      inherit (config.snowflake.core.docker) enableOnBoot;
       autoPrune = {
         enable = true;
       };
-      inherit (config.${namespace}.core.docker) storageDriver;
+      inherit (config.snowflake.core.docker) storageDriver;
     };
 
     # Add the system user to the docker group
-    ${namespace}.user.extraGroups = [ "docker" ];
+    snowflake.user.extraGroups = [ "docker" ];
   };
 }

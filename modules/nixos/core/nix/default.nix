@@ -2,16 +2,15 @@
   config,
   inputs,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.core.nix = {
+  options.snowflake.core.nix = {
     enable = lib.mkEnableOption "Enable core nix configuration";
   };
 
-  config = lib.mkIf config.${namespace}.core.nix.enable {
+  config = lib.mkIf config.snowflake.core.nix.enable {
     nix = {
       # Run garbage collector daily, and remove anything
       # older than 7 days.
@@ -47,6 +46,7 @@
           "flakes"
           "nix-command"
           "recursive-nix"
+          "pipe-operators"
         ];
         # Set local flake registry.
         flake-registry = "/etc/nix/registry.json";

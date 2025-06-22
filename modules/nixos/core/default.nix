@@ -1,13 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
-  system,
   ...
 }:
 {
-  options.${namespace} = {
+  options.snowflake = {
     stateVersion = lib.mkOption {
       type = lib.types.str;
       example = "24.05";
@@ -41,7 +39,7 @@
     };
 
     # Enable all core modules.
-    ${namespace}.core = {
+    snowflake.core = {
       fish.enable = lib.mkDefault true;
       gnupg.enable = lib.mkDefault true;
       nix.enable = lib.mkDefault true;
@@ -51,7 +49,7 @@
     };
 
     boot = {
-      initrd.systemd.enable = config.${namespace}.bootloader == "systemd-boot";
+      initrd.systemd.enable = config.snowflake.bootloader == "systemd-boot";
       initrd.verbose = false;
       # Default to the latest kernel package.
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -63,13 +61,13 @@
         efi.canTouchEfiVariables = true;
         # Use systemd-boot for all systems.
         systemd-boot = {
-          enable = config.${namespace}.bootloader == "systemd-boot";
+          enable = config.snowflake.bootloader == "systemd-boot";
           # Show only last 5 configurations in the boot menu.
           configurationLimit = lib.mkDefault 5;
         };
 
         grub = {
-          enable = config.${namespace}.bootloader == "grub";
+          enable = config.snowflake.bootloader == "grub";
           efiSupport = true;
           forceInstall = true;
         };
@@ -124,7 +122,7 @@
           prettyping
           whois
         ]
-        ++ config.${namespace}.extraPackages;
+        ++ config.snowflake.extraPackages;
     };
 
     i18n = {
@@ -142,8 +140,6 @@
       };
       supportedLocales = [ "en_US.UTF-8/UTF-8" ];
     };
-
-    nixpkgs.hostPlatform = system;
 
     # Can be configured further or is started in user sessions.
     programs.mtr.enable = true;
@@ -174,7 +170,7 @@
     # ref: https://github.com/Irqbalance/irqbalance/issues/308
     systemd.services.irqbalance.serviceConfig.ProtectKernelTunables = "no";
 
-    system.stateVersion = config.${namespace}.stateVersion;
+    system.stateVersion = config.snowflake.stateVersion;
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -182,7 +178,7 @@
       '';
     };
 
-    time.timeZone = config.${namespace}.timeZone;
+    time.timeZone = config.snowflake.timeZone;
 
     # Enable zram swap.
     # ref: https://wiki.archlinux.org/title/Zram

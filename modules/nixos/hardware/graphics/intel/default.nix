@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.hardware.graphics.intel = {
+  options.snowflake.hardware.graphics.intel = {
     enable = lib.mkEnableOption "Enable Intel graphics configuration";
     driver = lib.mkOption {
       type = lib.types.enum [
@@ -18,7 +17,7 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.hardware.graphics.intel.enable {
+  config = lib.mkIf config.snowflake.hardware.graphics.intel.enable {
     # Add opengl hardware support.
     hardware.graphics = {
       enable = true;
@@ -36,6 +35,6 @@
 
     environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
-    boot.initrd.kernelModules = [ config.${namespace}.hardware.graphics.intel.driver ];
+    boot.initrd.kernelModules = [ config.snowflake.hardware.graphics.intel.driver ];
   };
 }

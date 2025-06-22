@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.services.immich = {
+  options.snowflake.services.immich = {
     enable = lib.mkEnableOption "Enable immich service";
     monitoring.enable = lib.mkEnableOption "Enable immich monitoring";
 
@@ -19,7 +18,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.immich;
+      cfg = config.snowflake.services.immich;
     in
     lib.mkIf cfg.enable {
       services.immich = {

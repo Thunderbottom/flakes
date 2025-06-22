@@ -1,12 +1,11 @@
 {
   config,
   lib,
-  namespace,
   pkgs,
   ...
 }:
 {
-  options.${namespace}.monitoring.victoriametrics =
+  options.snowflake.monitoring.victoriametrics =
     let
       settingsFormat = pkgs.formats.json { };
     in
@@ -28,7 +27,7 @@
 
   config =
     let
-      cfg = config.${namespace}.monitoring.victoriametrics;
+      cfg = config.snowflake.monitoring.victoriametrics;
       exporterCfg = config.services.prometheus.exporters;
     in
     lib.mkIf cfg.enable {

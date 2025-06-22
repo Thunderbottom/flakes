@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.actual = {
+  options.snowflake.services.actual = {
     enable = lib.mkEnableOption "Enable actual-budget service";
 
     domain = lib.mkOption {
@@ -17,7 +16,7 @@
 
   config =
     let
-      cfg = config.${namespace}.services.actual;
+      cfg = config.snowflake.services.actual;
     in
     lib.mkIf cfg.enable {
       services.actual = {
@@ -41,7 +40,7 @@
         };
       };
 
-      ${namespace}.services.backups.config.actual-budget.paths = [
+      snowflake.services.backups.config.actual-budget.paths = [
         config.services.actual.settings.dataDir
       ];
     };

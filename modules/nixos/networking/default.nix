@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 let
-  cfg = config.${namespace}.networking;
+  cfg = config.snowflake.networking;
 
   # Helper function to create a standard WiFi profile
   mkWifiProfile = ssid: psk: {
@@ -22,16 +21,16 @@ let
     };
     wifi = {
       mode = "infrastructure";
-      ssid = ssid;
+      inherit ssid;
     };
     wifi-security = {
       key-mgmt = "wpa-psk";
-      psk = psk;
+      inherit psk;
     };
   };
 in
 {
-  options.${namespace}.networking = {
+  options.snowflake.networking = {
     iwd.enable = lib.mkEnableOption "Enable iwd backend for network manager";
     networkd.enable = lib.mkEnableOption "Enable systemd network management daemon";
     networkManager.enable = lib.mkEnableOption "Enable network-manager";
@@ -43,13 +42,13 @@ in
 
       environmentFiles = lib.mkOption {
         type = lib.types.listOf lib.types.path;
-        default = [];
+        default = [ ];
         description = "List of environment files containing WiFi credentials";
       };
 
       networks = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
-        default = {};
+        default = { };
         example = {
           "My Network" = "$MY_NETWORK_PSK";
           "Office WiFi" = "$OFFICE_PSK";
@@ -59,7 +58,7 @@ in
 
       customProfiles = lib.mkOption {
         type = lib.types.attrs;
-        default = {};
+        default = { };
         example = {
           "Enterprise-Network" = {
             connection = {
@@ -108,12 +107,12 @@ in
   config = lib.mkMerge [
     {
       # Enable the network firewall by default.
-      networking.firewall.enable = config.${namespace}.networking.firewall.enable;
+      networking.firewall.enable = lib.mkDefault config.snowflake.networking.firewall.enable;
       # use nftables for firewall
       networking.nftables.enable = true;
     }
 
-    (lib.mkIf config.${namespace}.networking.iwd.enable {
+    (lib.mkIf config.snowflake.networking.iwd.enable {
       networking.wireless.iwd = {
         enable = true;
         settings = {
@@ -133,20 +132,20 @@ in
       };
     })
 
-    (lib.mkIf config.${namespace}.networking.networkManager.enable {
+    (lib.mkIf config.snowflake.networking.networkManager.enable {
       systemd.services.NetworkManager-wait-online.enable = false;
 
       networking.networkmanager = {
         enable = lib.mkDefault true;
         # Disable Wifi powersaving
         wifi.powersave = false;
-        wifi.backend = if config.${namespace}.networking.iwd.enable then "iwd" else "wpa_supplicant";
+        wifi.backend = if config.snowflake.networking.iwd.enable then "iwd" else "wpa_supplicant";
       };
 
-      ${namespace}.user.extraGroups = [ "networkmanager" ];
+      snowflake.user.extraGroups = [ "networkmanager" ];
 
       services.resolved = {
-        inherit (config.${namespace}.networking.resolved) enable;
+        inherit (config.snowflake.networking.resolved) enable;
       };
     })
 
@@ -156,17 +155,18 @@ in
           # Generate profiles from the networks map
           generatedProfiles = builtins.listToAttrs (
             lib.mapAttrsToList (ssid: psk: {
-              name = builtins.replaceStrings [" " "." ":"] ["-" "-" "-"] ssid;
+              name = builtins.replaceStrings [ " " "." ":" ] [ "-" "-" "-" ] ssid;
               value = mkWifiProfile ssid psk;
             }) cfg.wifiProfiles.networks
           );
-        in {
-          environmentFiles = cfg.wifiProfiles.environmentFiles;
+        in
+        {
+          inherit (cfg.wifiProfiles) environmentFiles;
           profiles = generatedProfiles // cfg.wifiProfiles.customProfiles;
         };
     })
 
-    (lib.mkIf config.${namespace}.networking.networkd.enable {
+    (lib.mkIf config.snowflake.networking.networkd.enable {
       systemd.network.enable = true;
 
       systemd.services = {

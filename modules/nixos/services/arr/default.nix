@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 {
-  options.${namespace}.services.arr = {
+  options.snowflake.services.arr = {
     enable = lib.mkEnableOption "Enable arr suite configuration";
     monitoring = {
       enable = lib.mkEnableOption "Enable monitoring for arr suite";
@@ -18,8 +17,8 @@
     };
   };
 
-  config = lib.mkIf config.${namespace}.services.arr.enable {
-    ${namespace}.services = {
+  config = lib.mkIf config.snowflake.services.arr.enable {
+    snowflake.services = {
       jellyfin.enable = true;
       jellyseerr.enable = true;
 
