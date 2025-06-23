@@ -16,6 +16,7 @@
     extraPackages = with pkgs; [
       easyeffects
       glibc
+      logseq
       obsidian
     ];
 
