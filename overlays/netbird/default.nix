@@ -1,6 +1,6 @@
 _final: prev:
 let
-  version = "0.43.0";
+  version = "0.48.0";
 in
 {
   netbird = prev.netbird.overrideAttrs (_old: {
@@ -9,9 +9,9 @@ in
       owner = "netbirdio";
       repo = "netbird";
       rev = "v${version}";
-      hash = "sha256-HmNd5MyplQ8iwpaxhEnomASIwx4VE3Qv70sURxqDzdo=";
+      hash = "sha256-FAkV3JFYaNwlmUN5fATLSL2WtcYLS6mo9o/zYpt1NMk=";
     };
-    vendorHash = "sha256-/iqWVDqQOTFP5OZDrgq5gAH7NmHneQlf5+wAzIyoEPw=";
+    vendorHash = "sha256-t/X/muMwHVwg8Or+pFTSEQEsnkKLuApoVUmMhyCImWI=";
     ldflags = [
       "-s"
       "-w"
