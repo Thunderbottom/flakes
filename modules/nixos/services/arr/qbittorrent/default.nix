@@ -28,20 +28,24 @@
       default = 64211;
     };
 
-    flood = {
-      enable = lib.mkEnableOption "Enable flood Web UI for qbittorrent-nox";
+    ui = {
+      flood = {
+        enable = lib.mkEnableOption "Enable flood Web UI for qbittorrent-nox";
 
-      port = lib.mkOption {
-        description = "Flood web UI port";
-        type = lib.types.port;
-        default = 8282;
+        port = lib.mkOption {
+          description = "Flood web UI port";
+          type = lib.types.port;
+          default = 8282;
+        };
+
+        host = lib.mkOption {
+          description = "Interfaces that flood should listen on";
+          type = lib.types.str;
+          default = "0.0.0.0";
+        };
       };
 
-      host = lib.mkOption {
-        description = "Interfaces that flood should listen on";
-        type = lib.types.str;
-        default = "0.0.0.0";
-      };
+      vuetorrent.enable = lib.mkEnableOption "Enable VueTorrent Web UI for qbittorrent-nox";
     };
   };
 
@@ -78,7 +82,7 @@
             unitConfig.Documentation = "man:qbittorrent-nox(1)";
             # required for reverse proxying
             preStart = ''
-              ${lib.optionalString (!cfg.flood.enable) ''
+              ${lib.optionalString cfg.ui.vuetorrent.enable ''
                 rm -rf /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
                 ln -sf ${pkgs.vuetorrent}/share/vuetorrent /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
               ''}
@@ -106,7 +110,7 @@
           };
         }
 
-        (lib.mkIf cfg.flood.enable {
+        (lib.mkIf cfg.ui.flood.enable {
           environment.systemPackages = with pkgs; [
             flood
             mediainfo
@@ -125,9 +129,8 @@
 
               ExecStart = ''
                 ${pkgs.flood}/bin/flood \
-                  --port ${toString cfg.flood.port} \
-                  --host ${cfg.flood.host}
-                  # --qburl "http://127.0.0.1:${toString cfg.uiPort}"
+                  --port ${toString cfg.ui.flood.port} \
+                  --host ${cfg.ui.flood.host}
               '';
             };
           };
