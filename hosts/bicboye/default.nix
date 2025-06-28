@@ -92,6 +92,7 @@
       };
 
       arr.enable = true;
+      qbittorrent-nox.flood.enable = true;
 
       backups = {
         enable = true;
