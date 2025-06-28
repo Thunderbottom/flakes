@@ -60,7 +60,7 @@
         # required for reverse proxying
         preStart = ''
           rm -rf /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
-          ln -sf ${pkgs.vuetorrent} /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
+          ln -sf ${pkgs.vuetorrent}/share/vuetorrent /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
 
           if [[ ! -f /var/lib/qbittorrent-nox/qBittorrent/config/qBittorrent.conf ]]; then
             mkdir -p /var/lib/qbittorrent-nox/qBittorrent/config
