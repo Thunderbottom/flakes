@@ -107,6 +107,13 @@
         environmentFile = userdata.secrets.services.bluesky-pds.environment;
       };
 
+      duperemove = {
+        enable = true;
+        extraArgs = "-dr";
+        hashfile = "/storage/duperemove.hash";
+        paths = [ "/storage/media" ];
+      };
+
       fail2ban.enable = true;
 
       forgejo = {
