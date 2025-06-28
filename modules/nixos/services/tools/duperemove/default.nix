@@ -72,7 +72,7 @@
           User = "root";
           ExecStart = builtins.concatStringsSep " " (
             [ "${lib.getExe cfg.package} ${cfg.extraArgs}" ]
-            ++ lib.lists.optional (!isNull cfg.hashfile) "--hashfile=${cfg.hashfile}"
+            ++ lib.lists.optional (cfg.hashfile != null) "--hashfile=${cfg.hashfile}"
             ++ cfg.paths
           );
         };
