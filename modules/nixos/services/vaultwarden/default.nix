@@ -14,6 +14,12 @@
       description = "Configuration domain to use for the vaultwarden service";
     };
 
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 33003;
+      description = "Configuration port to use for the vaultwarden service";
+    };
+
     adminTokenFile = lib.mkOption {
       description = "Age module containing the ADMIN_TOKEN to use for vaultwarden";
     };
@@ -24,6 +30,11 @@
       cfg = config.snowflake.services.vaultwarden;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       age.secrets.vaultwarden = {
         inherit (cfg.adminTokenFile) file;
         owner = "vaultwarden";
@@ -43,7 +54,7 @@
           signupsAllowed = false;
 
           rocketAddress = "127.0.0.1";
-          rocketPort = 33003;
+          rocketPort = cfg.port;
 
           databaseUrl = "postgres:///vaultwarden?host=/var/run/postgresql";
         };

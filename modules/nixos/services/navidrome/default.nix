@@ -7,6 +7,12 @@
   options.snowflake.services.navidrome = {
     enable = lib.mkEnableOption "Enable navidrome deployment configuration";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Configuration domain to use for the navidrome service";
+    };
+
     port = lib.mkOption {
       type = lib.types.port;
       default = 4533;
@@ -24,6 +30,11 @@
       cfg = config.snowflake.services.navidrome;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       services.navidrome = {
         enable = true;
         group = "media";
@@ -36,8 +47,8 @@
 
       services.nginx = {
         virtualHosts = {
-          "music.deku.moe" = {
-            serverName = "music.deku.moe";
+          "${cfg.domain}" = {
+            serverName = cfg.domain;
             enableACME = true;
             forceSSL = true;
             locations."/" = {

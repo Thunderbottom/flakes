@@ -12,6 +12,12 @@
       default = "";
       description = "Configuration domain to use for the actual-budget service";
     };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 5006;
+      description = "Configuration port to use for the actual-budget service";
+    };
   };
 
   config =
@@ -19,10 +25,15 @@
       cfg = config.snowflake.services.actual;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       services.actual = {
         enable = true;
         settings = {
-          port = 5006;
+          port = cfg.port;
         };
       };
 

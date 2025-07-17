@@ -22,6 +22,8 @@
       cfg = config.snowflake.services.postgresql;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta.ports.list = [ 5432 ];
+
       services.postgresql = {
         enable = true;
         inherit (cfg) package;

@@ -6,6 +6,11 @@
 {
   options.snowflake.services.jellyfin = {
     enable = lib.mkEnableOption "Enable jellyfin deployment configuration";
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Configuration domain to use for the jellyfin service";
+    };
   };
 
   config =
@@ -13,6 +18,13 @@
       cfg = config.snowflake.services.jellyfin;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [
+          8096
+          8920
+        ];
+      };
       services.jellyfin = {
         enable = true;
         openFirewall = true;
@@ -34,8 +46,8 @@
 
       services.nginx = {
         virtualHosts = {
-          "jelly.deku.moe" = {
-            serverName = "jelly.deku.moe";
+          "${cfg.domain}" = {
+            serverName = cfg.domain;
             enableACME = true;
             forceSSL = true;
             locations."/" = {

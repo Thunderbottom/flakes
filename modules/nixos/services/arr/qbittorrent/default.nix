@@ -56,10 +56,15 @@
     lib.mkIf cfg.enable (
       lib.mkMerge [
         {
+          snowflake.meta.ports.list = [
+            cfg.torrentPort
+            cfg.uiPort
+          ] ++ lib.optional (cfg.ui.flood.enable) cfg.ui.flood.port;
+
           networking.firewall.allowedTCPPorts =
             lib.optional (cfg.openFirewall && cfg.torrentPort != null) cfg.torrentPort
             ++ lib.optional cfg.openFirewall cfg.uiPort
-            ++ lib.optional (cfg.openFirewall && cfg.flood.enable) cfg.flood.port;
+            ++ lib.optional (cfg.openFirewall && cfg.ui.flood.enable) cfg.ui.flood.port;
           networking.firewall.allowedUDPPorts = lib.optional (
             cfg.openFirewall && cfg.torrentPort != null
           ) cfg.torrentPort;

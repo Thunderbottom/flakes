@@ -15,44 +15,52 @@
     };
   };
 
-  config = lib.mkIf config.snowflake.services.bluesky-pds.enable {
-    age.secrets = {
-      bluesky-pds = {
-        inherit (config.snowflake.services.bluesky-pds.environmentFile) file;
-        owner = "pds";
-        inherit (config.users.users.pds) group;
-        mode = "0440";
+  config =
+    let
+      cfg = config.snowflake.services.bluesky-pds;
+    in
+    lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ config.services.pds.settings.PDS_PORT ];
       };
-    };
-    services.pds = {
-      enable = true;
-
-      environmentFiles = [
-        config.age.secrets.bluesky-pds.path
-      ];
-
-      settings = {
-        PDS_HOSTNAME = config.snowflake.services.bluesky-pds.domain;
+      age.secrets = {
+        bluesky-pds = {
+          inherit (cfg.environmentFile) file;
+          owner = "pds";
+          inherit (config.users.users.pds) group;
+          mode = "0440";
+        };
       };
-    };
-    services.nginx = {
-      virtualHosts = {
-        "${config.snowflake.services.bluesky-pds.domain}" = {
-          serverName = config.snowflake.services.bluesky-pds.domain;
-          forceSSL = true;
+      services.pds = {
+        enable = true;
 
-          locations."~ ^(/xrpc|/.well-known/atproto-did)" = {
-            proxyPass = "http://localhost:${toString config.services.pds.settings.PDS_PORT}";
-            proxyWebsockets = true;
-            recommendedProxySettings = true;
+        environmentFiles = [
+          config.age.secrets.bluesky-pds.path
+        ];
+
+        settings = {
+          PDS_HOSTNAME = cfg.domain;
+        };
+      };
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.domain}" = {
+            serverName = cfg.domain;
+            forceSSL = true;
+
+            locations."~ ^(/xrpc|/.well-known/atproto-did)" = {
+              proxyPass = "http://localhost:${toString config.services.pds.settings.PDS_PORT}";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+            };
           };
         };
       };
-    };
 
-    snowflake.nginx.wildcard-ssl = {
-      enable = true;
-      domains."${config.snowflake.services.bluesky-pds.domain}".enable = true;
+      snowflake.nginx.wildcard-ssl = {
+        enable = true;
+        domains."${cfg.domain}".enable = true;
+      };
     };
-  };
 }

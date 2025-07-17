@@ -13,7 +13,7 @@
       description = "Configuration domain to use for the ntfy-sh service";
     };
 
-    listenPort = lib.mkOption {
+    port = lib.mkOption {
       type = lib.types.int;
       description = "Configuration port for the ntfy-sh service to listen on";
       default = 8082;
@@ -25,11 +25,16 @@
       cfg = config.snowflake.services.ntfy-sh;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       services.ntfy-sh.enable = true;
       services.ntfy-sh.settings = {
         base-url = "https://${cfg.domain}";
         upstream-base-url = "https://ntfy.sh";
-        listen-http = "127.0.0.1:${toString cfg.listenPort}";
+        listen-http = "127.0.0.1:${toString cfg.port}";
         behind-proxy = true;
 
         auth-default-access = "deny-all";

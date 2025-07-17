@@ -28,6 +28,8 @@
   };
 
   snowflake = {
+    meta.ip.v4 = "192.168.69.193";
+
     extraPackages = with pkgs; [
       nmap
       recyclarr
@@ -92,6 +94,8 @@
       };
 
       arr.enable = true;
+      jellyfin.domain = "jelly.deku.moe";
+      jellyseerr.domain = "seerr.deku.moe";
 
       backups = {
         enable = true;

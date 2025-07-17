@@ -34,6 +34,7 @@
     in
     lib.mkMerge [
       (lib.mkIf cfg.enable {
+        snowflake.meta.ports.list = [ 8443 ];
         networking.firewall.allowedTCPPorts = [ 8443 ];
         services.unifi = {
           enable = true;

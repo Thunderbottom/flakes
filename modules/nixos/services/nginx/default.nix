@@ -18,6 +18,11 @@
       cfg = config.snowflake.services.nginx;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta.ports.list = [
+        80
+        443
+      ];
+
       security.acme.defaults.email = cfg.acmeEmail;
       security.dhparams = {
         enable = true;

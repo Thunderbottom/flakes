@@ -17,7 +17,7 @@
       description = "Age module containing the ADMIN_USERNAME and ADMIN_PASSWORD to use for miniflux";
     };
 
-    listenPort = lib.mkOption {
+    port = lib.mkOption {
       type = lib.types.int;
       description = "Configuration port for the miniflux service to listen on";
       default = 8816;
@@ -29,6 +29,11 @@
       cfg = config.snowflake.services.miniflux;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       age.secrets.miniflux = {
         inherit (cfg.adminTokenFile) file;
         owner = "miniflux";
@@ -39,7 +44,7 @@
       services.miniflux.adminCredentialsFile = config.age.secrets.miniflux.path;
 
       services.miniflux.config = {
-        LISTEN_ADDR = "localhost:${toString cfg.listenPort}";
+        LISTEN_ADDR = "localhost:${toString cfg.port}";
         BASE_URL = "https://${cfg.domain}";
       };
 
@@ -50,7 +55,7 @@
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://localhost:${toString cfg.listenPort}";
+              proxyPass = "http://localhost:${toString cfg.port}";
               extraConfig = ''
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

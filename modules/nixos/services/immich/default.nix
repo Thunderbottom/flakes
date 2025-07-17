@@ -14,6 +14,12 @@
       default = "";
       description = "Configuration domain to use for the immich service";
     };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 9121;
+      description = "Configuration port to use for the immich service";
+    };
   };
 
   config =
@@ -21,11 +27,16 @@
       cfg = config.snowflake.services.immich;
     in
     lib.mkIf cfg.enable {
+      snowflake.meta = {
+        domains.list = [ cfg.domain ];
+        ports.list = [ cfg.port ];
+      };
+
       services.immich = {
         enable = true;
         package = pkgs.immich;
         mediaLocation = "/storage/media/immich-library";
-        port = 9121;
+        port = cfg.port;
 
         environment = {
           IMMICH_TELEMETRY_INCLUDE = if cfg.monitoring.enable then "all" else "";

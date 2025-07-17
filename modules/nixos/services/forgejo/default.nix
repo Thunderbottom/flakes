@@ -69,6 +69,17 @@
         else
           [ ];
 
+      snowflake.meta = {
+        domains.list = [
+          cfg.domain
+          cfg.sshDomain
+        ];
+        ports.list = [
+          cfg.httpPort
+          cfg.sshPort
+        ];
+      };
+
       age.secrets = {
         forgejo = {
           inherit (cfg.dbPasswordFile) file;
@@ -192,8 +203,7 @@
       };
 
       snowflake.services.backups.config.forgejo.paths = [
-        config.services.forgejo.repositoryRoot
-        config.services.forgejo.lfs.contentDir
+        config.services.forgejo.statDir
       ];
 
       services.fail2ban.jails.forgejo = {
