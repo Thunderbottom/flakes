@@ -203,7 +203,7 @@
       };
 
       snowflake.services.backups.config.forgejo.paths = [
-        config.services.forgejo.statDir
+        config.services.forgejo.stateDir
       ];
 
       services.fail2ban.jails.forgejo = {

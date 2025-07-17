@@ -36,7 +36,7 @@
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://localhost:${cfg.port}/";
+              proxyPass = "http://localhost:${toString cfg.port}/";
             };
           };
         };
