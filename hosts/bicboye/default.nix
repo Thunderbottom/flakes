@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
 
   pkgs,
@@ -8,11 +7,6 @@
   ...
 }:
 {
-  imports = [
-    inputs.srvos.nixosModules.server
-    inputs.srvos.nixosModules.mixins-systemd-boot
-  ];
-
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
