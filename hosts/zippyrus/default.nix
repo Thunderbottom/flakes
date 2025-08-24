@@ -35,18 +35,18 @@
   services = {
     # Enable G502 mouse configuration daemon.
     ratbagd.enable = true;
+    ollama = {
+      enable = true;
+      acceleration = "cuda";
+    };
   };
 
   snowflake = {
-    extraPackages =
-      with pkgs;
-      [
-        obsidian
-        piper
-      ]
-      ++ [
-        inputs.zed.packages.${pkgs.system}.default
-      ];
+    extraPackages = with pkgs; [
+      obsidian
+      piper
+      zed-editor
+    ];
 
     core = {
       # Enable secure boot.
@@ -90,8 +90,6 @@
     };
 
     networking = {
-      iwd.enable = true;
-
       wifiProfiles = {
         enable = true;
         environmentFiles = [ config.age.secrets.network-manager-psk.path ];

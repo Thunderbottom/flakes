@@ -63,6 +63,7 @@
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     ghostty.url = "github:ghostty-org/ghostty";
+    ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -101,7 +102,8 @@
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
     wezterm.inputs.rust-overlay.follows = "rust-overlay";
 
-    zed.url = "github:zed-industries/zed?ref=v0.190.6";
-    zed.inputs.nixpkgs.follows = "nixpkgs";
+    # NOTE: enable this and switch ref for nightly builds
+    # zed.url = "github:zed-industries/zed?ref=v0.190.6";
+    # zed.inputs.nixpkgs.follows = "nixpkgs";
   };
 }
