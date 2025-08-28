@@ -29,23 +29,89 @@ This repository contains modularized NixOS configurations, carefully compiled an
 ├── modules
 │   ├── home
 │   │   ├── desktop
+│   │   │   ├── firefox
+│   │   │   ├── ghostty
+│   │   │   ├── gnome
+│   │   │   └── wezterm
 │   │   ├── development
+│   │   │   ├── git
+│   │   │   ├── helix
+│   │   │   └── tmux
 │   │   └── shell
+│   │       ├── direnv
+│   │       └── fish
 │   └── nixos
 │       ├── core
+│       │   ├── docker
+│       │   ├── fish
+│       │   ├── gnupg
+│       │   ├── lanzaboote
+│       │   ├── meta
+│       │   ├── nix
+│       │   ├── security
+│       │   └── sshd
 │       ├── desktop
+│       │   ├── fonts
+│       │   ├── gnome
+│       │   ├── hyprland
+│       │   ├── kde
+│       │   ├── pipewire
+│       │   └── plymouth
 │       ├── gaming
+│       │   ├── proton
+│       │   └── steam
 │       ├── hardware
+│       │   ├── bluetooth
+│       │   ├── graphics
+│       │   │   ├── amd
+│       │   │   ├── intel
+│       │   │   └── nvidia
+│       │   ├── initrd-luks
+│       │   ├── usbguard
+│       │   └── yubico
 │       ├── monitoring
+│       │   ├── exporter
+│       │   ├── grafana
+│       │   └── victoriametrics
 │       ├── networking
+│       │   ├── mullvad
+│       │   └── netbird
 │       ├── services
+│       │   ├── actual-budget
+│       │   ├── arr
+│       │   │   ├── bazarr
+│       │   │   ├── jellyfin
+│       │   │   ├── jellyseerr
+│       │   │   ├── prowlarr
+│       │   │   ├── qbittorrent
+│       │   │   ├── radarr
+│       │   │   ├── sabnzbd
+│       │   │   └── sonarr
+│       │   ├── asus
+│       │   ├── backup
+│       │   ├── bluesky-pds
+│       │   ├── fail2ban
+│       │   ├── forgejo
+│       │   ├── homebridge
+│       │   ├── immich
+│       │   ├── mailserver
+│       │   ├── miniflux
+│       │   ├── navidrome
+│       │   ├── nginx
+│       │   ├── ntfy-sh
+│       │   ├── paperless
+│       │   ├── postgresql
+│       │   ├── static-site
+│       │   ├── technitium
+│       │   ├── tools
+│       │   │   └── duperemove
+│       │   ├── unifi-controller
+│       │   ├── vaultwarden
+│       │   └── wildcard-ssl
 │       └── user
 ├── overlays
-│   ├── cloud-init
 │   ├── jellyfin-web
-│   ├── lttng-tools
-│   ├── netbird
-│   └── paperless-ngx
+│   └── netbird
 ├── packages
 │   └── vuetorrent
 ├── secrets
@@ -61,6 +127,7 @@ This repository contains modularized NixOS configurations, carefully compiled an
 │       ├── backups
 │       ├── bluesky-pds
 │       ├── forgejo
+│       │   └── actions-runner
 │       ├── maddy
 │       ├── mailserver
 │       ├── miniflux
@@ -71,15 +138,13 @@ This repository contains modularized NixOS configurations, carefully compiled an
 │   ├── desktop
 │   ├── module
 │   └── server
-├── users
-│   ├── chnmy
-│   │   ├── thonkpad
-│   │   └── zippyrus
-│   └── server
-│       ├── bicboye
-│       └── smolboye
-├── flake.nix
-└── data.nix
+└── users
+    ├── chnmy
+    │   ├── thonkpad
+    │   └── zippyrus
+    └── server
+        ├── bicboye
+        └── smolboye
 ```
 
 - `flake.nix`: Entrypoint for the NixOS configurations
@@ -92,6 +157,8 @@ This repository contains modularized NixOS configurations, carefully compiled an
 - `packages`: Custom packages for NixOS
 - `templates`: Flake templates for generating Nix configurations
 - `secrets`: Agenix deployment secrets, referenced in `data.nix`
+- `options.md`: Auto-generated documentation for all available module options
+- `treefmt.nix`: Configuration for code formatting
 
 ## Modules
 
