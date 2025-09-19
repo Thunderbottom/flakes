@@ -22,6 +22,11 @@
         window-padding-y = 2;
         working-directory = "home";
         window-inherit-working-directory = false;
+        shell-integration-features = [
+          "sudo"
+          "ssh-env"
+          "ssh-terminfo"
+        ];
       };
     };
   };
