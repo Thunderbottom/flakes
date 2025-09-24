@@ -87,6 +87,11 @@
         domain = "actual.deku.moe";
       };
 
+      atuin = {
+        enable = true;
+        domain = "atuin.deku.moe";
+      };
+
       arr.enable = true;
       jellyfin.domain = "jelly.deku.moe";
       jellyseerr.domain = "seerr.deku.moe";
