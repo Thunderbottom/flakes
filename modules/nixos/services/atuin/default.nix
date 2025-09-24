@@ -45,7 +45,7 @@
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://${config.services.atuin.host}:${toString config.services.atuin.settings.port}/";
+              proxyPass = "http://${config.services.atuin.host}:${toString config.services.atuin.port}/";
               proxyWebsockets = true;
             };
           };
