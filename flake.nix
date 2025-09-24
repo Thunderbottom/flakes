@@ -74,7 +74,7 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
-    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/73467ac83eee61006e5e675badf84cadd5bd0d89.tar.gz";
+    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/6e23df19298fb21dd3040419b520a00db32079dc.tar.gz";
     maych-in.inputs.nixpkgs.follows = "nixpkgs";
 
     nil.url = "github:oxalica/nil";

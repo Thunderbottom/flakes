@@ -607,15 +607,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1751378873,
-        "narHash": "sha256-hHaOC926Wbm0Z1ux0XqiGr43kNq9+fSxbAyuHPh7O2g=",
-        "rev": "73467ac83eee61006e5e675badf84cadd5bd0d89",
+        "lastModified": 1753763330,
+        "narHash": "sha256-xnYXYUfSwN0IfQ5j6ZXB+QwYxAeG1geyFEOYtOWS1cE=",
+        "rev": "6e23df19298fb21dd3040419b520a00db32079dc",
         "type": "tarball",
-        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/73467ac83eee61006e5e675badf84cadd5bd0d89.tar.gz"
+        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/6e23df19298fb21dd3040419b520a00db32079dc.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.deku.moe/thunderbottom/website/archive/73467ac83eee61006e5e675badf84cadd5bd0d89.tar.gz"
+        "url": "https://git.deku.moe/thunderbottom/website/archive/6e23df19298fb21dd3040419b520a00db32079dc.tar.gz"
       }
     },
     "nil": {
