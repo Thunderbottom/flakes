@@ -22,7 +22,7 @@
     lib.mkIf cfg.enable {
       snowflake.meta = {
         domains.list = [ cfg.domain ];
-        ports.list = [ config.services.pds.settings.PDS_PORT ];
+        ports.list = [ config.services.bluesky-pds.settings.PDS_PORT ];
       };
       age.secrets = {
         bluesky-pds = {
@@ -32,7 +32,7 @@
           mode = "0440";
         };
       };
-      services.pds = {
+      services.bluesky-pds = {
         enable = true;
 
         environmentFiles = [
@@ -50,7 +50,7 @@
             forceSSL = true;
 
             locations."~ ^(/xrpc|/.well-known/atproto-did)" = {
-              proxyPass = "http://localhost:${toString config.services.pds.settings.PDS_PORT}";
+              proxyPass = "http://localhost:${toString config.services.bluesky-pds.settings.PDS_PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };
