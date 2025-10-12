@@ -110,10 +110,10 @@
 
       # Prefer using ipv4 and use correct ipv6
       # address to avoid rDNS issues
-      services.postfix.extraConfig = ''
-        smtp_bind_address6 = ${cfg.postfixBindIPv6}
-        smtp_address_preference = ipv4
-      '';
+      services.postfix.settings.main = {
+        smtp_bind_address6 = cfg.postfixBindIPv6;
+        smtp_address_preference = "ipv4";
+      };
 
       services.fail2ban.jails = {
         postfix = {
