@@ -32,25 +32,39 @@
         editor = {
           line-number = "relative";
           cursorline = true;
-          cursor-shape.insert = "bar";
-          scrolloff = 5;
+          rulers = [ 120 ];
           color-modes = true;
-          idle-timeout = 1;
           true-color = true;
           bufferline = "always";
-          soft-wrap.enable = true;
           completion-replace = true;
+          trim-trailing-whitespace = true;
+          end-of-line-diagnostics = "hint";
+          rainbow-brackets = true;
+
+          file-picker.hidden = false;
+          soft-wrap.enable = false;
+
+          auto-save = {
+            focus-lost = true;
+            after-delay = {
+              enable = true;
+              timeout = 300000;
+            };
+          };
+
           lsp = {
             display-messages = true;
             display-inlay-hints = true;
           };
 
-          whitespace.render = "all";
-          whitespace.characters = {
-            space = "·";
-            nbsp = "⍽";
-            tab = "→";
-            newline = "⤶";
+          whitespace = {
+            render = "all";
+            characters = {
+              space = "·";
+              nbsp = "⍽";
+              tab = "→";
+              newline = "⤶";
+            };
           };
 
           gutters = [
@@ -59,6 +73,7 @@
             "spacer"
             "diff"
           ];
+
           statusline = {
             separator = "of";
             left = [
@@ -84,10 +99,8 @@
               select = "SELECT";
             };
           };
-          indent-guides = {
-            render = true;
-            rainbow-option = "normal";
-          };
+
+          indent-guides.render = true;
         };
       };
 
