@@ -28,6 +28,7 @@
         dialect = "uk";
       };
       enableFishIntegration = config.snowflake.shell.fish.enable;
+      flags = [ "--disable-up-arrow" ];
     };
   };
 }
