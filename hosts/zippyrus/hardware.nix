@@ -28,6 +28,8 @@
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"
+      "amdgpu.sg_display=0"
+      "amdgpu.dcdebugmask=0x10"
       "pcie_aspm.policy=powersupersave"
       # Attempt to fix mediatek wifi lag/latency on MT7922
       "mt7921e.disable_aspm=Y"
