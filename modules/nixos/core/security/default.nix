@@ -30,10 +30,14 @@
 
       (lib.mkIf config.snowflake.core.security.sysctl.enable {
         kernel.sysctl = {
-          # The Magic SysRq key is a key combo that allows users connected to the
-          # system console of a Linux kernel to perform some low-level commands.
-          # Disable it, since we don't need it, and is a potential security concern.
           "kernel.sysrq" = 0;
+          "kernel.kptr_restrict" = 2;
+          "kernel.dmesg_restrict" = 1;
+          "kernel.unprivileged_bpf_disabled" = 1;
+          "net.core.bpf_jit_harden" = 2;
+
+          "net.netfilter.nf_conntrack_max" = 524288;
+          "net.nf_conntrack_max" = 524288;
 
           ## TCP hardening
           # Prevent bogus ICMP errors from filling up logs.

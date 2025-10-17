@@ -56,9 +56,10 @@
         keep-outputs = true;
         keep-derivations = true;
         max-jobs = "auto";
-        # Use sandboxed build environments for builds on all systems.
-        # Defaults to true on linux.
+        cores = 0;
         sandbox = true;
+        min-free = 5368709120;
+        max-free = 10737418240;
         # Add `wheel` group to trusted users.
         trusted-users = [
           "root"
