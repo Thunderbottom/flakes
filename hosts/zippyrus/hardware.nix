@@ -17,8 +17,14 @@
         "usb_storage"
         "xhci_pci"
       ];
-      luks.devices."cryptroot".device = "/dev/disk/by-uuid/80db9688-8fb5-47c6-a94f-dcb991a80e9a";
-      luks.devices."cryptroot".bypassWorkqueues = true;
+      luks.devices."cryptroot" = {
+        device = "/dev/disk/by-uuid/80db9688-8fb5-47c6-a94f-dcb991a80e9a";
+        bypassWorkqueues = true;
+        crypttabExtraOpts = [
+          "no-read-workqueue"
+          "no-write-workqueue"
+        ];
+      };
     };
     kernelModules = [
       "kvm-amd"

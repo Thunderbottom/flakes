@@ -166,9 +166,13 @@
       };
     };
 
-    # Workaround for irqbalance read-only filesystem issue.
-    # ref: https://github.com/Irqbalance/irqbalance/issues/308
     systemd.services.irqbalance.serviceConfig.ProtectKernelTunables = "no";
+
+    services.journald.extraConfig = ''
+      SystemMaxUse=500M
+      SystemMaxFileSize=50M
+      MaxRetentionSec=7day
+    '';
 
     system.stateVersion = config.snowflake.stateVersion;
     system.activationScripts.diff = {
@@ -180,8 +184,10 @@
 
     time.timeZone = config.snowflake.timeZone;
 
-    # Enable zram swap.
-    # ref: https://wiki.archlinux.org/title/Zram
-    zramSwap.enable = true;
+    zramSwap = {
+      enable = true;
+      algorithm = "zstd";
+      memoryPercent = 50;
+    };
   };
 }

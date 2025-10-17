@@ -77,7 +77,8 @@
       extraGroups = [
         "wheel"
         "users"
-      ] ++ config.snowflake.user.extraGroups;
+      ]
+      ++ config.snowflake.user.extraGroups;
       hashedPasswordFile = lib.mkIf (
         !config.snowflake.user.setEmptyPassword
       ) config.age.secrets.hashed-user-password.path;

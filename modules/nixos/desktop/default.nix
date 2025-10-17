@@ -8,6 +8,12 @@
   options.snowflake.desktop = {
     enable = lib.mkEnableOption "Enable core Desktop Environment configuration";
     fingerprint.enable = lib.mkEnableOption "Enable fingerprint support for Desktop Environments";
+
+    extraPackages = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [ ];
+      description = "Additional packages to install for the desktop environment";
+    };
   };
 
   config = lib.mkIf config.snowflake.desktop.enable {
@@ -56,8 +62,7 @@
     xdg.portal.wlr.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
 
-    # Add bibata cursors everywhere because it looks cool.
-    environment.systemPackages = [ pkgs.bibata-cursors ];
+    environment.systemPackages = [ pkgs.bibata-cursors ] ++ config.snowflake.desktop.extraPackages;
 
     # Set environment variables for the system.
     environment.variables = {

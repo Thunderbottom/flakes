@@ -39,7 +39,6 @@
           completion-replace = true;
           trim-trailing-whitespace = true;
           end-of-line-diagnostics = "hint";
-          rainbow-brackets = true;
 
           file-picker.hidden = false;
           soft-wrap.enable = false;

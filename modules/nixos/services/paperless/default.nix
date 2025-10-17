@@ -49,7 +49,7 @@
       services.paperless = {
         enable = true;
         package = pkgs.paperless-ngx;
-        port = cfg.port;
+        inherit (cfg) port;
         passwordFile = config.age.secrets.paperless.path;
 
         settings = {

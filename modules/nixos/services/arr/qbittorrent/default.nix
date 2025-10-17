@@ -10,6 +10,24 @@
 
     package = lib.mkPackageOption pkgs "qbittorrent-nox" { };
 
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "qbittorrent-nox";
+      description = "User account under which qbittorrent-nox runs";
+    };
+
+    group = lib.mkOption {
+      type = lib.types.str;
+      default = "media";
+      description = "Group under which qbittorrent-nox runs";
+    };
+
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib/qbittorrent-nox";
+      description = "The directory where qbittorrent-nox stores its data files";
+    };
+
     openFirewall = lib.mkOption {
       description = "Allow firewall access for qbittorrent-nox";
       type = lib.types.bool;
@@ -59,7 +77,8 @@
           snowflake.meta.ports.list = [
             cfg.torrentPort
             cfg.uiPort
-          ] ++ lib.optional (cfg.ui.flood.enable) cfg.ui.flood.port;
+          ]
+          ++ lib.optional cfg.ui.flood.enable cfg.ui.flood.port;
 
           networking.firewall.allowedTCPPorts =
             lib.optional (cfg.openFirewall && cfg.torrentPort != null) cfg.torrentPort
@@ -69,11 +88,13 @@
             cfg.openFirewall && cfg.torrentPort != null
           ) cfg.torrentPort;
 
-          users.users.qbittorrent-nox = {
+          users.users.${cfg.user} = {
             isSystemUser = true;
-            group = "media";
-            home = "/var/lib/qbittorrent-nox";
+            inherit (cfg) group;
+            home = cfg.dataDir;
           };
+
+          users.groups.${cfg.group} = lib.mkIf (cfg.group == "media") { };
 
           systemd.services.qbittorrent-nox = {
             description = "qBittorrent-nox service";
@@ -88,28 +109,26 @@
             # required for reverse proxying
             preStart = ''
               ${lib.optionalString cfg.ui.vuetorrent.enable ''
-                rm -rf /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
-                ln -sf ${pkgs.vuetorrent}/share/vuetorrent /var/lib/qbittorrent-nox/qBittorrent/config/vuetorrent
+                rm -rf ${cfg.dataDir}/qBittorrent/config/vuetorrent
+                ln -sf ${pkgs.vuetorrent}/share/vuetorrent ${cfg.dataDir}/qBittorrent/config/vuetorrent
               ''}
 
-              if [[ ! -f /var/lib/qbittorrent-nox/qBittorrent/config/qBittorrent.conf ]]; then
-                mkdir -p /var/lib/qbittorrent-nox/qBittorrent/config
-                echo "Preferences\WebUI\HostHeaderValidation=false" >> /var/lib/qbittorrent-nox/qBittorrent/config/qBittorrent.conf
+              if [[ ! -f ${cfg.dataDir}/qBittorrent/config/qBittorrent.conf ]]; then
+                mkdir -p ${cfg.dataDir}/qBittorrent/config
+                echo "Preferences\WebUI\HostHeaderValidation=false" >> ${cfg.dataDir}/qBittorrent/config/qBittorrent.conf
               fi
             '';
             serviceConfig = {
-              User = "qbittorrent-nox";
-              Group = "media";
-              # NOTE: Required for arr stack to symlink files
-              # Allows the group to have r+w on files
+              User = cfg.user;
+              Group = cfg.group;
               Umask = "0002";
-              StateDirectory = "qbittorrent-nox";
-              WorkingDirectory = "/var/lib/qbittorrent-nox";
+              StateDirectory = lib.mkIf (cfg.dataDir == "/var/lib/${cfg.user}") cfg.user;
+              WorkingDirectory = cfg.dataDir;
               ExecStart = ''
                 ${cfg.package}/bin/qbittorrent-nox ${
                   lib.optionalString (cfg.torrentPort != null) "--torrenting-port=${toString cfg.torrentPort}"
                 } \
-                  --webui-port=${toString cfg.uiPort} --profile=/var/lib/qbittorrent-nox
+                  --webui-port=${toString cfg.uiPort} --profile=${cfg.dataDir}
               '';
             };
           };
@@ -129,8 +148,8 @@
 
             serviceConfig = {
               Type = "simple";
-              User = "qbittorrent-nox";
-              Group = "media";
+              User = cfg.user;
+              Group = cfg.group;
 
               ExecStart = ''
                 ${pkgs.flood}/bin/flood \

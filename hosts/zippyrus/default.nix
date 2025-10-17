@@ -1,19 +1,23 @@
 {
   config,
-  inputs,
   pkgs,
   userdata,
   ...
 }:
 {
   hardware = {
-    # Update the CPU microcode for AMD processors.
     cpu.amd.updateMicrocode = true;
-    # Enable firmware with a license allowing redistribution.
     enableRedistributableFirmware = true;
-    # Enable orientation and ambient light sensor.
     sensor.iio.enable = true;
   };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = [ "/" ];
+  };
+
+  powerManagement.cpuFreqGovernor = "performance";
 
   age.secrets.network-manager-psk = {
     inherit (userdata.secrets.network-manager.passphrase) file;
@@ -58,7 +62,6 @@
       };
       # `sysctl` configuration for gaming improvements.
       security.sysctl.gaming.enable = true;
-      # security.sysctl.performance.enable = true;
     };
 
     desktop = {
@@ -66,6 +69,7 @@
       enable = true;
       # Enable GNOME desktop environment.
       gnome.enable = true;
+      hyprland.enable = true;
     };
 
     gaming = {

@@ -79,7 +79,8 @@ in
         user.name = config.snowflake.development.git.user.name;
         user.email = config.snowflake.development.git.user.email;
         user.signingKey = config.snowflake.development.git.user.signingKey;
-      } // config.snowflake.development.git.work.extraConfig;
+      }
+      // config.snowflake.development.git.work.extraConfig;
 
       # Global gitignore configuration.
       ignores = [

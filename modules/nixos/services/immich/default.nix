@@ -20,6 +20,12 @@
       default = 9121;
       description = "Configuration port to use for the immich service";
     };
+
+    mediaLocation = lib.mkOption {
+      type = lib.types.path;
+      default = "/storage/media/immich-library";
+      description = "Path to the immich media library";
+    };
   };
 
   config =
@@ -35,8 +41,7 @@
       services.immich = {
         enable = true;
         package = pkgs.immich;
-        mediaLocation = "/storage/media/immich-library";
-        port = cfg.port;
+        inherit (cfg) port mediaLocation;
 
         environment = {
           IMMICH_TELEMETRY_INCLUDE = if cfg.monitoring.enable then "all" else "";

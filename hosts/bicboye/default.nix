@@ -10,6 +10,12 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = [ "/storage" ];
+  };
+
   networking = {
     interfaces.enp2s0 = {
       useDHCP = lib.mkDefault true;
@@ -31,7 +37,6 @@
 
     core.docker.enable = true;
     core.docker.storageDriver = "btrfs";
-    core.security.sysctl.enable = lib.mkForce false;
 
     hardware.graphics.intel.enable = true;
     hardware.initrd-luks = {
@@ -116,7 +121,10 @@
         paths = [ "/storage/media" ];
       };
 
-      fail2ban.enable = true;
+      fail2ban = {
+        enable = true;
+        extraIgnoreIPs = [ "192.168.69.0/16" ];
+      };
 
       forgejo = {
         enable = true;

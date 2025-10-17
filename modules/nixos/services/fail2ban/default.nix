@@ -31,10 +31,10 @@
         };
 
         ignoreIP = [
-          "192.168.69.0/16"
           "172.16.0.0/12"
           "127.0.0.0/8"
-        ] ++ cfg.extraIgnoreIPs;
+        ]
+        ++ cfg.extraIgnoreIPs;
 
         jails = {
           DEFAULT = {

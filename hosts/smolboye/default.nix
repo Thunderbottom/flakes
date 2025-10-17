@@ -70,8 +70,6 @@
   snowflake = {
     bootloader = "grub";
 
-    core.security.sysctl.enable = lib.mkForce false;
-
     services = {
       fail2ban.enable = true;
 

@@ -32,7 +32,7 @@
 
       services.atuin = {
         enable = true;
-        port = cfg.port;
+        inherit (cfg) port;
         openFirewall = false;
         openRegistration = false;
         database.createLocally = true;

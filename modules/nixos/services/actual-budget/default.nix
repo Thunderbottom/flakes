@@ -33,7 +33,7 @@
       services.actual = {
         enable = true;
         settings = {
-          port = cfg.port;
+          inherit (cfg) port;
         };
       };
 

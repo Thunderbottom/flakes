@@ -74,7 +74,7 @@
               }) entry.value
             )
             |> lib.groupBy (entry: toString entry.domain)
-            |> lib.filterAttrs (domain: entries: lib.length entries > 1);
+            |> lib.filterAttrs (_domain: entries: lib.length entries > 1);
 
           domainError =
             duplicateDomains
@@ -95,7 +95,7 @@
               }) entry.value
             )
             |> lib.groupBy (entry: toString entry.port)
-            |> lib.filterAttrs (port: entries: lib.length entries > 1);
+            |> lib.filterAttrs (_port: entries: lib.length entries > 1);
 
           portError =
             duplicatePorts
