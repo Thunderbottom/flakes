@@ -14,6 +14,12 @@
       description = "Package to use for the PostgreSQL service";
     };
 
+    enablePerformanceTuning = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable performance tuning for PostgreSQL";
+    };
+
     backup.enable = lib.mkEnableOption "Enable backup service for postgresql databases";
   };
 
@@ -27,6 +33,25 @@
       services.postgresql = {
         enable = true;
         inherit (cfg) package;
+
+        settings = lib.mkIf cfg.enablePerformanceTuning {
+          shared_buffers = "256MB";
+          effective_cache_size = "1GB";
+          maintenance_work_mem = "64MB";
+          checkpoint_completion_target = 0.9;
+          wal_buffers = "16MB";
+          default_statistics_target = 100;
+          random_page_cost = 1.1;
+          effective_io_concurrency = 200;
+          work_mem = "4MB";
+          huge_pages = "try";
+          min_wal_size = "1GB";
+          max_wal_size = "4GB";
+          max_worker_processes = 4;
+          max_parallel_workers_per_gather = 2;
+          max_parallel_workers = 4;
+          max_parallel_maintenance_workers = 2;
+        };
       };
 
       snowflake.services.backups.config.postgresql =
@@ -34,7 +59,7 @@
           compressSuffix = ".zstd";
           compressCmd = "${pkgs.zstd}/bin/zstd -c";
 
-          baseDir = "/tmp/postgres-backup";
+          baseDir = "/var/lib/postgresql/backup";
 
           mkSqlPath = prefix: suffix: "/${baseDir}/all${prefix}.sql${suffix}";
           curFile = mkSqlPath "" compressSuffix;
