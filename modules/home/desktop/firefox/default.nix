@@ -49,11 +49,7 @@
               Status = "locked";
             };
             lock-true = {
-              Value = false;
-              Status = "locked";
-            };
-            lock-empty-string = {
-              Value = false;
+              Value = true;
               Status = "locked";
             };
           in
@@ -68,7 +64,6 @@
             "browser.urlbar.suggest.topsites" = lock-false;
 
             # Remove sponsored sites
-            "browser.newtabpage.pinned" = lock-empty-string;
             "browser.newtabpage.activity-stream.showSponsored" = lock-false;
             "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
             "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
@@ -101,7 +96,6 @@
           ublock-origin
         ];
         bookmarks = { };
-        # extraConfig = builtins.readFile "${inputs.betterfox}/user.js";
         search = {
           force = true;
           default = "kagi";
@@ -257,20 +251,6 @@
           "browser.newtabpage.activity-stream.feeds.topsites" = false;
           "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
           "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts" = false;
-          "browser.newtabpage.blocked" = lib.genAttrs [
-            # Youtube
-            "26UbzFJ7qT9/4DhodHKA1Q=="
-            # Facebook
-            "4gPpjkxgZzXPVtuEoAL9Ig=="
-            # Wikipedia
-            "eV8/WsSLxHadrTL1gAxhug=="
-            # Reddit
-            "gLv0ja2RYVgxKdp0I5qwvA=="
-            # Amazon
-            "K00ILysCaEq8+bEqV/3nuw=="
-            # Twitter
-            "T9nJot5PurhJSy8n038xGA=="
-          ] (_: 1);
 
           # Disable some telemetry
           "app.shield.optoutstudies.enabled" = false;
@@ -313,6 +293,13 @@
           "gfx.webrender.enabled" = true;
           "media.eme.enabled" = true;
           "media.hardware-video-decoding.enabled" = true;
+
+          "browser.cache.disk.enable" = true;
+          "browser.cache.memory.enable" = true;
+          "browser.sessionstore.restore_on_demand" = true;
+          "browser.sessionstore.restore_tabs_lazily" = true;
+          "nglayout.initialpaint.delay" = 0;
+          "nglayout.initialpaint.delay_in_oopif" = 0;
         };
       };
     };
