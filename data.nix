@@ -1,6 +1,10 @@
 {
   secrets = {
     machines = {
+      donkpad = {
+        password.file = ./secrets/machines/donkpad/password.age;
+        root-password.file = ./secrets/machines/donkpad/root-password.age;
+      };
       thonkpad = {
         password.file = ./secrets/machines/thonkpad/password.age;
         root-password.file = ./secrets/machines/thonkpad/root-password.age;

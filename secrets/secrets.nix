@@ -7,6 +7,9 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
   ];
 
+  donkpad = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiN+hb+hpLksNnj9mov29PNcfBdTCM8I+62+ycUAofx"
+  ];
   thonkpad = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMrNdHskpknCow+nuCTEBRrKb0b2BKzwTQY60eEAWztS"
@@ -24,6 +27,8 @@ let
   users = thunderbottom ++ codingcoffee;
 in
 {
+  "machines/donkpad/password.age".publicKeys = thunderbottom ++ donkpad;
+  "machines/donkpad/root-password.age".publicKeys = thunderbottom ++ donkpad;
   "machines/thonkpad/password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/thonkpad/root-password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/zippyrus/password.age".publicKeys = thunderbottom ++ zippyrus;
