@@ -300,6 +300,9 @@
           "browser.sessionstore.restore_tabs_lazily" = true;
           "nglayout.initialpaint.delay" = 0;
           "nglayout.initialpaint.delay_in_oopif" = 0;
+
+          # Disable AI
+          "browser.ml.enable" = false;
         };
       };
     };
