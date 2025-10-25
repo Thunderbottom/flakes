@@ -32,6 +32,7 @@
     hardware.bluetooth.enable = true;
     hardware.graphics.intel = {
       enable = true;
+      computeRuntime = pkgs.intel-compute-runtime-legacy1;
     };
 
     networking.iwd.enable = true;
