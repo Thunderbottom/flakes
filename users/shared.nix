@@ -43,6 +43,8 @@
 
   # Show activation change diff for new builds.
   home.activation.report-changes = inputs.home-manager.lib.hm.dag.entryAnywhere ''
-    ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+    if [ -v oldGenPath ]; then
+      ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+    fi
   '';
 }
