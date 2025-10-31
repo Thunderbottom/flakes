@@ -15,5 +15,9 @@
     services.bazarr.enable = true;
     services.bazarr.group = "media";
     services.bazarr.openFirewall = true;
+
+    snowflake.services.backups.config.bazarr.paths = [
+      config.services.bazarr.dataDir
+    ];
   };
 }

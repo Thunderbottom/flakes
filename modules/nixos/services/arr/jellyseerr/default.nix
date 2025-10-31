@@ -29,6 +29,7 @@
       };
       services.jellyseerr.enable = true;
       services.jellyseerr.openFirewall = true;
+
       services.nginx = {
         virtualHosts = {
           "${cfg.domain}" = {
@@ -41,6 +42,11 @@
           };
         };
       };
+
+      snowflake.services.backups.config.jellyseerr.paths = [
+        config.services.jellyseerr.configDir
+      ];
+
       environment.etc = {
         jellyseerr = {
           target = "fail2ban/filter.d/jellyseerr.conf";

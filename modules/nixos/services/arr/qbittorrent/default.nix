@@ -80,6 +80,8 @@
           ]
           ++ lib.optional cfg.ui.flood.enable cfg.ui.flood.port;
 
+          snowflake.services.backups.config.qbittorrent-nox.paths = [ cfg.dataDir ];
+
           networking.firewall.allowedTCPPorts =
             lib.optional (cfg.openFirewall && cfg.torrentPort != null) cfg.torrentPort
             ++ lib.optional cfg.openFirewall cfg.uiPort

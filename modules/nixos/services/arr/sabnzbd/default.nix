@@ -15,5 +15,9 @@
 
     # This needs to be changed as per the port specified in the configuration.
     networking.firewall.allowedTCPPorts = [ 8085 ];
+
+    snowflake.services.backups.config.sabnzbd.paths = [
+      config.services.sabnzbd.configFile
+    ];
   };
 }

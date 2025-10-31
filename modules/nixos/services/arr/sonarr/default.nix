@@ -12,5 +12,9 @@
     services.sonarr.enable = true;
     services.sonarr.group = "media";
     services.sonarr.openFirewall = true;
+
+    snowflake.services.backups.config.sonarr.paths = [
+      config.services.sonarr.dataDir
+    ];
   };
 }

@@ -41,9 +41,6 @@
         intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
       };
 
-      services.jellyseerr.enable = true;
-      services.jellyseerr.openFirewall = true;
-
       services.nginx = {
         virtualHosts = {
           "${cfg.domain}" = {
@@ -68,6 +65,10 @@
         enabled = true;
         filter = "jellyfin";
       };
+
+      snowflake.services.backups.config.jellyfin.paths = [
+        config.services.jellyfin.dataDir
+      ];
 
       environment.etc = {
         jellyfin = {

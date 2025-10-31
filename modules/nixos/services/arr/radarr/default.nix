@@ -12,5 +12,9 @@
     services.radarr.enable = true;
     services.radarr.group = "media";
     services.radarr.openFirewall = true;
+
+    snowflake.services.backups.config.radarr.paths = [
+      config.services.radarr.dataDir
+    ];
   };
 }
