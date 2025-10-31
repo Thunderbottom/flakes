@@ -38,9 +38,9 @@
     };
 
     actions-runner = {
-      enable = lib.mkEnableOption "Enable a single-instance of forgejo-actions-runner";
+      enable = lib.mkEnableOption "Enable a single-instance of forgejo-runner";
       tokenFile = lib.mkOption {
-        description = "Age module containing the token to use for forgejo-actions-runner";
+        description = "Age module containing the token to use for forgejo-runner";
       };
     };
   };
@@ -87,7 +87,7 @@
           group = config.services.forgejo.user;
         };
 
-        forgejo-actions-runner = lib.mkIf cfg.actions-runner.enable {
+        forgejo-runner = lib.mkIf cfg.actions-runner.enable {
           inherit (cfg.actions-runner.tokenFile) file;
         };
       };
@@ -138,12 +138,12 @@
       };
 
       services.gitea-actions-runner = lib.mkIf cfg.actions-runner.enable {
-        package = pkgs.forgejo-actions-runner;
+        package = pkgs.forgejo-runner;
         instances.default = {
           inherit (cfg.actions-runner) enable;
           name = config.networking.hostName;
           url = "https://${cfg.domain}";
-          tokenFile = config.age.secrets.forgejo-actions-runner.path;
+          tokenFile = config.age.secrets.forgejo-runner.path;
 
           labels = [
             "ubuntu-latest:docker://node:22-bookworm"
