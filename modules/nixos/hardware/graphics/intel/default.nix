@@ -28,16 +28,14 @@
       enable = true;
       enable32Bit = true;
 
-      extraPackages =
-        with pkgs;
-        [
-          intel-media-driver
-          intel-vaapi-driver
-          libvdpau-va-gl
-          vaapiVdpau
-          vpl-gpu-rt
-        ]
-        ++ config.snowflake.hardware.graphics.intel.computeRuntime;
+      extraPackages = with pkgs; [
+        config.snowflake.hardware.graphics.intel.computeRuntime
+        intel-media-driver
+        intel-vaapi-driver
+        libvdpau-va-gl
+        vaapiVdpau
+        vpl-gpu-rt
+      ];
     };
 
     environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
