@@ -90,6 +90,7 @@
           clearurls
           consent-o-matic
           duckduckgo-privacy-essentials
+          kagi-search
           reddit-enhancement-suite
           return-youtube-dislikes
           sponsorblock

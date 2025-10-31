@@ -44,9 +44,6 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
 
-    betterfox.url = "github:yokoffing/Betterfox";
-    betterfox.flake = false;
-
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -68,7 +65,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # NOTE: enable this to make hyprland work
     hyprland.url = "github:hyprwm/Hyprland";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
