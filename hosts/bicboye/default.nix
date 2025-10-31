@@ -97,6 +97,11 @@
         domain = "atuin.deku.moe";
       };
 
+      audiobookshelf = {
+        enable = true;
+        domain = "books.deku.moe";
+      };
+
       arr.enable = true;
       jellyfin.domain = "jelly.deku.moe";
       jellyseerr.domain = "seerr.deku.moe";
