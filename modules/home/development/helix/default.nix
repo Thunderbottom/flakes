@@ -16,6 +16,7 @@
         nil
         gopls
         gotools
+        harper
         lldb
         marksman
         nixfmt-rfc-style
@@ -123,7 +124,10 @@
           {
             name = "markdown";
             auto-format = true;
-            language-servers = [ "marksman" ];
+            language-servers = [
+              "harper"
+              "marksman"
+            ];
           }
           {
             name = "nix";
@@ -168,6 +172,10 @@
           gopls = {
             command = lib.getExe pkgs.gopls;
             config.gopls.formatting.command = [ "${pkgs.go}/bin/gofmt" ];
+          };
+          harper-ls = {
+            command = lib.getExe pkgs.harper;
+            args = [ "--stdio" ];
           };
           marksman.command = lib.getExe pkgs.marksman;
           nil = {
