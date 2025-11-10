@@ -51,9 +51,6 @@
     services.xserver.excludePackages = [ pkgs.xterm ];
     services.xserver.desktopManager.xterm.enable = false;
 
-    # Add udev rules for ADB.
-    services.udev.packages = [ pkgs.android-udev-rules ];
-
     # Enable XDG Portal.
     # Additional configuration will be done through individual
     # desktop environment configurations.
