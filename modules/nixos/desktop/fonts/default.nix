@@ -53,14 +53,13 @@
             nerd-fonts.ubuntu-mono
             noto-fonts
             noto-fonts-cjk-sans
-            noto-fonts-emoji
-            noto-fonts-extra
+            noto-fonts-color-emoji
             powerline-fonts
             proggyfonts
             source-serif
             roboto
-            ubuntu_font_family
-            vistafonts
+            ubuntu-classic
+            vista-fonts
             work-sans
           ]
         ))
