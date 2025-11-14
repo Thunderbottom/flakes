@@ -30,7 +30,7 @@
       "kvm-amd"
       "zenpower"
     ];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"

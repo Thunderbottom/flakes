@@ -1,10 +1,12 @@
 {
   config,
+  inputs,
   pkgs,
   userdata,
   ...
 }:
 {
+  imports = [ inputs.chaotic.nixosModules.default ];
   hardware = {
     cpu.amd.updateMicrocode = true;
     enableRedistributableFirmware = true;
