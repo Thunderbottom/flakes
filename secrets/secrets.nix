@@ -42,7 +42,7 @@ in
   "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/bluesky-pds/environment.age".publicKeys = thunderbottom ++ bicboye;
-  "services/bluesky-pds/ssl-environment.age".publicKeys = thunderbottom ++ bicboye;
+  "services/bluesky-pds/ssl-environment.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
   "services/forgejo/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
   "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
@@ -52,5 +52,5 @@ in
   "services/miniflux/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/paperless/password.age".publicKeys = users ++ bicboye;
   "services/unifi-unpoller/password.age".publicKeys = users ++ bicboye;
-  "services/vaultwarden/password.age".publicKeys = users ++ bicboye;
+  "services/vaultwarden/password.age".publicKeys = users ++ bicboye ++ smolboye;
 }
