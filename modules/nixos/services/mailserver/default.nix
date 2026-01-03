@@ -79,7 +79,7 @@
 
         # Spin up a stripped-down nginx instance on
         # port 80 to generate a certificate automatically.
-        certificateScheme = "acme-nginx";
+        x509.useACMEHost = cfg.fqdn;
 
         # Enable a better way of storing emails.
         useFsLayout = true;
@@ -106,6 +106,14 @@
             specialUse = "Trash";
           };
         };
+      };
+
+      security.acme.certs.${cfg.fqdn} = {
+        reloadServices = [
+          "postfix.service"
+          "dovecot.service"
+        ];
+        webroot = "/var/lib/acme/acme-challenge";
       };
 
       # Prefer using ipv4 and use correct ipv6
