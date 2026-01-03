@@ -19,7 +19,7 @@
     timeZone = lib.mkOption {
       type = lib.types.str;
       description = "Timezone to use for the system";
-      default = "Asia/Kolkata";
+      default = "Europe/Madrid";
     };
     bootloader = lib.mkOption {
       type = lib.types.enum [

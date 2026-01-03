@@ -1590,7 +1590,7 @@ Timezone to use for the system
 
 **Type:** `lib.types.str`
 
-**Default:** `"Asia/Kolkata"`
+**Default:** `"Europe/Madrid"`
 
 ## [`options.snowflake.user.description`](modules/nixos/user/default.nix#L24)
 
