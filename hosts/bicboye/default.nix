@@ -200,11 +200,11 @@
         };
       };
 
-      vaultwarden = {
-        enable = true;
-        domain = "bw.deku.moe";
-        adminTokenFile = userdata.secrets.services.vaultwarden.password;
-      };
+      # vaultwarden = {
+      #   enable = true;
+      #   domain = "bw.deku.moe";
+      #   adminTokenFile = userdata.secrets.services.vaultwarden.password;
+      # };
     };
 
     user = {

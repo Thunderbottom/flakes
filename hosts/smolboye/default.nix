@@ -95,6 +95,20 @@
           };
         };
       };
+
+      nginx = {
+        enable = true;
+        acmeEmail = "chinmaydpai@gmail.com";
+        enableCloudflareRealIP = true;
+      };
+
+      postgresql.enable = true;
+
+      vaultwarden = {
+        enable = true;
+        domain = "bw.deku.moe";
+        adminTokenFile = userdata.secrets.services.vaultwarden.password;
+      };
     };
 
     user = {
