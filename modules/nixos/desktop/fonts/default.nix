@@ -34,7 +34,6 @@
             fira
             fira-code
             fira-code-symbols
-            fira-go
             google-fonts
             hack-font
             ibm-plex
