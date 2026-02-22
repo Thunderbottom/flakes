@@ -1,0 +1,115 @@
+''
+  * {
+    font-family: "JetBrainsMono Nerd Font";
+    font-weight: bold;
+    min-height: 0;
+    font-size: 100%;
+    font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+    padding: 0px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+
+  window#waybar {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  window#waybar.hidden {
+    opacity: 0.5;
+  }
+
+  tooltip {
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+  }
+
+  tooltip label {
+    color: #cad3f5;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  .modules-right,
+  .modules-center,
+  .modules-left {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 0px solid rgba(0, 0, 0, 1);
+    border-radius: 8px;
+  }
+
+  #workspaces button {
+    padding: 2px;
+    color: #6e738d;
+    margin-right: 5px;
+  }
+
+  #workspaces button.active {
+    color: #dfdfdf;
+    border-radius: 3px 3px 3px 3px;
+  }
+
+  #workspaces button.focused {
+    color: #d8dee9;
+  }
+
+  #workspaces button.urgent {
+    color: #ed8796;
+    border-radius: 8px;
+  }
+
+  #workspaces button:hover {
+    color: #dfdfdf;
+    border-radius: 3px;
+  }
+
+  #backlight,
+  #battery,
+  #bluetooth,
+  #clock,
+  #cpu,
+  #custom-notification,
+  #custom-recorder,
+  #language,
+  #memory,
+  #network,
+  #privacy,
+  #pulseaudio,
+  #temperature,
+  #tray,
+  #workspaces {
+    color: #dfdfdf;
+    padding: 0px 10px;
+    border-radius: 8px;
+  }
+
+  #temperature.critical {
+    background-color: #ff0000;
+  }
+
+  @keyframes blink {
+    to {
+      color: #000000;
+    }
+  }
+
+  #taskbar button.active {
+    background-color: #7f849c;
+  }
+
+  #battery.critical:not(.charging) {
+    color: #f53c3c;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  #custom-recorder {
+    color: #ff2800;
+  }
+
+  #privacy {
+    color: #f5a97f;
+  }
+''

@@ -5,6 +5,8 @@
   ...
 }:
 {
+  imports = [ ./runner.nix ];
+
   options.snowflake.services.forgejo = {
     enable = lib.mkEnableOption "Enable forgejo service";
 
@@ -80,16 +82,10 @@
         ];
       };
 
-      age.secrets = {
-        forgejo = {
-          inherit (cfg.dbPasswordFile) file;
-          owner = config.services.forgejo.user;
-          group = config.services.forgejo.user;
-        };
-
-        forgejo-runner = lib.mkIf cfg.actions-runner.enable {
-          inherit (cfg.actions-runner.tokenFile) file;
-        };
+      age.secrets.forgejo = {
+        inherit (cfg.dbPasswordFile) file;
+        owner = config.services.forgejo.user;
+        group = config.services.forgejo.user;
       };
 
       services.forgejo = {
@@ -136,45 +132,6 @@
           };
         };
       };
-
-      services.gitea-actions-runner = lib.mkIf cfg.actions-runner.enable {
-        package = pkgs.forgejo-runner;
-        instances.default = {
-          inherit (cfg.actions-runner) enable;
-          name = config.networking.hostName;
-          url = "https://${cfg.domain}";
-          tokenFile = config.age.secrets.forgejo-runner.path;
-
-          labels = [
-            "ubuntu-latest:docker://node:22-bookworm"
-          ];
-
-          settings = {
-            log.level = "info";
-
-            cache = {
-              enabled = true;
-              dir = "/var/cache/forgejo-runner/actions";
-            };
-
-            runner = {
-              capacity = 2;
-              envs = { };
-              timeout = "1h";
-            };
-
-            container = {
-              network = "bridge";
-              privileged = false;
-              docker_host = "";
-            };
-            host.workdir_parent = "/var/tmp/forgejo-actions-work";
-          };
-        };
-      };
-
-      systemd.services.gitea-runner-default.serviceConfig.CacheDirectory =
-        lib.mkIf cfg.actions-runner.enable "forgejo-runner";
 
       networking.firewall = lib.mkIf config.networking.firewall.enable {
         allowedTCPPorts = [ cfg.sshPort ];
