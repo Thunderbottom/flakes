@@ -25,6 +25,13 @@
       cfg = config.snowflake.services.actual;
     in
     lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.domain != "";
+          message = "snowflake.services.actual.domain must be set when enabled";
+        }
+      ];
+
       snowflake.meta = {
         domains.list = [ cfg.domain ];
         ports.list = [ cfg.port ];

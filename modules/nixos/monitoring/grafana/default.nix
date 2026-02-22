@@ -40,6 +40,13 @@
       cfg = config.snowflake.monitoring.grafana;
     in
     lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.domain != "";
+          message = "snowflake.monitoring.grafana.domain must be set when enabled";
+        }
+      ];
+
       age.secrets.grafana = {
         inherit (cfg.adminPasswordFile) file;
         owner = "grafana";

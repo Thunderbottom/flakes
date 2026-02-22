@@ -176,19 +176,19 @@
 
       technitium.enable = true;
 
-      static-sites.sites = {
-        maych-in = {
-          enable = true;
-          package = pkgs.maych-in;
-          domain = "maych.in";
-        };
+      # static-sites.sites = {
+      #   maych-in = {
+      #     enable = true;
+      #     package = pkgs.maych-in;
+      #     domain = "maych.in";
+      #   };
 
-        toasters = {
-          enable = true;
-          package = pkgs.toaste-rs;
-          domain = "toaste.rs";
-        };
-      };
+      #   toasters = {
+      #     enable = true;
+      #     package = pkgs.toaste-rs;
+      #     domain = "toaste.rs";
+      #   };
+      # };
 
       unifi-controller = {
         enable = true;

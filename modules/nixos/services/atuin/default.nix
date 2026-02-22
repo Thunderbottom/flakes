@@ -25,6 +25,13 @@
       cfg = config.snowflake.services.atuin;
     in
     lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.domain != "";
+          message = "snowflake.services.atuin.domain must be set when enabled";
+        }
+      ];
+
       snowflake.meta = {
         domains.list = [ cfg.domain ];
         ports.list = [ cfg.port ];

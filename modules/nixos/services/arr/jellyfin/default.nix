@@ -18,6 +18,13 @@
       cfg = config.snowflake.services.jellyfin;
     in
     lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.domain != "";
+          message = "snowflake.services.jellyfin.domain must be set when enabled";
+        }
+      ];
+
       snowflake.meta = {
         domains.list = [ cfg.domain ];
         ports.list = [
