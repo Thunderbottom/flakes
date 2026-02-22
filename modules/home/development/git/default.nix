@@ -50,9 +50,7 @@ in
   };
 
   config = lib.mkIf config.snowflake.development.git.enable {
-    programs.git = {
-      enable = true;
-
+    programs = {
       delta = {
         enable = true;
         options = {
@@ -62,52 +60,56 @@ in
         };
       };
 
-      extraConfig = {
-        init.defaultBranch = "main";
-        commit.gpgSign = true;
-        diff.algorithm = "histogram";
-        gc.writeCommitGraph = true;
+      git = {
+        enable = true;
 
-        # Do not `git fetch && git merge` or `git fetch && git rebase`
-        # on default `git pull behavior`.
-        pull.ff = "only";
-        pull.rebase = false;
+        settings = {
+          init.defaultBranch = "main";
+          commit.gpgSign = true;
+          diff.algorithm = "histogram";
+          gc.writeCommitGraph = true;
 
-        # Enable REuse REcorded REsolution for git merge conflicts.
-        rerere.enabled = true;
+          # Do not `git fetch && git merge` or `git fetch && git rebase`
+          # on default `git pull behavior`.
+          pull.ff = "only";
+          pull.rebase = false;
 
-        user.name = config.snowflake.development.git.user.name;
-        user.email = config.snowflake.development.git.user.email;
-        user.signingKey = config.snowflake.development.git.user.signingKey;
-      }
-      // config.snowflake.development.git.work.extraConfig;
+          # Enable REuse REcorded REsolution for git merge conflicts.
+          rerere.enabled = true;
 
-      # Global gitignore configuration.
-      ignores = [
-        "*~"
-        ".#*"
-      ];
-      includes = lib.mkIf config.snowflake.development.git.work.enable [
-        # Enable work git configuration in specific directories.
-        # This allows existence of two different gitconfigs based on directories.
-        # For this, structuring the git repositories into directories based on
-        # origin is an ideal workflow.
-        # Example:
-        # ~/workspace/github.com: personal git workflow.
-        # ~/workspace/git.work.example: $WORK git workflow.
-        # Setting config.snowflake.work.git.workpath = "~/workspace/git.work.example"
-        # would apply the following configuration to only
-        # the ~/workspace.git.work.example folder.
-        {
-          condition = "gitdir:${config.snowflake.development.git.work.path}";
-          contents = {
-            commit.gpgSign = true;
-            user.email = config.snowflake.development.git.work.email;
-            user.name = config.snowflake.development.git.user.name;
-            user.signingKey = config.snowflake.development.git.user.signingKey;
-          };
+          user.name = config.snowflake.development.git.user.name;
+          user.email = config.snowflake.development.git.user.email;
+          user.signingKey = config.snowflake.development.git.user.signingKey;
         }
-      ];
+        // config.snowflake.development.git.work.extraConfig;
+
+        # Global gitignore configuration.
+        ignores = [
+          "*~"
+          ".#*"
+        ];
+        includes = lib.mkIf config.snowflake.development.git.work.enable [
+          # Enable work git configuration in specific directories.
+          # This allows existence of two different gitconfigs based on directories.
+          # For this, structuring the git repositories into directories based on
+          # origin is an ideal workflow.
+          # Example:
+          # ~/workspace/github.com: personal git workflow.
+          # ~/workspace/git.work.example: $WORK git workflow.
+          # Setting config.snowflake.work.git.workpath = "~/workspace/git.work.example"
+          # would apply the following configuration to only
+          # the ~/workspace.git.work.example folder.
+          {
+            condition = "gitdir:${config.snowflake.development.git.work.path}";
+            contents = {
+              commit.gpgSign = true;
+              user.email = config.snowflake.development.git.work.email;
+              user.name = config.snowflake.development.git.user.name;
+              user.signingKey = config.snowflake.development.git.user.signingKey;
+            };
+          }
+        ];
+      };
     };
   };
 }
