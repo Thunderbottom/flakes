@@ -86,6 +86,15 @@
           "net.core.wmem_max" = 16777216;
           "net.ipv4.tcp_rmem" = "4096 65536 16777216";
           "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+
+          "net.core.netdev_max_backlog" = 16384;
+          "net.core.somaxconn" = 8192;
+
+          "fs.file-max" = 2097152;
+
+          "fs.inotify.max_user_watches" = 524288;
+          "fs.inotify.max_user_instances" = 1024;
+          "fs.inotify.max_queued_events" = 32768;
         };
       })
     ];

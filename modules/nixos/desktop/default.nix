@@ -31,9 +31,10 @@
       user.extraGroups = [ "adbusers" ];
     };
 
-    # Enable ADB for Android devices.
-    programs.adb.enable = true;
     programs.dconf.enable = true;
+
+    services.geoclue2.enable = true;
+    location.provider = "geoclue2";
 
     # Enable fingerprint authentication.
     # Requires fingerprint registered using `fprint-enroll` to work.
@@ -59,7 +60,11 @@
     xdg.portal.wlr.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
 
-    environment.systemPackages = [ pkgs.bibata-cursors ] ++ config.snowflake.desktop.extraPackages;
+    environment.systemPackages = [
+      pkgs.android-tools
+      pkgs.bibata-cursors
+    ]
+    ++ config.snowflake.desktop.extraPackages;
 
     # Set environment variables for the system.
     environment.variables = {
