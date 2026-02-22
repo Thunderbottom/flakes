@@ -304,11 +304,59 @@
 
           # Disable AI
           "browser.ml.enable" = false;
+
+          "gfx.webrender.all" = true;
+          "gfx.webrender.precache-shaders" = true;
+          "gfx.canvas.accelerated" = true;
+          "layers.gpu-process.enabled" = true;
+          "widget.dmabuf.force-enabled" = true;
+
+          "media.hardware-video-decoding.force-enabled" = true;
+          "media.ffmpeg.vaapi.enabled" = true;
+          "media.rdd-ffmpeg.enabled" = true;
+
+          "content.notify.interval" = 100000;
+
+          "browser.cache.jsbc_compression_level" = 3;
+          "browser.cache.disk.smart_size.enabled" = false;
+          "browser.cache.disk.capacity" = 1048576;
+          "browser.cache.memory.capacity" = 524288;
+
+          "media.memory_cache_max_size" = 65536;
+          "media.cache_readahead_limit" = 7200;
+          "media.cache_resume_threshold" = 3600;
+
+          "image.mem.decode_bytes_at_a_time" = 131072;
+          "image.mem.shared.unmap.min_expiration_ms" = 120000;
+
+          "network.http.max-connections" = 1800;
+          "network.http.max-persistent-connections-per-server" = 10;
+          "network.http.max-urgent-start-excessive-connections-per-host" = 5;
+          "network.http.pacing.requests.enabled" = false;
+          "network.dnsCacheExpiration" = 3600;
+          "network.ssl_tokens_cache_capacity" = 10240;
+
+          "network.dns.disablePrefetch" = false;
+          "network.dns.disablePrefetchFromHTTPS" = false;
+          "network.prefetch-next" = true;
+          "network.predictor.enabled" = true;
+          "network.predictor.enable-prefetch" = true;
+
+          "browser.sessionstore.interval" = 30000;
+          "dom.ipc.processCount" = 8;
+
+          "accessibility.force_disabled" = 1;
+          "reader.parse-on-load.enabled" = false;
+          "extensions.htmlaboutaddons.recommendations.enabled" = false;
+          "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
+          "dom.enable_web_task_scheduling" = true;
         };
       };
     };
 
-    # Run firefox in wayland.
-    home.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+    home.sessionVariables = {
+      MOZ_ENABLE_WAYLAND = "1";
+      MOZ_WAYLAND_USE_VAAPI = "1";
+    };
   };
 }
