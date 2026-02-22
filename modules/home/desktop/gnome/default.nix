@@ -45,7 +45,7 @@
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Super>Return";
-        command = "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty";
+        command = "${inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ghostty";
         name = "Ghostty";
       };
 

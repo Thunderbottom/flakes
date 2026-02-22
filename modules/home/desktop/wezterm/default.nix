@@ -11,7 +11,7 @@
   config = lib.mkIf config.snowflake.desktop.wezterm.enable {
     programs.wezterm = {
       enable = true;
-      package = inputs.wezterm.packages.${pkgs.system}.default;
+      package = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
       extraConfig = ''
         local wezterm = require 'wezterm'
