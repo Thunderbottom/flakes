@@ -19,10 +19,10 @@ let
 
   # Input-based overlays for external packages
   inputOverlays = [
-    (_: prev: {
-      inherit (inputs.maych-in.packages.${prev.system}) maych-in;
-      inherit (inputs.toasters.packages.${prev.system}) toaste-rs;
-    })
+    # (_: prev: {
+    #   inherit (inputs.maych-in.packages.${prev.system}) maych-in;
+    #   inherit (inputs.toasters.packages.${prev.system}) toaste-rs;
+    # })
   ];
 
 in
