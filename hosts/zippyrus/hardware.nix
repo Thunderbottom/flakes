@@ -30,7 +30,7 @@
       "kvm-amd"
       "zenpower"
     ];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"
@@ -39,6 +39,8 @@
       "pcie_aspm.policy=powersupersave"
       # Attempt to fix mediatek wifi lag/latency on MT7922
       "mt7921e.disable_aspm=Y"
+      "transparent_hugepage=madvise"
+      "split_lock_detect=off"
     ];
     blacklistedKernelModules = [
       "k10temp"

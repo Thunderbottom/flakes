@@ -25,6 +25,10 @@
     group = "root";
   };
 
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom="ES"
+  '';
+
   networking = {
     # Improve wireless roaming stability.
     wireless.iwd.settings = {
@@ -34,6 +38,10 @@
         RoamRetryInterval = 20;
       };
     };
+  };
+
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "10s";
   };
 
   services = {
@@ -49,7 +57,6 @@
     extraPackages = with pkgs; [
       obsidian
       piper
-      zed-editor
     ];
 
     core = {
