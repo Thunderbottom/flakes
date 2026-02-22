@@ -57,8 +57,6 @@
     ];
   };
 
-  security.acme.defaults.email = "chinmaydpai@gmail.com";
-
   # Disable smartd, not required for VPS
   services.smartd.enable = lib.mkForce false;
 
@@ -98,7 +96,7 @@
 
       nginx = {
         enable = true;
-        acmeEmail = "chinmaydpai@gmail.com";
+        acmeEmail = userdata.acmeEmail;
         enableCloudflareRealIP = true;
       };
 
@@ -117,12 +115,10 @@
       description = "Smolboye Server";
       userPasswordAgeModule = userdata.secrets.machines.smolboye.password;
       rootPasswordAgeModule = userdata.secrets.machines.smolboye.root-password;
-      extraAuthorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
-      ];
+      extraAuthorizedKeys =
+        userdata.sshKeys.users.thunderbottom
+        ++ [ (builtins.head userdata.sshKeys.machines.thonkpad) ]
+        ++ userdata.sshKeys.users.codingcoffee;
     };
   };
 }

@@ -1,27 +1,7 @@
 let
-  codingcoffee = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN cc@predator"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C cc@eden"
-  ];
-  thunderbottom = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
-  ];
-
-  donkpad = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiN+hb+hpLksNnj9mov29PNcfBdTCM8I+62+ycUAofx"
-  ];
-  thonkpad = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMrNdHskpknCow+nuCTEBRrKb0b2BKzwTQY60eEAWztS"
-  ];
-  zippyrus = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHLWaHgjXm/P8YBoGPeN6UKgl+2o2YoyoKELNYP1pbVy"
-  ];
-
-  smolboye = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQFm91hLes24sYbq96zD52mDrrr1l2F2xstcfAEg+qI" ];
-  bicboye = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBsciEMPwLAYtbHNkdedjhSrb66fFQ46lgnVGssCuiLH"
-  ];
+  data = import ../data.nix;
+  inherit (data.sshKeys.users) codingcoffee thunderbottom;
+  inherit (data.sshKeys.machines) donkpad thonkpad zippyrus smolboye bicboye;
 
   servers = bicboye ++ smolboye;
   users = thunderbottom ++ codingcoffee;

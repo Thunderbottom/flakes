@@ -41,12 +41,10 @@
     hardware.graphics.intel.enable = true;
     hardware.initrd-luks = {
       enable = true;
-      authorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
-      ];
+      authorizedKeys =
+        userdata.sshKeys.users.thunderbottom
+        ++ [ (builtins.head userdata.sshKeys.machines.thonkpad) ]
+        ++ userdata.sshKeys.users.codingcoffee;
       availableKernelModules = [ "r8169" ];
     };
 
@@ -155,7 +153,7 @@
 
       nginx = {
         enable = true;
-        acmeEmail = "chinmaydpai@gmail.com";
+        acmeEmail = userdata.acmeEmail;
         enableCloudflareRealIP = true;
       };
 
@@ -213,12 +211,10 @@
       description = "Bicboye Server";
       userPasswordAgeModule = userdata.secrets.machines.bicboye.password;
       rootPasswordAgeModule = userdata.secrets.machines.bicboye.root-password;
-      extraAuthorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3PeMbehJBkmv8Ee7xJimTzXoSdmAnxhBatHSdS+saM"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOyY8ZkhwWiqJCiTqXvHnLpXQb1qWwSZAoqoSWJI1ogP"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJQWA+bAwpm9ca5IhC6q2BsxeQH4WAiKyaht48b7/xkN"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJnFvU6nBXEuZF08zRLFfPpxYjV3o0UayX0zTPbDb7C"
-      ];
+      extraAuthorizedKeys =
+        userdata.sshKeys.users.thunderbottom
+        ++ [ (builtins.head userdata.sshKeys.machines.thonkpad) ]
+        ++ userdata.sshKeys.users.codingcoffee;
     };
   };
 }
