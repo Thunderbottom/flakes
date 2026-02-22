@@ -19,7 +19,7 @@
         harper
         lldb
         marksman
-        nixfmt-rfc-style
+        nixfmt
         pyright
         ruff
         rust-analyzer
@@ -181,7 +181,7 @@
           nil = {
             command = lib.getExe pkgs.nil;
             config.nil.formatting.command = [
-              "${lib.getExe pkgs.nixfmt-rfc-style}"
+              "${lib.getExe pkgs.nixfmt}"
               "-q"
             ];
           };
