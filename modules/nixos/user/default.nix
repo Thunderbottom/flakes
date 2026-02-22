@@ -4,6 +4,7 @@
   inputs,
   self,
   pkgs,
+  userdata,
   ...
 }:
 {
@@ -91,7 +92,7 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = {
-        inherit inputs self pkgs;
+        inherit inputs self pkgs userdata;
       };
       users.${config.snowflake.user.username}.imports = [
         self.homeModules.default

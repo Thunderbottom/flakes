@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, userdata, ... }:
 {
   snowflake.desktop.firefox.enable = true;
   snowflake.desktop.ghostty.enable = true;
@@ -15,7 +15,7 @@
   snowflake.development.tmux.enable = true;
   snowflake.shell.atuin = {
     enable = true;
-    sync.address = "https://atuin.deku.moe";
+    sync.address = "https://atuin.${userdata.domain}";
   };
   snowflake.shell.fish.enable = true;
   snowflake.shell.direnv.enable = true;

@@ -51,7 +51,7 @@
     monitoring = {
       enable = true;
       grafana = {
-        domain = "lens.deku.moe";
+        domain = "lens.${userdata.domain}";
         adminPasswordFile = userdata.secrets.monitoring.grafana.password;
       };
       victoriametrics.extraPrometheusConfig = [
@@ -87,22 +87,22 @@
     services = {
       actual = {
         enable = true;
-        domain = "actual.deku.moe";
+        domain = "actual.${userdata.domain}";
       };
 
       atuin = {
         enable = true;
-        domain = "atuin.deku.moe";
+        domain = "atuin.${userdata.domain}";
       };
 
       audiobookshelf = {
         enable = true;
-        domain = "books.deku.moe";
+        domain = "books.${userdata.domain}";
       };
 
       arr.enable = true;
-      jellyfin.domain = "jelly.deku.moe";
-      jellyseerr.domain = "seerr.deku.moe";
+      jellyfin.domain = "jelly.${userdata.domain}";
+      jellyseerr.domain = "seerr.${userdata.domain}";
 
       backups = {
         enable = true;
@@ -113,7 +113,7 @@
 
       bluesky-pds = {
         enable = true;
-        domain = "blue.deku.moe";
+        domain = "blue.${userdata.domain}";
         environmentFile = userdata.secrets.services.bluesky-pds.environment;
       };
 
@@ -131,8 +131,8 @@
 
       forgejo = {
         enable = true;
-        domain = "git.deku.moe";
-        sshDomain = "git-ssh.deku.moe";
+        domain = "git.${userdata.domain}";
+        sshDomain = "git-ssh.${userdata.domain}";
         dbPasswordFile = userdata.secrets.services.forgejo.password;
         actions-runner = {
           enable = true;
@@ -142,12 +142,12 @@
 
       immich = {
         enable = true;
-        domain = "photos.deku.moe";
+        domain = "photos.${userdata.domain}";
       };
 
       miniflux = {
         enable = true;
-        domain = "flux.deku.moe";
+        domain = "flux.${userdata.domain}";
         adminTokenFile = userdata.secrets.services.miniflux.password;
       };
 
@@ -159,12 +159,12 @@
 
       ntfy-sh = {
         enable = true;
-        domain = "ntfy.deku.moe";
+        domain = "ntfy.${userdata.domain}";
       };
 
       paperless = {
         enable = true;
-        domain = "docs.deku.moe";
+        domain = "docs.${userdata.domain}";
         passwordFile = userdata.secrets.services.paperless.password;
         adminUser = "chinmay";
       };

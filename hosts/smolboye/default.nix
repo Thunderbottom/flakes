@@ -73,21 +73,21 @@
 
       mailserver = {
         enable = true;
-        fqdn = "mail.deku.moe";
-        domains = [ "deku.moe" ];
+        fqdn = "mail.${userdata.domain}";
+        domains = [ userdata.domain ];
         postfixBindIPv6 = "2a01:4f8:1c1c:90b::";
         loginAccounts = {
-          "watashi@deku.moe" = {
+          "watashi@${userdata.domain}" = {
             hashedPasswordFile = config.age.secrets.mailserver-watashi.path;
-            aliases = [ "@deku.moe" ];
-            catchAll = [ "deku.moe" ];
+            aliases = [ "@${userdata.domain}" ];
+            catchAll = [ userdata.domain ];
           };
-          "noreply@deku.moe" = {
+          "noreply@${userdata.domain}" = {
             hashedPasswordFile = config.age.secrets.mailserver-noreply.path;
             aliases = [
-              "git@deku.moe"
-              "jelly@deku.moe"
-              "vaultwarden@deku.moe"
+              "git@${userdata.domain}"
+              "jelly@${userdata.domain}"
+              "vaultwarden@${userdata.domain}"
             ];
             sendOnly = true;
           };
@@ -104,7 +104,7 @@
 
       vaultwarden = {
         enable = true;
-        domain = "bw.deku.moe";
+        domain = "bw.${userdata.domain}";
         adminTokenFile = userdata.secrets.services.vaultwarden.password;
       };
     };
