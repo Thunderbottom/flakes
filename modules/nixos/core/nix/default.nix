@@ -69,7 +69,7 @@
         warn-dirty = false;
 
         # Add cache substituters to allow fetching cached builds.
-        trusted-substituters = [
+        substituters = [
           "https://nix-community.cachix.org"
           "https://hyprland.cachix.org"
           "https://helix.cachix.org"
