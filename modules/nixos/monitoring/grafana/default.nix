@@ -66,7 +66,10 @@
             reporting_enabled = false;
             feedback_links_enabled = false;
           };
-          security.admin_password = "$__file{${config.age.secrets.grafana.path}}";
+          security = {
+            admin_password = "$__file{${config.age.secrets.grafana.path}}";
+            secret_key = "$__file{${config.age.secrets.grafana.path}}";
+          };
         };
 
         provision = {
