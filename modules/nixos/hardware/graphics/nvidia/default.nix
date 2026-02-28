@@ -53,13 +53,28 @@
     };
 
     environment.variables = {
-      GBM_BACKEND = "nvidia-drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       WLR_NO_HARDWARE_CURSORS = "1";
     };
 
     hardware.nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      # package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package =
+        let
+          base = config.boot.kernelPackages.nvidiaPackages.latest;
+          cachyos-nvidia-patch = pkgs.fetchpatch {
+            url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
+            sha256 = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
+          };
+
+          # Patch the appropriate driver based on config.hardware.nvidia.open
+          driverAttr = if config.hardware.nvidia.open then "open" else "bin";
+        in
+        base
+        // {
+          ${driverAttr} = base.${driverAttr}.overrideAttrs (oldAttrs: {
+            patches = (oldAttrs.patches or [ ]) ++ [ cachyos-nvidia-patch ];
+          });
+        };
       modesetting.enable = true;
       nvidiaSettings = config.snowflake.desktop.enable;
       dynamicBoost.enable = true;
@@ -69,6 +84,10 @@
 
       open = true;
 
+      # In PRIME offload mode, apps run on the iGPU by default, so LIBVA should
+      # use the iGPU's driver (set by the AMD/Intel graphics module).
+      # GBM_BACKEND and __GLX_VENDOR_LIBRARY_NAME are set by the nvidia-offload
+      # wrapper command (enableOffloadCmd) only for apps explicitly run on the dGPU.
       prime = {
         offload = {
           enable = true;
@@ -79,7 +98,6 @@
       };
     };
 
-    environment.sessionVariables.LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
     environment.variables.KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = "1";
 
     boot.blacklistedKernelModules = [ "nouveau" ];
@@ -105,7 +123,7 @@
         ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = ''${pkgs.procps}/bin/pkill -f -STOP ${pkgs.gnome-shell}/bin/gnome-shell'';
+          ExecStart = "${pkgs.procps}/bin/pkill -f -STOP ${pkgs.gnome-shell}/bin/gnome-shell";
         };
       };
       services."gnome-resume" = {
@@ -121,7 +139,7 @@
         ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = ''${pkgs.procps}/bin/pkill -f -CONT ${pkgs.gnome-shell}/bin/gnome-shell'';
+          ExecStart = "${pkgs.procps}/bin/pkill -f -CONT ${pkgs.gnome-shell}/bin/gnome-shell";
         };
       };
     };
