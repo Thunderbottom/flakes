@@ -116,6 +116,12 @@
         webroot = "/var/lib/acme/acme-challenge";
       };
 
+      services.nginx.virtualHosts."${cfg.fqdn}" = {
+        locations."/.well-known/acme-challenge" = {
+          root = "/var/lib/acme/acme-challenge";
+        };
+      };
+
       # Prefer using ipv4 and use correct ipv6
       # address to avoid rDNS issues
       services.postfix.settings.main = {
