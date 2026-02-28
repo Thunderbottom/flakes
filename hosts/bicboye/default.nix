@@ -191,18 +191,18 @@
       };
 
       unifi-controller = {
-        enable = true;
+        enable = false;
         unpoller = {
-          enable = true;
+          enable = false;
           passwordFile = userdata.secrets.services.unifi-unpoller.password;
         };
       };
 
-      # vaultwarden = {
-      #   enable = true;
-      #   domain = "bw.deku.moe";
-      #   adminTokenFile = userdata.secrets.services.vaultwarden.password;
-      # };
+      vaultwarden = {
+        enable = false;
+        domain = "bw.deku.moe";
+        adminTokenFile = userdata.secrets.services.vaultwarden.password;
+      };
     };
 
     user = {
