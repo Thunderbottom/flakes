@@ -70,8 +70,8 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
-    # maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/6e23df19298fb21dd3040419b520a00db32079dc.tar.gz";
-    # maych-in.inputs.nixpkgs.follows = "nixpkgs";
+    maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/6e23df19298fb21dd3040419b520a00db32079dc.tar.gz";
+    maych-in.inputs.nixpkgs.follows = "nixpkgs";
 
     nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
@@ -91,8 +91,8 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # toasters.url = "https://git.deku.moe/thunderbottom/toasters/archive/main.tar.gz";
-    # toasters.inputs.nixpkgs.follows = "nixpkgs";
+    toasters.url = "https://git.deku.moe/thunderbottom/toasters/archive/main.tar.gz";
+    toasters.inputs.nixpkgs.follows = "nixpkgs";
 
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
