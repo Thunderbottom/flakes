@@ -96,7 +96,7 @@
 
       nginx = {
         enable = true;
-        acmeEmail = userdata.acmeEmail;
+        inherit (userdata) acmeEmail;
         enableCloudflareRealIP = true;
       };
 

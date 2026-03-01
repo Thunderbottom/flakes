@@ -1,6 +1,7 @@
 { self, lib, ... }:
 let
-  modulesOf = dir: dir |> lib.filesystem.listFilesRecursive |> builtins.filter (lib.hasSuffix "default.nix");
+  modulesOf =
+    dir: dir |> lib.filesystem.listFilesRecursive |> builtins.filter (lib.hasSuffix "default.nix");
 in
 {
   flake = {
