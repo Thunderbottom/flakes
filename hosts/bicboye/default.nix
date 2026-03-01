@@ -28,7 +28,11 @@
   };
 
   snowflake = {
-    meta.ip.v4 = "192.168.69.193";
+    meta.ip.v4 = "192.168.1.169";
+
+    # Disable NetworkManager - this is a server with a single ethernet interface
+    # dhcpcd will handle DHCP instead
+    networking.networkManager.enable = lib.mkForce false;
 
     extraPackages = with pkgs; [
       nmap

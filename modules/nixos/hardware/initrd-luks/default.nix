@@ -45,9 +45,20 @@
       inherit (config.snowflake.hardware.initrd-luks) availableKernelModules;
 
       # Systemd networkd DHCP config (required when systemd is in initrd)
-      systemd.network.networks."10-initrd-wan" = lib.mkIf config.boot.initrd.systemd.enable {
-        matchConfig.Name = "enp2s0";
-        networkConfig.DHCP = "yes";
+      systemd.network = lib.mkIf config.boot.initrd.systemd.enable {
+        networks."10-initrd-wan" = {
+          matchConfig.Name = "enp2s0";
+          networkConfig.DHCP = "yes";
+          dhcpV4Config = {
+            ClientIdentifier = "mac";
+          };
+        };
+        # Wait for network to be actually online (DHCP lease acquired) before continuing
+        wait-online = {
+          enable = true;
+          anyInterface = true;
+          timeout = 60;  # Wait up to 60 seconds for DHCP
+        };
       };
 
       # Network and SSH config (works with both scripted and systemd initrd)
