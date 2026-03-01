@@ -71,6 +71,9 @@
       bluesky-pds = {
         environment.file = ./secrets/services/bluesky-pds/environment.age;
       };
+      cloudflare-ddns = {
+        api-token.file = ./secrets/services/cloudflare-ddns/api.age;
+      };
       forgejo = {
         password.file = ./secrets/services/forgejo/password.age;
         actions-runner.token.file = ./secrets/services/forgejo/actions-runner/token.age;

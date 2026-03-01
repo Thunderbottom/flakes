@@ -117,6 +117,16 @@
         environmentFile = userdata.secrets.services.bluesky-pds.environment;
       };
 
+      cloudflare-dyndns = {
+        enable = true;
+        apiTokenFile = userdata.secrets.services.cloudflare-ddns.api-token;
+        domains = [
+          "maych.in"
+          "bicboye.deku.moe"
+        ];
+        proxied = false;
+      };
+
       duperemove = {
         enable = true;
         extraArgs = "-dr";
@@ -153,7 +163,7 @@
 
       nginx = {
         enable = true;
-        acmeEmail = userdata.acmeEmail;
+        inherit (userdata) acmeEmail;
         enableCloudflareRealIP = true;
       };
 
