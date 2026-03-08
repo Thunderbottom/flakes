@@ -38,6 +38,7 @@ in
   "services/mailserver/noreply.age".publicKeys = thunderbottom ++ smolboye;
   "services/miniflux/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/paperless/password.age".publicKeys = users ++ bicboye;
+  "services/qui/session-secret.age".publicKeys = thunderbottom ++ bicboye;
   "services/unifi-unpoller/password.age".publicKeys = users ++ bicboye;
   "services/vaultwarden/password.age".publicKeys = users ++ bicboye ++ smolboye;
 }

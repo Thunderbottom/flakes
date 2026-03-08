@@ -106,6 +106,11 @@
       };
 
       arr.enable = true;
+
+      qui = {
+        enable = true;
+        secretFile = userdata.secrets.services.qui.session-secret.file;
+      };
       jellyfin.domain = "jelly.${userdata.domain}";
       jellyseerr.domain = "seerr.${userdata.domain}";
 

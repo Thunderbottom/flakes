@@ -29,7 +29,6 @@
       sabnzbd.enable = true;
       qbittorrent-nox = {
         enable = true;
-        ui.vuetorrent.enable = true;
         openFirewall = true;
       };
     };

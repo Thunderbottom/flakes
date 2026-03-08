@@ -88,6 +88,9 @@
       paperless = {
         password.file = ./secrets/services/paperless/password.age;
       };
+      qui = {
+        session-secret.file = ./secrets/services/qui/session-secret.age;
+      };
       unifi-unpoller = {
         password.file = ./secrets/services/unifi-unpoller/password.age;
       };
