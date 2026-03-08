@@ -11,12 +11,6 @@
     sensor.iio.enable = true;
   };
 
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
   powerManagement.cpuFreqGovernor = "performance";
 
   age.secrets.network-manager-psk = {
@@ -54,6 +48,9 @@
   };
 
   snowflake = {
+    # Enable laptop profile (includes power management, NetworkManager, btrfs scrub, user defaults)
+    profile.laptop.enable = true;
+
     extraPackages = with pkgs; [
       obsidian
       piper
@@ -67,8 +64,6 @@
         enable = true;
         storageDriver = "btrfs";
       };
-      # `sysctl` configuration for gaming improvements.
-      security.sysctl.gaming.enable = true;
     };
 
     desktop = {
@@ -114,11 +109,8 @@
 
     services.asus.enable = true;
 
+    # Host-specific password configuration (other user settings from laptop profile)
     user = {
-      enable = true;
-      username = "chnmy";
-      description = "Chinmay D. Pai";
-      extraGroups = [ "video" ];
       userPasswordAgeModule = userdata.secrets.machines.zippyrus.password;
       rootPasswordAgeModule = userdata.secrets.machines.zippyrus.root-password;
     };

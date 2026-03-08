@@ -66,6 +66,9 @@
   };
 
   snowflake = {
+    # Enable server profile (performance CPU governor, no laptop services, btrfs scrub for /)
+    profile.server.enable = true;
+
     bootloader = "grub";
 
     services = {

@@ -57,14 +57,16 @@
             };
           };
 
-          port-scan = {
-            settings = {
-              filter = "port-scan";
-              action = "iptables-allports[name=port-scan]";
-              bantime = 86400;
-              maxretry = 2;
-            };
-          };
+          # Port-scan jail disabled - filter not available by default
+          # and can cause false positives. Consider using firewall rules instead.
+          # port-scan = {
+          #   settings = {
+          #     filter = "port-scan";
+          #     action = "iptables-allports[name=port-scan]";
+          #     bantime = 86400;
+          #     maxretry = 2;
+          #   };
+          # };
         };
       };
     };

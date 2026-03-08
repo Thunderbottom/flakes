@@ -10,6 +10,7 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
+  # Custom btrfs scrub for /storage (root filesystem scrub from server profile)
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
@@ -28,11 +29,11 @@
   };
 
   snowflake = {
-    meta.ip.v4 = "192.168.1.169";
+    # Enable server profiles (includes performance CPU governor, no laptop services)
+    profile.server.enable = true;
+    profile.server-performance.enable = true;
 
-    # Disable NetworkManager - this is a server with a single ethernet interface
-    # dhcpcd will handle DHCP instead
-    networking.networkManager.enable = lib.mkForce false;
+    meta.ip.v4 = "192.168.1.169";
 
     extraPackages = with pkgs; [
       nmap

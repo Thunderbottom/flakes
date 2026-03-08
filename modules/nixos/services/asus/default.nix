@@ -22,10 +22,7 @@
     services = {
       scx.enable = true;
       supergfxd.enable = true;
-      asusd = {
-        enable = true;
-        enableUserService = true;
-      };
+      asusd.enable = true;
     };
   };
 }

@@ -13,6 +13,8 @@
   hardware.enableRedistributableFirmware = true;
 
   snowflake = {
+    # Enable laptop profile (includes power management, NetworkManager, user defaults)
+    profile.laptop.enable = true;
     extraPackages = with pkgs; [
       easyeffects
       glibc
@@ -39,10 +41,7 @@
     networking.iwd.enable = true;
     networking.netbird.enable = true;
 
-    user.enable = true;
-    user.username = "chnmy";
-    user.description = "Chinmay D. Pai";
-    user.extraGroups = [ "video" ];
+    # Host-specific password configuration (other user settings from laptop profile)
     user.userPasswordAgeModule = userdata.secrets.machines.thonkpad.password;
     user.rootPasswordAgeModule = userdata.secrets.machines.thonkpad.root-password;
   };

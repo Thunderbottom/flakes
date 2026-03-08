@@ -5,6 +5,14 @@
   ...
 }:
 {
+  # Use standard btrfs layout module
+  snowflake.hardware.btrfs-standard-layout = {
+    enable = true;
+    rootUUID = "740f7e37-527a-49a1-a6e8-3a81beadf96b";
+    luksUUID = "80db9688-8fb5-47c6-a94f-dcb991a80e9a";
+    bootUUID = "0BD6-9E8A";
+  };
+
   boot = {
     initrd = {
       availableKernelModules = [
@@ -17,14 +25,11 @@
         "usb_storage"
         "xhci_pci"
       ];
-      luks.devices."cryptroot" = {
-        device = "/dev/disk/by-uuid/80db9688-8fb5-47c6-a94f-dcb991a80e9a";
-        bypassWorkqueues = true;
-        crypttabExtraOpts = [
-          "no-read-workqueue"
-          "no-write-workqueue"
-        ];
-      };
+      # Override the standard LUKS config with additional options for zippyrus
+      luks.devices."cryptroot".crypttabExtraOpts = [
+        "no-read-workqueue"
+        "no-write-workqueue"
+      ];
     };
     kernelModules = [
       "kvm-amd"
@@ -49,112 +54,4 @@
     extraModulePackages = with config.boot.kernelPackages; [ zenpower ];
     # resumeDevice = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
   };
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@"
-      ];
-      neededForBoot = true;
-    };
-
-    "/home" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@home"
-      ];
-    };
-
-    "/.snapshots" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@snapshots"
-      ];
-    };
-
-    "/var/log" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@log"
-      ];
-    };
-
-    "/var/cache" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@cache"
-      ];
-    };
-
-    "/etc/nixos" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@nix-config"
-      ];
-    };
-
-    "/nix" = {
-      device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "compress-force=zstd"
-        "noatime"
-        "ssd"
-        "subvol=@nix-store"
-      ];
-    };
-
-    # TODO: setup swap
-    # ref: https://sawyershepherd.org/post/hibernating-to-an-encrypted-swapfile-on-btrfs-with-nixos/
-    # "/swap" = {
-    #   device = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
-    #   fsType = "btrfs";
-    #   options = [
-    #     "subvol=@swap"
-    #     "noatime"
-    #   ];
-    # };
-
-    "/boot" = {
-      device = "/dev/disk/by-uuid/0BD6-9E8A";
-      fsType = "vfat";
-      options = [
-        "fmask=0022"
-        "dmask=0022"
-      ];
-    };
-  };
-  swapDevices = [ ];
 }

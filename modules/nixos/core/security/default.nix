@@ -7,7 +7,6 @@
   options.snowflake.core.security = {
     enable = lib.mkEnableOption "Enable core security configuration";
     sysctl.enable = lib.mkEnableOption "Enable sysctl security configuration";
-    sysctl.gaming.enable = lib.mkEnableOption "Enable sysctl gaming configuration";
   };
 
   config = lib.mkIf config.snowflake.core.security.enable {
@@ -30,14 +29,16 @@
 
       (lib.mkIf config.snowflake.core.security.sysctl.enable {
         kernel.sysctl = {
+          # Security hardening
           "kernel.sysrq" = 0;
           "kernel.kptr_restrict" = 2;
           "kernel.dmesg_restrict" = 1;
           "kernel.unprivileged_bpf_disabled" = 1;
           "net.core.bpf_jit_harden" = 2;
 
-          "net.netfilter.nf_conntrack_max" = 524288;
-          "net.nf_conntrack_max" = 524288;
+          # Connection tracking (moderate default for all hosts)
+          "net.netfilter.nf_conntrack_max" = 262144;
+          "net.nf_conntrack_max" = 262144;
 
           ## TCP hardening
           # Prevent bogus ICMP errors from filling up logs.
@@ -64,37 +65,12 @@
           # Incomplete protection again TIME-WAIT assassination.
           "net.ipv4.tcp_rfc1337" = 1;
 
-          # TCP optimization
+          # Proven performance optimizations
           # Enable TCP Fast Open for incoming and outgoing connections.
           "net.ipv4.tcp_fastopen" = 3;
           # Bufferbloat mitigations + slight improvement in throughput & latency.
           "net.ipv4.tcp_congestion_control" = "bbr";
           "net.core.default_qdisc" = "cake";
-        };
-      })
-
-      (lib.mkIf config.snowflake.core.security.sysctl.gaming.enable {
-        kernel.sysctl = {
-          # Better memory management for gaming
-          "vm.swappiness" = 10;
-          "vm.vfs_cache_pressure" = 50;
-          "vm.dirty_ratio" = 15;
-          "vm.dirty_background_ratio" = 5;
-
-          # Network performance for gaming
-          "net.core.rmem_max" = 16777216;
-          "net.core.wmem_max" = 16777216;
-          "net.ipv4.tcp_rmem" = "4096 65536 16777216";
-          "net.ipv4.tcp_wmem" = "4096 65536 16777216";
-
-          "net.core.netdev_max_backlog" = 16384;
-          "net.core.somaxconn" = 8192;
-
-          "fs.file-max" = 2097152;
-
-          "fs.inotify.max_user_watches" = 524288;
-          "fs.inotify.max_user_instances" = 1024;
-          "fs.inotify.max_queued_events" = 32768;
         };
       })
     ];

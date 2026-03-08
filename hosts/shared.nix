@@ -7,12 +7,11 @@
     self.inputs.lanzaboote.nixosModules.lanzaboote
   ];
 
-  snowflake = {
-    stateVersion = "25.05";
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-    networking.resolved.enable = true;
-  };
+  # Enable base shared configuration
+  snowflake.profile.shared.enable = true;
+
+  # Universal settings
+  snowflake.stateVersion = "25.05";
 
   nixpkgs = {
     config.allowUnfree = true;
@@ -21,15 +20,4 @@
     ];
     hostPlatform = "x86_64-linux";
   };
-
-  # Enable weekly btrfs auto-scrub.
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
-  services.thermald.enable = true;
 }

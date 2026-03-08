@@ -12,13 +12,10 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = [ "/" ];
-  };
-
   snowflake = {
+    # Enable laptop profile (includes power management, NetworkManager, btrfs scrub, user defaults)
+    profile.laptop.enable = true;
+
     # core.lanzaboote.enable = true;
     core.docker.enable = true;
     core.docker.storageDriver = "btrfs";
@@ -37,10 +34,7 @@
 
     networking.iwd.enable = true;
 
-    user.enable = true;
-    user.username = "chnmy";
-    user.description = "Chinmay D. Pai";
-    user.extraGroups = [ "video" ];
+    # Host-specific password configuration (other user settings from laptop profile)
     user.userPasswordAgeModule = userdata.secrets.machines.donkpad.password;
     user.rootPasswordAgeModule = userdata.secrets.machines.donkpad.root-password;
   };
