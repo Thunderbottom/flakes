@@ -82,7 +82,7 @@
         x509.useACMEHost = cfg.fqdn;
 
         # Enable a better way of storing emails.
-        useFsLayout = true;
+        useFSLayout = true;
 
         mailboxes = {
           Archive = {
