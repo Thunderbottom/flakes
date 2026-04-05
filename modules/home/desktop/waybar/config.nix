@@ -64,16 +64,16 @@
         critical = 20;
       };
       format = "<big>{icon}</big>  {capacity}%";
-      format-charging = " {capacity}%";
-      format-plugged = " {capacity}%";
+      format-charging = " {capacity}%";
+      format-plugged = " {capacity}%";
       format-full = "{icon} Full";
       format-alt = "{icon} {time}";
       format-icons = [
-        ""
-        ""
-        ""
-        ""
-        ""
+        ""
+        ""
+        ""
+        ""
+        ""
       ];
       format-time = "{H}h {M}min";
       tooltip = true;
@@ -82,8 +82,8 @@
 
     bluetooth = {
       format = "";
-      format-connected = " {num_connections}";
-      tooltip-format = " {device_alias}";
+      format-connected = " {num_connections}";
+      tooltip-format = " {device_alias}";
       tooltip-format-connected = "{device_enumerate}";
       tooltip-format-enumerate-connected = "Name: {device_alias}\nBattery: {device_battery_percentage}%";
       on-click = "blueman-manager";
@@ -91,7 +91,7 @@
 
     clock = {
       format = "{:%b %d %H:%M}";
-      format-alt = " {:%H:%M   %Y, %d %B, %A}";
+      format-alt = " {:%H:%M   %Y, %d %B, %A}";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
       calendar = {
         mode = "year";
@@ -154,12 +154,12 @@
 
     pulseaudio = {
       format = "{icon} {volume}%";
-      format-muted = "";
+      format-muted = "";
       format-icons = {
         default = [
-          ""
-          ""
-          " "
+          ""
+          ""
+          " "
         ];
       };
       on-click = "pavucontrol";
@@ -173,8 +173,8 @@
 
     "pulseaudio#microphone" = {
       format = "{format_source}";
-      format-source = " {volume}%";
-      format-source-muted = "";
+      format-source = " {volume}%";
+      format-source-muted = "";
       on-click = "pavucontrol";
       on-click-right = "pamixer --default-source -t";
       on-scroll-up = "pamixer --default-source -i 5";
@@ -197,14 +197,14 @@
       tooltip = false;
       format = "{icon}";
       format-icons = {
-        notification = "<span foreground='red'><sup></sup></span>";
-        none = "";
-        dnd-notification = "<span foreground='red'><sup></sup></span>";
-        dnd-none = "";
-        inhibited-notification = "<span foreground='red'><sup></sup></span>";
-        inhibited-none = "";
-        dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-        dnd-inhibited-none = "";
+        notification = "<span foreground='red'><sup></sup></span>";
+        none = "";
+        dnd-notification = "<span foreground='red'><sup></sup></span>";
+        dnd-none = "";
+        inhibited-notification = "<span foreground='red'><sup></sup></span>";
+        inhibited-none = "";
+        dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
+        dnd-inhibited-none = "";
       };
       return-type = "json";
       exec-if = "which swaync-client";
@@ -215,7 +215,7 @@
     };
 
     "custom/recorder" = {
-      format = "";
+      format = "";
       tooltip = false;
       return-type = "json";
       exec = "echo '{\"class\": \"recording\"}'";
