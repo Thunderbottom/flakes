@@ -38,6 +38,10 @@
           "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
         ];
 
+        cursor = {
+          no_hardware_cursors = false;
+        };
+
         gesture = [ "3,horizontal,workspace" ];
 
         general = {
@@ -128,7 +132,7 @@
           "$mainMod, V, togglefloating,"
           "$mainMod, R, exec, $menu"
           "$mainMod, P, pseudo, # dwindle"
-          "$mainMod, J, togglesplit, # dwindle"
+          "$mainMod, J, layoutmsg, # dwindle"
           "$mainMod, L, exec, hyprlock"
 
           # Move focus with mainMod + arrow keys
@@ -190,8 +194,8 @@
         ];
 
         windowrule = [
-          "suppressevent maximize, class:.*"
-          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+          "suppress_event maximize, match:class .*"
+          "no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
         ];
       };
     };

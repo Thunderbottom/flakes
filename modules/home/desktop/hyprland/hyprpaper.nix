@@ -12,8 +12,13 @@
       enable = true;
 
       settings = {
-        preload = [ "/home/chnmy/Pictures/Wallpapers/manga-cutouts.jpg" ];
-        wallpaper = [ ",/home/chnmy/Pictures/Wallpapers/manga-cutouts.jpg" ];
+        wallpaper = [
+          {
+            monitor = "";
+            path = "/home/chnmy/Pictures/Wallpapers/manga-cutouts.jpg";
+            fit_mode = "cover";
+          }
+        ];
       };
     };
   };
