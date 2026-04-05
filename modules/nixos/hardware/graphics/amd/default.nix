@@ -27,17 +27,7 @@
       ];
     };
 
-    environment.sessionVariables = {
-      LIBVA_DRIVER_NAME = "radeonsi";
-      RADV_PERFTEST = "gpl,nggc,sam";
-      AMD_VULKAN_ICD = "RADV";
-    };
-
     services.xserver.videoDrivers = [ "amdgpu" ];
     boot.initrd.kernelModules = [ "amdgpu" ];
-
-    boot.kernelParams = [
-      "amdgpu.ppfeaturemask=0xffffffff"
-    ];
   };
 }
