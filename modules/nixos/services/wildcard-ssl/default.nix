@@ -26,20 +26,17 @@ in
           }
         '';
       };
-      sslEnvironmentFile = lib.mkOption {
-        description = "Cloudflare Environment variables file for Wildcard SSL";
+      credentialFiles = lib.mkOption {
+        type = lib.types.attrsOf lib.types.path;
+        description = "Credential files for the DNS provider (passed as systemd credentials). Keys are environment variable names suffixed with _FILE.";
+        default = { };
+        example = lib.literalExpression ''
+          { "CF_DNS_API_TOKEN_FILE" = config.age.secrets.cloudflare-api-token.path; }
+        '';
       };
     };
   };
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      nginx-wildcard-ssl = {
-        inherit (config.snowflake.nginx.wildcard-ssl.sslEnvironmentFile) file;
-        owner = "pds";
-        inherit (config.users.users.pds) group;
-        mode = "0440";
-      };
-    };
 
     services.nginx.virtualHosts =
       with lib;
@@ -60,7 +57,7 @@ in
           extraDomainNames = [ domainName ];
 
           dnsProvider = "cloudflare";
-          credentialsFile = config.age.secrets.nginx-wildcard-ssl.path;
+          credentialFiles = cfg.credentialFiles;
 
           inherit (config.services.nginx) group;
         }

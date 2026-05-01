@@ -7,6 +7,11 @@
   ...
 }:
 {
+  age.secrets = {
+    cloudflare-acme-email.file = userdata.secrets.nginx.ssl-email.file;
+    cloudflare-acme-api-key.file = userdata.secrets.nginx.ssl-api-key.file;
+  };
+
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
@@ -87,7 +92,10 @@
       ];
     };
 
-    nginx.wildcard-ssl.sslEnvironmentFile = userdata.secrets.nginx.ssl-environment;
+    nginx.wildcard-ssl.credentialFiles = {
+      "CF_API_EMAIL_FILE" = config.age.secrets.cloudflare-acme-email.path;
+      "CF_API_KEY_FILE" = config.age.secrets.cloudflare-acme-api-key.path;
+    };
 
     services = {
       actual = {

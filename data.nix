@@ -62,7 +62,8 @@
       };
     };
     network-manager.passphrase.file = ./secrets/network-manager/passphrase.age;
-    nginx.ssl-environment.file = ./secrets/services/bluesky-pds/ssl-environment.age;
+    nginx.ssl-email.file = ./secrets/services/bluesky-pds/ssl-email.age;
+    nginx.ssl-api-key.file = ./secrets/services/bluesky-pds/ssl-api-key.age;
     services = {
       backups = {
         environment.file = ./secrets/services/backups/environment.age;

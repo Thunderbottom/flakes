@@ -28,7 +28,8 @@ in
   "services/backups/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/backups/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/bluesky-pds/environment.age".publicKeys = thunderbottom ++ bicboye;
-  "services/bluesky-pds/ssl-environment.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
+  "services/bluesky-pds/ssl-email.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
+  "services/bluesky-pds/ssl-api-key.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
   "services/cloudflare-ddns/api.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
