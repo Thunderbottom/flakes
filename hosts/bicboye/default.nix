@@ -6,6 +6,15 @@
   userdata,
   ...
 }:
+let
+  securityHeaders = ''
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Permissions-Policy "interest-cohort=(), geolocation=(), microphone=(), camera=()" always;
+  '';
+in
 {
   age.secrets = {
     cloudflare-acme-email.file = userdata.secrets.nginx.ssl-email.file;
@@ -209,6 +218,35 @@
           enable = true;
           package = pkgs.maych-in;
           domain = "maych.in";
+          extraConfig = {
+            locations = {
+              "^~ /_astro/" = {
+                extraConfig = ''
+                  add_header Cache-Control "public, max-age=31536000, immutable" always;
+                '' + securityHeaders;
+              };
+              "^~ /fonts/" = {
+                extraConfig = ''
+                  add_header Cache-Control "public, max-age=31536000, immutable" always;
+                '' + securityHeaders;
+              };
+              "^~ /icons/" = {
+                extraConfig = ''
+                  add_header Cache-Control "public, max-age=31536000, immutable" always;
+                '' + securityHeaders;
+              };
+              "~* \\.(xml|txt|webmanifest)$" = {
+                extraConfig = ''
+                  add_header Cache-Control "public, max-age=3600" always;
+                '' + securityHeaders;
+              };
+              "/" = {
+                extraConfig = ''
+                  add_header Cache-Control "no-cache" always;
+                '' + securityHeaders;
+              };
+            };
+          };
         };
 
         toasters = {

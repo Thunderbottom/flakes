@@ -42,7 +42,7 @@
           add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
 
           # Minimize information leaked to other domains
-          add_header 'Referrer-Policy' 'origin-when-cross-origin';
+          add_header 'Referrer-Policy' 'strict-origin-when-cross-origin';
 
           # Disable embedding as a frame
           # add_header X-Frame-Options SAMEORIGIN;
