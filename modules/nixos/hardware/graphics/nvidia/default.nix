@@ -52,10 +52,6 @@
       ];
     };
 
-    environment.variables = {
-      WLR_NO_HARDWARE_CURSORS = "1";
-    };
-
     hardware.nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
@@ -81,14 +77,11 @@
       };
     };
 
-    environment.variables.KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = "1";
-
     boot.blacklistedKernelModules = [ "nouveau" ];
     boot.kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia.NVreg_EnableGpuFirmware=0"
     ];
 
     services.xserver.videoDrivers = [ "nvidia" ];

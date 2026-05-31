@@ -20,8 +20,14 @@
     # already included in flake.nix from https://github.com/NixOS/nixos-hardware/blob/master/asus/zephyrus/ga402x/shared.nix still overwiting it
     # source: https://asus-linux.org/guides/nixos/
     services = {
-      scx.enable = true;
-      supergfxd.enable = true;
+      scx = {
+        enable = true;
+        scheduler = "scx_lavd";
+      };
+      supergfxd = {
+        enable = true;
+        settings.mode = "Hybrid";
+      };
       asusd.enable = true;
     };
   };

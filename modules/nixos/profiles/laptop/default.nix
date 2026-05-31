@@ -14,7 +14,6 @@
 
     # Power management for battery efficiency on portable devices
     powerManagement.powertop.enable = true;
-    services.thermald.enable = true;
 
     # Wireless networking
     snowflake.networking.networkManager.enable = true;
