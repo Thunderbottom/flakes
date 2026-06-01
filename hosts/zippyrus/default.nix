@@ -11,8 +11,6 @@
     sensor.iio.enable = true;
   };
 
-  powerManagement.cpuFreqGovernor = "performance";
-
   age.secrets.network-manager-psk = {
     inherit (userdata.secrets.network-manager.passphrase) file;
     owner = "root";
