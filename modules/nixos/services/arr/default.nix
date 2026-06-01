@@ -20,7 +20,7 @@
   config = lib.mkIf config.snowflake.services.arr.enable {
     snowflake.services = {
       jellyfin.enable = true;
-      jellyseerr.enable = true;
+      seerr.enable = true;
 
       prowlarr.enable = true;
       radarr.enable = true;

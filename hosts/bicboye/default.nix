@@ -129,7 +129,7 @@ in
         secretFile = userdata.secrets.services.qui.session-secret.file;
       };
       jellyfin.domain = "jelly.${userdata.domain}";
-      jellyseerr.domain = "seerr.${userdata.domain}";
+      seerr.domain = "seerr.${userdata.domain}";
 
       backups = {
         enable = true;
@@ -223,27 +223,32 @@ in
               "^~ /_astro/" = {
                 extraConfig = ''
                   add_header Cache-Control "public, max-age=31536000, immutable" always;
-                '' + securityHeaders;
+                ''
+                + securityHeaders;
               };
               "^~ /fonts/" = {
                 extraConfig = ''
                   add_header Cache-Control "public, max-age=31536000, immutable" always;
-                '' + securityHeaders;
+                ''
+                + securityHeaders;
               };
               "^~ /icons/" = {
                 extraConfig = ''
                   add_header Cache-Control "public, max-age=31536000, immutable" always;
-                '' + securityHeaders;
+                ''
+                + securityHeaders;
               };
               "~* \\.(xml|txt|webmanifest)$" = {
                 extraConfig = ''
                   add_header Cache-Control "public, max-age=3600" always;
-                '' + securityHeaders;
+                ''
+                + securityHeaders;
               };
               "/" = {
                 extraConfig = ''
                   add_header Cache-Control "no-cache" always;
-                '' + securityHeaders;
+                ''
+                + securityHeaders;
               };
             };
           };
