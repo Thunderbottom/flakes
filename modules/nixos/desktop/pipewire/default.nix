@@ -11,9 +11,6 @@
   };
 
   config = lib.mkIf config.snowflake.desktop.pipewire.enable {
-    # Enable sound.
-    # sound.enable = true;
-
     # Use pipewire for sound and disable pulseaudio.
     services.pulseaudio = {
       enable = false;

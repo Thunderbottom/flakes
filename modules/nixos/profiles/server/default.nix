@@ -24,7 +24,6 @@
     # Server optimization: disable unnecessary hardware/services
     services.printing.enable = lib.mkForce false; # No printer on servers
     hardware.bluetooth.enable = lib.mkForce false; # No bluetooth on servers
-    sound.enable = lib.mkDefault false; # No audio on servers (can override if needed)
 
     # Performance CPU governor for consistent throughput
     powerManagement.cpuFreqGovernor = "performance";
