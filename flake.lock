@@ -963,15 +963,15 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1780348185,
-        "narHash": "sha256-sqGZY8qid8AoVZeYcj2Be2dlJp5Gb4sxfbIWpCuWPW0=",
-        "rev": "5dcaa1d4d7d4a9a81d4a924eae48aad630e55044",
+        "lastModified": 1780349880,
+        "narHash": "sha256-/FV4bvsr0e5vB0hIYfEeFMlDYUixv+9nrZbXHD/pc3U=",
+        "rev": "68f0caa9a04b221b1046405c4fb6c7a7077ed2a8",
         "type": "tarball",
-        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/5dcaa1d4d7d4a9a81d4a924eae48aad630e55044.tar.gz"
+        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/68f0caa9a04b221b1046405c4fb6c7a7077ed2a8.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.deku.moe/thunderbottom/website/archive/5dcaa1d4d7d4a9a81d4a924eae48aad630e55044.tar.gz"
+        "url": "https://git.deku.moe/thunderbottom/website/archive/68f0caa9a04b221b1046405c4fb6c7a7077ed2a8.tar.gz"
       }
     },
     "nil": {
