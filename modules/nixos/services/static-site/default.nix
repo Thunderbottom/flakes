@@ -34,7 +34,7 @@
   config = {
     services.nginx.virtualHosts = lib.mapAttrs (
       _name: site:
-      lib.mkIf site.enable {
+      {
         serverName = site.domain;
         enableACME = true;
         forceSSL = true;
