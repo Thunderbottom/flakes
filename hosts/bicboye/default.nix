@@ -126,6 +126,7 @@ in
 
       qui = {
         enable = true;
+        openFirewall = true;
         secretFile = userdata.secrets.services.qui.session-secret.file;
       };
       jellyfin.domain = "jelly.${userdata.domain}";
