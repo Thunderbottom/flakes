@@ -24,17 +24,12 @@
       ];
 
       security.acme.defaults.email = cfg.acmeEmail;
-      security.dhparams = {
-        enable = true;
-        params.nginx = { };
-      };
       services.nginx = {
         enable = true;
         recommendedProxySettings = true;
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
         recommendedTlsSettings = true;
-        sslDhparam = config.security.dhparams.params.nginx.path;
 
         # Disable default_server access and return HTTP 444.
         appendHttpConfig = ''
