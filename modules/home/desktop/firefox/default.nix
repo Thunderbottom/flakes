@@ -17,8 +17,6 @@
         extensions.packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
           bitwarden
           clearurls
-          consent-o-matic
-          duckduckgo-privacy-essentials
           kagi-search
           reddit-enhancement-suite
           return-youtube-dislikes
@@ -32,7 +30,6 @@
     };
 
     home.sessionVariables = {
-      MOZ_ENABLE_WAYLAND = "1";
       MOZ_WAYLAND_USE_VAAPI = "1";
     };
   };

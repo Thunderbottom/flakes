@@ -40,11 +40,6 @@
       };
     in
     {
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = lock-true;
-
-      # Remove poluting defaults
-      "extensions.pocket.enabled" = lock-false;
-
       # Remove default top sites
       "browser.topsites.contile.enabled" = lock-false;
       "browser.urlbar.suggest.topsites" = lock-false;
