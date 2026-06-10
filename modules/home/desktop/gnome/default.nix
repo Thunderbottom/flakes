@@ -25,7 +25,6 @@
           appindicator.extensionUuid
           clipboard-history.extensionUuid
           just-perfection.extensionUuid
-          blur-my-shell.extensionUuid
         ];
       };
 
@@ -51,52 +50,6 @@
 
       "org/gnome/shell/app-switcher" = {
         current-workspace-only = false;
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell" = {
-        settings-version = 2;
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
-        brightness = 0.6;
-        sigma = 30;
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/coverflow-alt-tab" = {
-        pipeline = "pipeline_default";
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
-        blur = true;
-        brightness = 0.3;
-        pipeline = "pipeline_default_rounded";
-        sigma = 20;
-        static-blur = false;
-        style-dash-to-dock = 0;
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/lockscreen" = {
-        pipeline = "pipeline_default";
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/overview" = {
-        pipeline = "pipeline_default";
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/panel" = {
-        brightness = 0.3;
-        pipeline = "pipeline_default";
-        sigma = 10;
-        static-blur = false;
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/screenshot" = {
-        pipeline = "pipeline_default";
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/window-list" = {
-        brightness = 0.6;
-        sigma = 25;
       };
 
       "org/gnome/shell/extensions/caffeine" = {

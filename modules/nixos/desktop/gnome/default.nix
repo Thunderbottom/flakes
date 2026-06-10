@@ -51,11 +51,14 @@
         gnome-photos
         gnome-shell-extensions
         gnome-software
+        gnome-terminal
         gnome-text-editor
         gnome-tour
         gnome-user-docs
+        gnome-weather
         hitori # sudoku game
         iagno # go game
+        loupe
         orca
         simple-scan
         snapshot
@@ -67,11 +70,7 @@
       systemPackages = with pkgs; [
         ffmpegthumbnailer
         adwaita-icon-theme
-        adwaita-icon-theme-legacy
-        bibata-cursors
-        dconf-editor
         gnome-tweaks
-        gnome-themes-extra
         nautilus-python
         nautilus-open-any-terminal
         wl-clipboard
@@ -81,7 +80,6 @@
         gnomeExtensions.appindicator
         gnomeExtensions.clipboard-history
         gnomeExtensions.just-perfection
-        gnomeExtensions.blur-my-shell
       ];
     };
 
