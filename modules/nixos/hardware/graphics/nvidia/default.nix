@@ -57,10 +57,6 @@
       modesetting.enable = true;
       nvidiaSettings = config.snowflake.desktop.enable;
       dynamicBoost.enable = true;
-
-      powerManagement.enable = true;
-      powerManagement.finegrained = true;
-
       open = true;
 
       # In PRIME offload mode, apps run on the iGPU by default, so LIBVA should
