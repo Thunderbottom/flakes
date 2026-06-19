@@ -27,9 +27,13 @@
       "virtio_gpu"
     ];
     kernelParams = [ "console=tty" ];
-    loader.grub = {
-      device = "/dev/sda";
-      configurationLimit = 2;
+    loader = {
+      efi.canTouchEfiVariables = lib.mkForce false;
+      grub = {
+        device = lib.mkForce "nodev";
+        efiInstallAsRemovable = true;
+        configurationLimit = 2;
+      };
     };
   };
 

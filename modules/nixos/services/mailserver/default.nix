@@ -63,9 +63,6 @@
       cfg = config.snowflake.services.mailserver;
     in
     lib.mkIf cfg.enable {
-      # Ref: https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/issues/275
-      services.dovecot2.sieve.extensions = [ "fileinto" ];
-
       mailserver = {
         inherit (cfg)
           enable
@@ -83,29 +80,6 @@
 
         # Enable a better way of storing emails.
         useFSLayout = true;
-
-        mailboxes = {
-          Archive = {
-            auto = "subscribe";
-            specialUse = "Archive";
-          };
-          Drafts = {
-            auto = "subscribe";
-            specialUse = "Drafts";
-          };
-          Sent = {
-            auto = "subscribe";
-            specialUse = "Sent";
-          };
-          Junk = {
-            auto = "subscribe";
-            specialUse = "Junk";
-          };
-          Trash = {
-            auto = "subscribe";
-            specialUse = "Trash";
-          };
-        };
       };
 
       security.acme.certs.${cfg.fqdn} = {
