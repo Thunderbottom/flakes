@@ -44,6 +44,9 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "nixpkgs";
 
+    autofirma-nix.url = "github:nix-community/autofirma-nix";
+    autofirma-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 

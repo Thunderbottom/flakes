@@ -4,6 +4,7 @@
     self.nixosModules.default
     self.inputs.agenix.nixosModules.age
     self.inputs.disko.nixosModules.disko
+    self.inputs.autofirma-nix.nixosModules.default
     self.inputs.lanzaboote.nixosModules.lanzaboote
   ];
 

@@ -79,6 +79,7 @@
     };
 
     hardware = {
+      autofirma.enable = true;
       bluetooth.enable = true;
       yubico.enable = true;
       graphics = {
