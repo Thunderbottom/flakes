@@ -53,11 +53,12 @@
     };
 
     hardware.nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = true;
       nvidiaSettings = config.snowflake.desktop.enable;
       dynamicBoost.enable = true;
       open = true;
+      powerManagement.enable = true;
 
       # In PRIME offload mode, apps run on the iGPU by default, so LIBVA should
       # use the iGPU's driver (set by the AMD/Intel graphics module).
@@ -78,6 +79,10 @@
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "acpi_backlight=native"
+      # Prevent NVIDIA from registering its own backlight handler in hybrid mode,
+      # letting amdgpu own brightness control via amdgpu_bl1.
+      "nvidia.NVreg_EnableBacklightHandler=0"
     ];
 
     services.xserver.videoDrivers = [ "nvidia" ];

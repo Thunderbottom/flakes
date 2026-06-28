@@ -30,5 +30,11 @@
       };
       asusd.enable = true;
     };
+
+    services.udev.extraRules = ''
+      # Disable wakeup on the ASUS ITE device (0b05:193b) to prevent
+      # immediate resume after suspend.
+      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="193b", ATTR{power/wakeup}="disabled"
+    '';
   };
 }
