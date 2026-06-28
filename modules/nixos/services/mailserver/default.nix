@@ -79,7 +79,7 @@
         x509.useACMEHost = cfg.fqdn;
 
         # Enable a better way of storing emails.
-        useFSLayout = true;
+        useFsLayout = true;
       };
 
       security.acme.certs.${cfg.fqdn} = {
