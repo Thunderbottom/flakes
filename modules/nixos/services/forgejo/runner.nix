@@ -22,6 +22,7 @@ lib.mkIf (cfg.enable && cfg.actions-runner.enable) {
 
       labels = [
         "ubuntu-latest:docker://node:22-bookworm"
+        "native:host"
       ];
 
       settings = {
