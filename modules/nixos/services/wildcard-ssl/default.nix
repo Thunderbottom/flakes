@@ -57,7 +57,7 @@ in
           extraDomainNames = [ domainName ];
 
           dnsProvider = "cloudflare";
-          credentialFiles = cfg.credentialFiles;
+          inherit (cfg) credentialFiles;
 
           inherit (config.services.nginx) group;
         }

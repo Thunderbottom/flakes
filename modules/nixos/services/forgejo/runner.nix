@@ -25,6 +25,18 @@ lib.mkIf (cfg.enable && cfg.actions-runner.enable) {
         "native:host"
       ];
 
+      hostPackages = with pkgs; [
+        bash
+        coreutils
+        curl
+        gawk
+        gitMinimal
+        gnused
+        nodejs
+        wget
+        config.nix.package
+      ];
+
       settings = {
         log.level = "info";
 

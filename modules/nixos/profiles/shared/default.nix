@@ -6,7 +6,8 @@
   # This profile is minimal by design - only include what EVERY host needs.
   # Host-type-specific settings belong in laptop/server/desktop profiles.
 
-  options.snowflake.profile.shared.enable = lib.mkEnableOption "Shared base configuration for all hosts";
+  options.snowflake.profile.shared.enable =
+    lib.mkEnableOption "Shared base configuration for all hosts";
 
   config = lib.mkIf config.snowflake.profile.shared.enable {
     # Truly universal settings only

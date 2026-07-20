@@ -11,7 +11,8 @@
   # - Larger connection tracking tables
   # - Increased network queue sizes
 
-  options.snowflake.profile.server-performance.enable = lib.mkEnableOption "Server performance tuning for high-connection workloads";
+  options.snowflake.profile.server-performance.enable =
+    lib.mkEnableOption "Server performance tuning for high-connection workloads";
 
   config = lib.mkIf config.snowflake.profile.server-performance.enable {
     boot.kernel.sysctl = {

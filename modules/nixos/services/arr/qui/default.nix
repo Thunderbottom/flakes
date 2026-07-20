@@ -45,9 +45,10 @@ in
       enable = true;
       inherit (cfg) secretFile openFirewall;
       settings = {
-        host = cfg.host;
-        port = cfg.port;
-      } // cfg.extraSettings;
+        inherit (cfg) host;
+        inherit (cfg) port;
+      }
+      // cfg.extraSettings;
     };
 
     snowflake.meta.ports.list = [ cfg.port ];

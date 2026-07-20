@@ -35,7 +35,10 @@ in
         services.cross-seed = {
           enable = true;
           group = "media";
-          settings = { port = cfg.port; } // cfg.settings;
+          settings = {
+            inherit (cfg) port;
+          }
+          // cfg.settings;
         };
 
         snowflake.meta.ports.list = [ cfg.port ];

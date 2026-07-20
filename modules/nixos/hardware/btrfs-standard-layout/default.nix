@@ -17,22 +17,26 @@
 let
   cfg = config.snowflake.hardware.btrfs-standard-layout;
 
-  mkBtrfsMount = device: subvol: mountpoint: extraOpts: {
-    inherit device;
-    fsType = "btrfs";
-    options = [
-      "compress-force=zstd:3"  # Level 3: good compression/performance balance
-      "noatime"                # Don't update access times
-      "nodiratime"             # Don't update directory access times
-      "ssd"                    # SSD optimizations
-      "space_cache=v2"         # Free space cache v2
-      "commit=120"             # Commit interval: 120 seconds
-      "discard=async"          # Async TRIM for SSD
-      "subvol=${subvol}"
-    ] ++ extraOpts;
-  } // lib.optionalAttrs (mountpoint == "/") {
-    neededForBoot = true;
-  };
+  mkBtrfsMount =
+    device: subvol: mountpoint: extraOpts:
+    {
+      inherit device;
+      fsType = "btrfs";
+      options = [
+        "compress-force=zstd:3" # Level 3: good compression/performance balance
+        "noatime" # Don't update access times
+        "nodiratime" # Don't update directory access times
+        "ssd" # SSD optimizations
+        "space_cache=v2" # Free space cache v2
+        "commit=120" # Commit interval: 120 seconds
+        "discard=async" # Async TRIM for SSD
+        "subvol=${subvol}"
+      ]
+      ++ extraOpts;
+    }
+    // lib.optionalAttrs (mountpoint == "/") {
+      neededForBoot = true;
+    };
 in
 {
   options.snowflake.hardware.btrfs-standard-layout = {
@@ -66,18 +70,21 @@ in
 
     # Standard btrfs subvolume layout
     fileSystems = {
-      "/" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@" "/" [];
-      "/home" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@home" "/home" [];
-      "/.snapshots" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@snapshots" "/.snapshots" [];
-      "/var/log" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@log" "/var/log" [];
-      "/var/cache" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@cache" "/var/cache" [];
-      "/etc/nixos" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@nix-config" "/etc/nixos" [];
-      "/nix" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@nix-store" "/nix" [];
+      "/" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@" "/" [ ];
+      "/home" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@home" "/home" [ ];
+      "/.snapshots" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@snapshots" "/.snapshots" [ ];
+      "/var/log" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@log" "/var/log" [ ];
+      "/var/cache" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@cache" "/var/cache" [ ];
+      "/etc/nixos" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@nix-config" "/etc/nixos" [ ];
+      "/nix" = mkBtrfsMount "/dev/disk/by-uuid/${cfg.rootUUID}" "@nix-store" "/nix" [ ];
 
       "/boot" = {
         device = "/dev/disk/by-uuid/${cfg.bootUUID}";
         fsType = "vfat";
-        options = [ "fmask=0022" "dmask=0022" ];
+        options = [
+          "fmask=0022"
+          "dmask=0022"
+        ];
       };
     };
 

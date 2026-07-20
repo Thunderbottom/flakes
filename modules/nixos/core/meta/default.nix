@@ -69,7 +69,7 @@
             |> lib.concatMap (
               entry:
               map (domain: {
-                file = entry.file;
+                inherit (entry) file;
                 inherit domain;
               }) entry.value
             )

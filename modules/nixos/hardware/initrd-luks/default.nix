@@ -57,7 +57,7 @@
         wait-online = {
           enable = true;
           anyInterface = true;
-          timeout = 60;  # Wait up to 60 seconds for DHCP
+          timeout = 60; # Wait up to 60 seconds for DHCP
         };
       };
 
