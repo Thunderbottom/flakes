@@ -1,18 +1,14 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
-
 jobs:
   check:
     runs-on: native
     steps:
       - uses: actions/checkout@v4
-
       - name: Format check
-        run: nix fmt -- --check
-
+        run: nix fmt -- --ci
       - name: Flake check
         run: nix flake check --no-build
