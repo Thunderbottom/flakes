@@ -22,7 +22,7 @@
       "net.core.netdev_max_backlog" = 5000;
 
       # Higher connection tracking for web servers
-      "net.netfilter.nf_conntrack_max" = 524288;
+      "net.netfilter.nf_conntrack_max" = lib.mkForce 524288;
     };
   };
 }
