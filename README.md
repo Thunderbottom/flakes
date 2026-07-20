@@ -23,100 +23,33 @@ This repository contains modularized NixOS configurations, carefully compiled an
 .
 ├── hosts
 │   ├── bicboye
+│   ├── donkpad
 │   ├── smolboye
 │   ├── thonkpad
 │   └── zippyrus
 ├── modules
 │   ├── home
 │   │   ├── desktop
-│   │   │   ├── firefox
-│   │   │   ├── ghostty
-│   │   │   ├── gnome
-│   │   │   └── wezterm
 │   │   ├── development
-│   │   │   ├── git
-│   │   │   ├── helix
-│   │   │   └── tmux
 │   │   └── shell
-│   │       ├── direnv
-│   │       └── fish
 │   └── nixos
 │       ├── core
-│       │   ├── docker
-│       │   ├── fish
-│       │   ├── gnupg
-│       │   ├── lanzaboote
-│       │   ├── meta
-│       │   ├── nix
-│       │   ├── security
-│       │   └── sshd
 │       ├── desktop
-│       │   ├── fonts
-│       │   ├── gnome
-│       │   ├── hyprland
-│       │   ├── kde
-│       │   ├── pipewire
-│       │   └── plymouth
 │       ├── gaming
-│       │   ├── proton
-│       │   └── steam
 │       ├── hardware
-│       │   ├── bluetooth
-│       │   ├── graphics
-│       │   │   ├── amd
-│       │   │   ├── intel
-│       │   │   └── nvidia
-│       │   ├── initrd-luks
-│       │   ├── usbguard
-│       │   └── yubico
 │       ├── monitoring
-│       │   ├── exporter
-│       │   ├── grafana
-│       │   └── victoriametrics
 │       ├── networking
-│       │   ├── mullvad
-│       │   └── netbird
+│       ├── profiles
 │       ├── services
-│       │   ├── actual-budget
-│       │   ├── arr
-│       │   │   ├── bazarr
-│       │   │   ├── jellyfin
-│       │   │   ├── jellyseerr
-│       │   │   ├── prowlarr
-│       │   │   ├── qbittorrent
-│       │   │   ├── radarr
-│       │   │   ├── sabnzbd
-│       │   │   └── sonarr
-│       │   ├── asus
-│       │   ├── backup
-│       │   ├── bluesky-pds
-│       │   ├── fail2ban
-│       │   ├── forgejo
-│       │   ├── homebridge
-│       │   ├── immich
-│       │   ├── mailserver
-│       │   ├── miniflux
-│       │   ├── navidrome
-│       │   ├── nginx
-│       │   ├── ntfy-sh
-│       │   ├── paperless
-│       │   ├── postgresql
-│       │   ├── static-site
-│       │   ├── technitium
-│       │   ├── tools
-│       │   │   └── duperemove
-│       │   ├── unifi-controller
-│       │   ├── vaultwarden
-│       │   └── wildcard-ssl
 │       └── user
 ├── overlays
-│   ├── jellyfin-web
-│   └── netbird
+│   ├── netbird
+│   └── patool
 ├── packages
-│   └── vuetorrent
 ├── secrets
 │   ├── machines
 │   │   ├── bicboye
+│   │   ├── donkpad
 │   │   ├── smolboye
 │   │   ├── thonkpad
 │   │   └── zippyrus
@@ -126,12 +59,13 @@ This repository contains modularized NixOS configurations, carefully compiled an
 │   └── services
 │       ├── backups
 │       ├── bluesky-pds
+│       ├── cloudflare-ddns
 │       ├── forgejo
-│       │   └── actions-runner
 │       ├── maddy
 │       ├── mailserver
 │       ├── miniflux
 │       ├── paperless
+│       ├── qui
 │       ├── unifi-unpoller
 │       └── vaultwarden
 ├── templates
@@ -140,6 +74,7 @@ This repository contains modularized NixOS configurations, carefully compiled an
 │   └── server
 └── users
     ├── chnmy
+    │   ├── donkpad
     │   ├── thonkpad
     │   └── zippyrus
     └── server
