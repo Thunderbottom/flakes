@@ -83,6 +83,9 @@
       # Prevent NVIDIA from registering its own backlight handler in hybrid mode,
       # letting amdgpu own brightness control via amdgpu_bl1.
       "nvidia.NVreg_EnableBacklightHandler=0"
+      # Required for the dGPU to power down during suspend on hardware that only
+      # supports s2idle (no S3). Without this, sleep battery drain is much higher.
+      "nvidia.NVreg_EnableS0ixPowerManagement=1"
     ];
 
     services.xserver.videoDrivers = [ "nvidia" ];
