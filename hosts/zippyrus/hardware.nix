@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, ... }:
 {
   # Use standard btrfs layout module
   snowflake.hardware.btrfs-standard-layout = {
@@ -35,7 +30,6 @@
       "kvm-amd"
       "zenpower"
     ];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"
@@ -53,4 +47,6 @@
     extraModulePackages = with config.boot.kernelPackages; [ zenpower ];
     # resumeDevice = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
   };
+
+  boot.kernel.sysctl."vm.swappiness" = 100;
 }

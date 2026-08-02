@@ -9,6 +9,12 @@
     cpu.amd.updateMicrocode = true;
     enableRedistributableFirmware = true;
     sensor.iio.enable = true;
+
+    facter = {
+      enable = true;
+      reportPath = ./facter.json;
+      detected.graphics.enable = false;
+    };
   };
 
   age.secrets.network-manager-psk = {
@@ -39,10 +45,6 @@
   services = {
     # Enable G502 mouse configuration daemon.
     ratbagd.enable = true;
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-cuda;
-    };
   };
 
   snowflake = {
@@ -69,7 +71,6 @@
       enable = true;
       # Enable GNOME desktop environment.
       gnome.enable = true;
-      hyprland.enable = true;
     };
 
     gaming = {
