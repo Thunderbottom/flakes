@@ -31,6 +31,10 @@ in
     fileSystems = [ "/storage" ];
   };
 
+  # Postgres + many concurrent services with plenty of headroom (32GB RAM) -
+  # prefer reclaiming cache over swapping active service memory.
+  boot.kernel.sysctl."vm.swappiness" = 10;
+
   networking = {
     interfaces.enp2s0 = {
       useDHCP = lib.mkDefault true;
@@ -41,6 +45,12 @@ in
       443
     ];
   };
+
+  # The RTL8125 2.5GbE chip is known to cause latency spikes/link
+  # renegotiation stalls with Energy Efficient Ethernet enabled.
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="net", KERNEL=="enp2s0", RUN+="${pkgs.ethtool}/bin/ethtool --set-eee enp2s0 eee off"
+  '';
 
   snowflake = {
     # Enable server profiles (includes performance CPU governor, no laptop services)

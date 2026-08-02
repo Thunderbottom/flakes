@@ -13,6 +13,13 @@ _: {
       luks.devices."cryptroot".device = "/dev/disk/by-uuid/e570c2be-65df-4208-9cac-a03de08a6209";
     };
     kernelModules = [ "kvm-intel" ];
+    kernelParams = [
+      # Reduce PCIe link power-state transition latency for the NVMe/NIC,
+      # matching the server profile's throughput-over-power-savings intent.
+      "pcie_aspm.policy=performance"
+    ];
+    # Server is wired-only; the onboard WiFi is never used.
+    blacklistedKernelModules = [ "iwlwifi" ];
   };
 
   fileSystems = {
