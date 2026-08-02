@@ -38,11 +38,8 @@
 
           # Connection tracking (moderate default for all hosts)
           "net.netfilter.nf_conntrack_max" = 262144;
-          "net.nf_conntrack_max" = 262144;
 
           ## TCP hardening
-          # Prevent bogus ICMP errors from filling up logs.
-          "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
           # Reverse path filtering causes the kernel to do source validation of
           # packets received from all interfaces. This can mitigate IP spoofing.
           "net.ipv4.conf.default.rp_filter" = 1;
@@ -56,12 +53,8 @@
           # Refuse ICMP redirects (MITM mitigations).
           "net.ipv4.conf.all.accept_redirects" = 0;
           "net.ipv4.conf.default.accept_redirects" = 0;
-          "net.ipv4.conf.all.secure_redirects" = 0;
-          "net.ipv4.conf.default.secure_redirects" = 0;
           "net.ipv6.conf.all.accept_redirects" = 0;
           "net.ipv6.conf.default.accept_redirects" = 0;
-          # Protects against SYN flood attacks.
-          "net.ipv4.tcp_syncookies" = 1;
           # Incomplete protection again TIME-WAIT assassination.
           "net.ipv4.tcp_rfc1337" = 1;
 
