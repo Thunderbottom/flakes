@@ -16,8 +16,6 @@
 
   config = lib.mkIf config.snowflake.profile.server-performance.enable {
     boot.kernel.sysctl = {
-      # Network tuning for servers with many connections
-      "net.core.somaxconn" = 4096;
       "net.ipv4.tcp_max_syn_backlog" = 4096;
       "net.core.netdev_max_backlog" = 5000;
 
