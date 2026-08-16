@@ -9,9 +9,9 @@
   };
 
   boot = {
+    loader.systemd-boot.configurationLimit = 3;
     initrd = {
       availableKernelModules = [
-        "mt7921e"
         "nvme"
         "rtsx_pci_sdmmc"
         "sd_mod"
@@ -27,6 +27,7 @@
       ];
     };
     kernelModules = [
+      "iwlwifi"
       "kvm-amd"
       "zenpower"
     ];
@@ -35,8 +36,6 @@
       "amd_pstate=active"
       "amdgpu.sg_display=0"
       "pcie_aspm.policy=powersupersave"
-      # Attempt to fix mediatek wifi lag/latency on MT7922
-      "mt7921e.disable_aspm=Y"
       "transparent_hugepage=madvise"
       "split_lock_detect=off"
     ];
