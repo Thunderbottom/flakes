@@ -25,7 +25,10 @@
   programs.home-manager.enable = true;
 
   # Enable fuzzy finder.
-  programs.fzf.enable = true;
+  programs.fzf = {
+    enable = true;
+    historyWidget.command = "";
+  };
 
   # Enable faster, smarter `cd`.
   programs.zoxide.enable = true;

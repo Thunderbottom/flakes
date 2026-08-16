@@ -17,7 +17,7 @@
     networking.firewall.allowedTCPPorts = [ 8085 ];
 
     snowflake.services.backups.config.sabnzbd.paths = [
-      config.services.sabnzbd.configFile
+      "/var/lib/${config.services.sabnzbd.stateDir}/sabnzbd.ini"
     ];
   };
 }

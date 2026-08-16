@@ -83,7 +83,7 @@
         fqdn = "mail.${userdata.domain}";
         domains = [ userdata.domain ];
         postfixBindIPv6 = "2a01:4f8:1c1c:90b::";
-        loginAccounts = {
+        accounts = {
           "watashi@${userdata.domain}" = {
             hashedPasswordFile = config.age.secrets.mailserver-watashi.path;
             aliases = [ "@${userdata.domain}" ];

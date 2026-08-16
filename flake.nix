@@ -21,7 +21,7 @@
             default = pkgs.mkShell {
               packages = [
                 pkgs.nh
-                inputs.deploy-rs.packages.${system}.default
+                inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
               ];
             };
 

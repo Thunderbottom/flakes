@@ -20,8 +20,8 @@ let
   # Input-based overlays for external packages
   inputOverlays = [
     (_: prev: {
-      inherit (inputs.maych-in.packages.${prev.system}) maych-in;
-      inherit (inputs.toasters.packages.${prev.system}) toaste-rs;
+      inherit (inputs.maych-in.packages.${prev.stdenv.hostPlatform.system}) maych-in;
+      inherit (inputs.toasters.packages.${prev.stdenv.hostPlatform.system}) toaste-rs;
     })
   ];
 

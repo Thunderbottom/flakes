@@ -11,6 +11,7 @@
   config = lib.mkIf config.snowflake.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
+      configPath = ".mozilla/firefox";
       package = pkgs.firefox;
       policies = import ./policies.nix;
       profiles.ff = {

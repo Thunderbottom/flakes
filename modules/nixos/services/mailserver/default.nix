@@ -21,7 +21,7 @@
       description = "Configuration domains to use for the mailserver";
     };
 
-    loginAccounts = lib.mkOption {
+    accounts = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {
@@ -68,7 +68,7 @@
           enable
           fqdn
           domains
-          loginAccounts
+          accounts
           ;
 
         # Set the state version for nixos-mailserver
