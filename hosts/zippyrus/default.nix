@@ -8,7 +8,6 @@
   hardware = {
     cpu.amd.updateMicrocode = true;
     enableRedistributableFirmware = true;
-    sensor.iio.enable = true;
 
     facter = {
       enable = true;
@@ -42,18 +41,12 @@
     DefaultTimeoutStopSec = "10s";
   };
 
-  services = {
-    # Enable G502 mouse configuration daemon.
-    ratbagd.enable = true;
-  };
-
   snowflake = {
     # Enable laptop profile (includes power management, NetworkManager, btrfs scrub, user defaults)
     profile.laptop.enable = true;
 
     extraPackages = with pkgs; [
       obsidian
-      piper
     ];
 
     core = {

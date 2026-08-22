@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 {
   # Use standard btrfs layout module
   snowflake.hardware.btrfs-standard-layout = {
@@ -29,22 +29,17 @@
     kernelModules = [
       "iwlwifi"
       "kvm-amd"
-      "zenpower"
     ];
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"
       "amdgpu.sg_display=0"
-      "pcie_aspm.policy=powersupersave"
       "transparent_hugepage=madvise"
       "split_lock_detect=off"
     ];
     blacklistedKernelModules = [
-      "k10temp"
       "sp5100_tco"
     ];
-    extraModulePackages = with config.boot.kernelPackages; [ zenpower ];
-    # resumeDevice = "/dev/disk/by-uuid/740f7e37-527a-49a1-a6e8-3a81beadf96b";
   };
 
   boot.kernel.sysctl."vm.swappiness" = 100;
