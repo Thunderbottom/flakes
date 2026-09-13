@@ -48,7 +48,6 @@
         gnome-logs
         gnome-maps
         gnome-music
-        gnome-photos
         gnome-shell-extensions
         gnome-software
         gnome-terminal
