@@ -168,11 +168,11 @@
 
     systemd.services.irqbalance.serviceConfig.ProtectKernelTunables = "no";
 
-    services.journald.extraConfig = ''
-      SystemMaxUse=500M
-      SystemMaxFileSize=50M
-      MaxRetentionSec=7day
-    '';
+    services.journald.settings.Journal = {
+      SystemMaxUse = "500M";
+      SystemMaxFileSize = "50M";
+      MaxRetentionSec = "7day";
+    };
 
     system.stateVersion = config.snowflake.stateVersion;
     system.activationScripts.diff = {
