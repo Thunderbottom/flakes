@@ -12,22 +12,15 @@
       "asus-armoury"
     ];
 
-    programs.rog-control-center = {
-      enable = true;
-      autoStart = true;
-    };
     # specific to Asus laptop
     # source: https://asus-linux.org/guides/nixos/
     services = {
+      asusd.enable = true;
+      cardwired.enable = true;
       scx = {
         enable = true;
         scheduler = "scx_lavd";
       };
-      supergfxd = {
-        enable = true;
-        settings.mode = "Hybrid";
-      };
-      asusd.enable = true;
     };
 
     services.udev.extraRules = ''
