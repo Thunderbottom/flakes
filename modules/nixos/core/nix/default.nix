@@ -45,7 +45,6 @@
           "cgroups"
           "flakes"
           "nix-command"
-          "recursive-nix"
           "pipe-operators"
         ];
         # Set local flake registry.
