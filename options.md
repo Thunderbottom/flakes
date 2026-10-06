@@ -1,6 +1,5 @@
 # NixOS Module Options
 
-
 ## [`options.snowflake.bootloader`](modules/nixos/core/default.nix#L24)
 
 Bootloader to use, can be either `systemd-boot` or `grub`
@@ -219,11 +218,7 @@ Whether to enable Enable hypridle home configuration.
 
 **Example:** `true`
 
-## `options.snowflake.desktop.hyprland.enable`
-
-**Declared in:**
-- [`modules/home/desktop/hyprland/hyprland.nix`](modules/home/desktop/hyprland/hyprland.nix#L7)
-- [`modules/nixos/desktop/hyprland/default.nix`](modules/nixos/desktop/hyprland/default.nix#L10)
+## [`options.snowflake.desktop.hyprland.enable`](modules/home/desktop/hyprland/hyprland.nix#L7)
 
 Whether to enable Enable hyprland home configuration.
 
@@ -232,6 +227,11 @@ Whether to enable Enable hyprland home configuration.
 **Default:** `false`
 
 **Example:** `true`
+
+**Also declared in:**
+
+- [`modules/nixos/desktop/hyprland/default.nix`](modules/nixos/desktop/hyprland/default.nix#L10)
+  > Whether to enable Enable the Hyprland Desktop Environment.
 
 ## [`options.snowflake.desktop.hyprland.extraPackages`](modules/nixos/desktop/hyprland/default.nix#L12)
 
@@ -799,11 +799,9 @@ Whether to enable Enable systemd-resolved.
 
 ## [`options.snowflake.networking.wifiProfiles.customProfiles`](modules/nixos/networking/default.nix#L59)
 
-
 Additional custom NetworkManager profiles that don't follow the standard template.
 Use this for networks requiring special configuration like enterprise authentication,
 static IP addresses, or custom security settings.
-
 
 **Type:** `attribute set`
 
@@ -887,7 +885,7 @@ Map of WiFi SSIDs to their PSK environment variables
 
 ## [`options.snowflake.nginx.wildcard-ssl.credentialFiles`](modules/nixos/services/wildcard-ssl/default.nix#L29)
 
-Credential files for the DNS provider (passed as systemd credentials). Keys are environment variable names suffixed with _FILE.
+Credential files for the DNS provider (passed as systemd credentials). Keys are environment variable names suffixed with \_FILE.
 
 **Type:** `attribute set of path`
 
@@ -1093,10 +1091,8 @@ Whether to enable Enable audiobookshelf deployment configuration.
 
 ## [`options.snowflake.services.backups.config.<name>.dynamicFilesFrom`](modules/nixos/services/backup/default.nix#L27)
 
-
 A script that produces a list of files to back up.
 The result of this command are given to the `--files-from` option.
-
 
 **Type:** `null or string`
 
@@ -1106,11 +1102,9 @@ The result of this command are given to the `--files-from` option.
 
 ## [`options.snowflake.services.backups.config.<name>.paths`](modules/nixos/services/backup/default.nix#L37)
 
-
 List of paths to bck up. If null or an empty array,
 no backup command will be run. This can be used to
 create a prune-only job.
-
 
 **Type:** `null or list of string`
 
@@ -1127,9 +1121,7 @@ create a prune-only job.
 
 ## [`options.snowflake.services.backups.config.<name>.timerConfig`](modules/nixos/services/backup/default.nix#L60)
 
-
 When to run the backup process. See man systemd.timer for details.
-
 
 **Type:** `any`
 
@@ -1152,9 +1144,7 @@ When to run the backup process. See man systemd.timer for details.
 
 ## [`options.snowflake.services.backups.config.<name>.user`](modules/nixos/services/backup/default.nix#L51)
 
-
 The user under which the backup should run.
-
 
 **Type:** `string`
 
@@ -1318,9 +1308,7 @@ Extra arguments to pass to duperemove. Example: -d -r
 
 ## [`options.snowflake.services.duperemove.hashfile`](modules/nixos/services/tools/duperemove/default.nix#L19)
 
-
 (Optional) Path to Hash file used for storing filesystem hashes. Significantly speeds up subsequent runs.
-
 
 **Type:** `null or string`
 
@@ -1336,10 +1324,8 @@ The duperemove package to use
 
 ## [`options.snowflake.services.duperemove.paths`](modules/nixos/services/tools/duperemove/default.nix#L28)
 
-
 Paths to deduplicate. If you're using NixOS, the Nix Store can be deduplicated by nix itself. These paths
 should point to other directories in that case for ex. /home/my-user
-
 
 **Type:** `list of string`
 
@@ -2292,4 +2278,5 @@ Username for the system user
 **Type:** `string`
 
 ---
-*Generated with [nix-options-doc](https://github.com/Thunderbottom/nix-options-doc)*
+
+_Generated with [nix-options-doc](https://github.com/Thunderbottom/nix-options-doc)_
