@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # Use standard btrfs layout module
   snowflake.hardware.btrfs-standard-layout = {
     enable = true;
