@@ -42,7 +42,6 @@
   inputs = {
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.inputs.home-manager.follows = "nixpkgs";
 
     autofirma-nix.url = "github:nix-community/autofirma-nix/develop";
     autofirma-nix.inputs.nixpkgs.follows = "nixpkgs";
