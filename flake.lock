@@ -1015,15 +1015,15 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1791330715,
-        "narHash": "sha256-tu2JgkjpoMBnCWoFZeyw4ljkWTwqOwQeYDd02tBiqJU=",
-        "rev": "52f9145ce9f5bb0f9f2e5b3c15f021704c9053a7",
+        "lastModified": 1791362241,
+        "narHash": "sha256-fks/QOMHCZGhxQDJZ2Ip3C3UPPBQoQ3He1AepPmXl28=",
+        "rev": "91534157f408d996f498b6bdf07bff77a0a82a45",
         "type": "tarball",
-        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/52f9145ce9f5bb0f9f2e5b3c15f021704c9053a7.tar.gz"
+        "url": "https://git.deku.moe/api/v1/repos/thunderbottom/website/archive/91534157f408d996f498b6bdf07bff77a0a82a45.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.deku.moe/thunderbottom/website/archive/52f9145ce9f5bb0f9f2e5b3c15f021704c9053a7.tar.gz"
+        "url": "https://git.deku.moe/thunderbottom/website/archive/91534157f408d996f498b6bdf07bff77a0a82a45.tar.gz"
       }
     },
     "nil": {
