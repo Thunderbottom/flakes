@@ -1,52 +1,31 @@
-# This is an example of a blank module.
+# A blank feature module. Copy it to `modules/<group>/<name>.nix`, it is loaded automatically.
+# Shared values come from `config.profile`. Reverse proxies go in `proxy.<name>` and
+# backup paths in `backups.<name>.paths`. Add `flake.modules.homeManager.<name>` next
+# to the NixOS part if there is one.
+{ nixos, ... }:
 {
-  config,
-  lib,
+  flake.modules.nixos.my-module =
+    { config, ... }:
+    let
+      cfg = config.profile.services.my-module;
+    in
+    {
+      # Other features this one needs, so hosts only list what they want.
+      imports = [
+        nixos.proxy
+        nixos.backup-registry
+      ];
 
-  ...
-}:
-let
-  cfg = config.snowflake.services.myModule;
-in
-{
-  options = {
-    snowflake.services.myModule = {
-      enable = lib.mkEnableOption "Enables this example module.";
-      attributes = lib.mkOption {
-        default = { };
-        type = lib.types.attrs;
-        description = "An example of an attributes option.";
+      services.my-module = {
+        enable = true;
+        inherit (cfg) port;
       };
-      string = lib.mkOption {
-        default = "";
-        type = lib.types.str;
-        description = "An example of a string option.";
+
+      proxy.my-module = {
+        inherit (cfg) domain;
+        upstream = "http://localhost:${toString cfg.port}/";
       };
-      list = lib.mkOption {
-        default = [ ];
-        type = lib.types.listOf lib.types.int;
-        description = "An example of a list (of integers) option.";
-      };
-      enum = lib.mkOption {
-        default = "one";
-        type = lib.types.enum [
-          "one"
-          "two"
-        ];
-        description = "An example of an enum option.";
-      };
+
+      backups.my-module.paths = [ "/var/lib/my-module" ];
     };
-  };
-
-  config = lib.mkIf cfg.enable {
-    # Define the changes applied by this module here.
-  };
-
-  systemd.services = {
-    # Tell systemd to wait for the module's configuration directory to be available before starting the service.
-    myModule.unitConfig.RequiresMountsFor = cfg.home;
-
-    # Tell Nginx to wait for the service to be available before coming online.
-    nginx.wants = [ config.systemd.services.myModule.name ];
-  };
 }

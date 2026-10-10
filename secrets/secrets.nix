@@ -1,22 +1,17 @@
 let
-  data = import ../data.nix;
-  inherit (data.sshKeys.users) codingcoffee thunderbottom;
-  inherit (data.sshKeys.machines)
+  keys = import ../modules/profile/_ssh-keys.nix;
+  inherit (keys.users) codingcoffee thunderbottom;
+  inherit (keys.machines)
     donkpad
-    thonkpad
     zippyrus
     smolboye
     bicboye
     ;
-
-  servers = bicboye ++ smolboye;
   users = thunderbottom ++ codingcoffee;
 in
 {
   "machines/donkpad/password.age".publicKeys = thunderbottom ++ donkpad;
   "machines/donkpad/root-password.age".publicKeys = thunderbottom ++ donkpad;
-  "machines/thonkpad/password.age".publicKeys = thunderbottom ++ thonkpad;
-  "machines/thonkpad/root-password.age".publicKeys = thunderbottom ++ thonkpad;
   "machines/zippyrus/password.age".publicKeys = thunderbottom ++ zippyrus;
   "machines/zippyrus/root-password.age".publicKeys = thunderbottom ++ zippyrus;
   "machines/bicboye/password.age".publicKeys = thunderbottom ++ bicboye;
@@ -30,11 +25,10 @@ in
   "services/bluesky-pds/environment.age".publicKeys = thunderbottom ++ bicboye;
   "services/bluesky-pds/ssl-email.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
   "services/bluesky-pds/ssl-api-key.age".publicKeys = thunderbottom ++ bicboye ++ smolboye;
-  "services/cloudflare-ddns/api.age".publicKeys = thunderbottom ++ bicboye;
+  "services/cloudflare-ddns/api-token.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/password.age".publicKeys = thunderbottom ++ bicboye;
   "services/forgejo/actions-runner/token.age".publicKeys = thunderbottom ++ bicboye;
-  "services/maddy/password.age".publicKeys = thunderbottom ++ bicboye;
-  "services/maddy/user-watashi.age".publicKeys = thunderbottom ++ servers;
+  "services/harmonia/signing-key.age".publicKeys = thunderbottom ++ bicboye;
   "services/mailserver/watashi.age".publicKeys = thunderbottom ++ smolboye;
   "services/mailserver/noreply.age".publicKeys = thunderbottom ++ smolboye;
   "services/miniflux/password.age".publicKeys = thunderbottom ++ bicboye;
