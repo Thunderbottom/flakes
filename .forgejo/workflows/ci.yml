@@ -7,17 +7,21 @@ on:
     - cron: "0 3 * * 1"
   workflow_dispatch:
 jobs:
-  # Weekly flake.lock bump, pushed straight to main with the job's automatic
-  # token. Pushes made with that token don't trigger new runs, so the check and
-  # build jobs below run in this same workflow against the updated main.
-  update:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+  check:
     runs-on: native
+    env:
+      BUMP: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v4
       - name: Update flake inputs
+        if: env.BUMP == 'true'
         run: nix flake update
-      - name: Commit and push
+      - name: Format check
+        run: nix fmt -- --ci
+      - name: Flake check
+        run: nix flake check --no-build
+      - name: Commit and push flake.lock
+        if: env.BUMP == 'true'
         run: |
           if git diff --quiet flake.lock; then
             echo "flake.lock is already up to date"
@@ -27,20 +31,8 @@ jobs:
           git config user.email "forgejo-actions@noreply.deku.moe"
           git commit -m "chore: update flake.lock" flake.lock
           git push origin HEAD:main
-  check:
-    needs: update
-    if: ${{ !cancelled() && !failure() }}
-    runs-on: native
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'pull_request' && github.ref || 'main' }}
-      - name: Format check
-        run: nix fmt -- --ci
-      - name: Flake check
-        run: nix flake check --no-build
   build:
-    if: ${{ !cancelled() && !failure() && github.event_name != 'pull_request' }}
+    if: github.event_name != 'pull_request'
     needs: check
     runs-on: native
     strategy:
