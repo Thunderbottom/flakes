@@ -1,18 +1,6 @@
 _: {
   boot = {
-    initrd = {
-      availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "ehci_pci"
-        "nvme"
-        "usbhid"
-        "usb_storage"
-        "sd_mod"
-      ];
-      luks.devices."cryptroot".device = "/dev/disk/by-uuid/e570c2be-65df-4208-9cac-a03de08a6209";
-    };
-    kernelModules = [ "kvm-intel" ];
+    initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/e570c2be-65df-4208-9cac-a03de08a6209";
     kernelParams = [
       # Reduce PCIe link power-state transition latency for the NVMe/NIC,
       # matching the server profile's throughput-over-power-savings intent.

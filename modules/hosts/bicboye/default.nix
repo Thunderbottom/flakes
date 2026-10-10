@@ -3,7 +3,6 @@
   configurations.nixos.bicboye.module =
     {
       config,
-      inputs,
       lib,
       pkgs,
       ...
@@ -42,8 +41,14 @@
         nixos.postgresql-backup
         nixos.technitium
         ./_hardware.nix
-        inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
       ];
+
+      hardware.facter = {
+        enable = true;
+        reportPath = ./facter.json;
+        # Graphics stack is owned by nixos.intel-graphics (and the jellyfin override).
+        detected.graphics.enable = false;
+      };
 
       # Custom btrfs scrub for /storage (root filesystem scrub from server profile)
       services.btrfs.autoScrub = {
