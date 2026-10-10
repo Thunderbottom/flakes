@@ -3,12 +3,59 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
 jobs:
-  check:
+  # Weekly flake.lock bump, pushed straight to main with the job's automatic
+  # token. Pushes made with that token don't trigger new runs, so the check and
+  # build jobs below run in this same workflow against the updated main.
+  update:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: native
     steps:
       - uses: actions/checkout@v4
+      - name: Update flake inputs
+        run: nix flake update
+      - name: Commit and push
+        run: |
+          if git diff --quiet flake.lock; then
+            echo "flake.lock is already up to date"
+            exit 0
+          fi
+          git config user.name "forgejo-actions"
+          git config user.email "forgejo-actions@noreply.deku.moe"
+          git commit -m "chore: update flake.lock" flake.lock
+          git push origin HEAD:main
+  check:
+    needs: update
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: native
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.ref || 'main' }}
       - name: Format check
         run: nix fmt -- --ci
       - name: Flake check
         run: nix flake check --no-build
+  build:
+    if: ${{ !cancelled() && !failure() && github.event_name != 'pull_request' }}
+    needs: check
+    runs-on: native
+    strategy:
+      fail-fast: false
+      matrix:
+        host: [bicboye, donkpad, smolboye, zippyrus]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      # The out-link is a GC root, which keeps the build in the cache until the
+      # next push replaces it.
+      - name: Build ${{ matrix.host }}
+        run: |
+          mkdir -p /var/lib/gitea-runner/gcroots
+          nix build ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
+            --no-update-lock-file \
+            --out-link "/var/lib/gitea-runner/gcroots/${{ matrix.host }}"
