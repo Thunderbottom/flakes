@@ -7,153 +7,72 @@
 
 ---
 
-This repository contains modularized NixOS configurations, carefully compiled and in often places inspired by other similar configurations. The setup is flake-based and fully reproducible. Feel free to explore and use any part that inspires you.
+This repository contains my NixOS configurations, carefully put together over a long time and in often places inspired by other similar setups. It follows the [dendritic pattern](https://github.com/mightyiam/dendritic), is flake-based and fully reproducible. Feel free to explore and use any part that inspires you.
 
 ## Highlights
 
-- Modular flake setup based on [flake-parts](https://flake.parts/)
+- Modular flake setup based on [flake-parts](https://flake.parts/), with no other helper libraries
+- Every component lives in a single file, with its NixOS and Home Manager parts side by side
+- Modules pull in whatever they depend on, so a host only lists what it is
+- Personal preferences in one place, which any host can override
 - Secret management based on [Agenix](https://github.com/ryantm/agenix)
-- Single flake setup for NixOS and Home Manager
-- Modules for servers, workstation, and mailserver
 - Encrypted BTRFS setup
 
 ## Structure
 
 ```
 .
-├── hosts
-│   ├── bicboye
-│   ├── donkpad
-│   ├── smolboye
-│   ├── thonkpad
-│   └── zippyrus
+├── flake.nix        # inputs, and the loader for everything under modules/
 ├── modules
-│   ├── home
-│   │   ├── desktop
-│   │   ├── development
-│   │   └── shell
-│   └── nixos
-│       ├── core
-│       ├── desktop
-│       ├── gaming
-│       ├── hardware
-│       ├── monitoring
-│       ├── networking
-│       ├── profiles
-│       ├── services
-│       └── user
-├── overlays
-│   ├── netbird
-│   └── patool
-├── packages
-├── secrets
-│   ├── machines
-│   │   ├── bicboye
-│   │   ├── donkpad
-│   │   ├── smolboye
-│   │   ├── thonkpad
-│   │   └── zippyrus
-│   ├── monitoring
-│   │   └── grafana
-│   ├── network-manager
-│   └── services
-│       ├── backups
-│       ├── bluesky-pds
-│       ├── cloudflare-ddns
-│       ├── forgejo
-│       ├── maddy
-│       ├── mailserver
-│       ├── miniflux
-│       ├── paperless
-│       ├── qui
-│       ├── unifi-unpoller
-│       └── vaultwarden
-├── templates
-│   ├── desktop
-│   ├── module
-│   └── server
-└── users
-    ├── chnmy
-    │   ├── donkpad
-    │   ├── thonkpad
-    │   └── zippyrus
-    └── server
-        ├── bicboye
-        └── smolboye
+│   ├── hosts        # one directory per machine
+│   ├── profile      # my preferences: identity, domain, service domains and ports
+│   ├── system       # base, laptop and server profiles, users, nix, ssh, networking
+│   ├── hardware     # cpu, gpu, bluetooth, yubikey, disk layouts
+│   ├── desktop      # desktop environments, apps, gaming
+│   ├── programs     # shell and development tools
+│   ├── services     # self-hosted services (arr, monitoring, ...)
+│   ├── users        # what each user gets in Home Manager
+│   ├── overlays     # one file per overlay
+│   └── nix          # flake plumbing: hosts, deploy, devshell, formatter, templates
+├── secrets          # agenix secrets
+└── templates        # starting points for a new module, desktop or server
 ```
 
-- `flake.nix`: Entrypoint for the NixOS configurations
-- `data.nix`: Mappings for Agenix secrets, passed as `specialArgs` in `flake.nix` and referenced inside the configurations.
-- `users`: Home user configuration for the flakes, structured as `<username>/<system>`
-- `modules`: Platform-based opinionated NixOS modules, containing `home` and `nixos`
-  - `home`: Home Manager configuration options programs and services
-  - `nixos`: NixOS configuration options for services, programs, and system setup
-- `overlays`: Customized nix package builds for existing packages
-- `packages`: Custom packages for NixOS
-- `templates`: Flake templates for generating Nix configurations
-- `secrets`: Agenix deployment secrets, referenced in `data.nix`
-- `options.md`: Auto-generated documentation for all available module options
-- `treefmt.nix`: Configuration for code formatting
+Every `.nix` file under `modules/` is loaded automatically, except files and directories starting with an `_`, which are imported by hand. A file describes one component and holds all of its parts, for example `flake.modules.nixos.fish` and `flake.modules.homeManager.fish` next to each other. Run `git add` on new files, flakes only see tracked ones.
 
-## Modules
+### Preferences
 
-All modules are available under the `modules/` directory, for both Home manager and NixOS, with the options listed under `snowflake.*`. These modules makes deploying complex configurations quite simple. For example: A full-fledged, minimal, KDE Plasma desktop can be enabled by adding `snowflake.desktop.kde.enable = true` to your system configuration.
+Everything personal lives in [`modules/profile/preferences.nix`](modules/profile/preferences.nix) and is read as `config.profile` from both NixOS and Home Manager modules: name, email, domain, the domain and port of each service, and the paths of all secrets. These are only defaults. A host can override any of them with `profile.<name> = ...`, for example `profile.fullName` or `profile.services.forgejo.port`, and the change reaches Home Manager as well. Servers log in as `server` this way.
 
-The modular configuration also allows for efficient reusability and config de-duplication between machines. Most of the configuration is tailored to my needs, but is still highly-customizable except for the security defaults.
+Service domains and ports must be unique, which is checked when a host is evaluated.
 
-As an example, to deploy a new workstation with a desktop environment:
+### Modules
+
+A module imports the modules it needs, so enabling something is just importing it. `nixos.gnome` brings the desktop along, `nixos.forgejo` brings nginx, postgres, fail2ban and the backup registry, and `nixos.laptop` brings the base. Importing the same module from several places is fine.
+
+Two small options exist for modules to contribute to: `proxy.<name>` turns a service into an nginx vhost with TLS, and `backups.<name>` adds paths to the restic backups. Everything else is the regular NixOS and Home Manager options.
+
+### Adding a host
+
+Create `modules/hosts/<name>/default.nix`:
 
 ```nix
-{lib, pkgs, userdata, ...}:
+{ nixos, ... }:
 {
-  imports = [./hardware.nix];
-
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-
-  networking.hostName = "workstation";
-
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
-  services.thermald.enable = true;
-
-  snowflake = {
-    stateVersion = "24.05";
-
-    core.lanzaboote.enable = true;
-    core.docker.enable = true;
-    core.docker.storageDriver = "btrfs";
-
-    desktop.enable = true;
-    desktop.fingerprint.enable = true;
-    desktop.kde.enable = true;
-
-    hardware.bluetooth.enable = true;
-    hardware.yubico.enable = true;
-
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-    networking.iwd.enable = true;
-    networking.resolved.enable = true;
-    networking.netbird.enable = true;
-
-    user.enable = true;
-    user.username = "user";
-    user.description = "User McUsername";
-    user.extraGroups = ["video"];
-
-    # NOTE: this requires adding an agenix secret to `secrets/secrets.nix`
-    # and an entry in `data.nix` to work. Refer those files for more details.
-    user.userPasswordAgeModule = userdata.secrets.machines.workstation.password;
-    user.rootPasswordAgeModule = userdata.secrets.machines.workstation.root-password;
-  }
-};
+  configurations.nixos.<name>.module.imports = [
+    nixos.laptop
+    nixos.gnome
+    nixos.docker
+    ./_hardware.nix
+  ];
+}
 ```
+
+Settings that only apply to this machine go in the same file. The password hashes are expected in `secrets/machines/<name>/`.
 
 ## Systems
 
 - `zippyrus`: Primary workstation on ASUS Zephyrus GA403UI - AMD Ryzen 9 8945HS, 32GB RAM, Nvidia 4070
-- `thonkpad`: Work provisioned Lenovo X1 Carbon 12th Gen - Intel Core Ultra 7 155H, 32GB RAM
 - `bicboye`: A custom-built Homelab running Intel Core i5 12600K, 32GB RAM, 16TB storage
 - `smolboye`: Hetzner Cloud VPS Running a dual-core Intel Xeon, 4GB RAM
 
@@ -165,14 +84,14 @@ For all deployment secrets, I am using `agenix`. All secrets are stored in the `
 
 To add new deployment secrets:
 
-- Create the relevant directory structure under `secrets/` and add an entry to `secrets.nix`
+- Create the secret under `secrets/` and add an entry for it to `secrets.nix`
 - Create/Edit the secret with agenix. This command needs to be run in the same directory as `secrets.nix`. You do not require agenix to be installed, and instead can use `nix run`, for example:
 
 ```shell
 $ nix run github:ryantm/agenix#agenix -- -e services/service-name/password.age
 ```
 
-- Add an entry for the secret to `data.nix`. The added secret can then be used as `userdata.secrets.services.service-name.password` in the configuration. Refer to `data.nix` for more details.
+- That is all. Every `.age` file under `secrets/` shows up as `config.profile.secrets.<path>.file`, so the example above becomes `config.profile.secrets.services.service-name.password.file`.
 
 ## Usage
 

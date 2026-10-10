@@ -1,99 +1,52 @@
-{
-  lib,
-  userdata,
-  ...
-}:
+# Copy this directory to `modules/hosts/<hostname>/` and rename `desktop`
+# below to the machine's hostname. New files are picked up automatically
+# (run `git add` first). `_hardware.nix` is imported explicitly.
+{ config, ... }:
 let
-  # NOTE: Update the hostname
-  hostname = "desktop";
+  inherit (config.flake.modules) nixos;
 in
 {
-  imports = [ ./hardware.nix ];
+  configurations.nixos.desktop.module = _: {
+    imports = [
+      nixos.laptop
 
-  # Enable microcode updates for the CPU
-  # NOTE: Only enable the one that is required.
-  # hardware.cpu.amd.updateMicrocode = true;
-  # hardware.cpu.intel.updateMicrocode = true;
+      nixos.gnome
+      nixos.docker
+      nixos.steam
+      nixos.proton
+      nixos.yubico
 
-  # Enable redistributable firmware for non-free hardware
-  hardware.enableRedistributableFirmware = true;
+      # Secure boot support.
+      # NOTE: Requires setting up lanzaboote, read the link below for help.
+      # ref: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
+      # nixos.lanzaboote
 
-  # Configure networking for the system
-  networking.hostName = hostname;
-  networking.interfaces.wlan0.useDHCP = lib.mkDefault false;
+      # GPU support.
+      # NOTE: nvidia requires the bus IDs to be set below.
+      nixos.intel-graphics
+      # nixos.amd-graphics
+      # nixos.nvidia-graphics
 
-  # Power management, enable powertop and thermald.
-  powerManagement.powertop.enable = true;
+      ./_hardware.nix
+    ];
 
-  snowflake = {
     # NOTE: Since the system runs on nixos-unstable, this should be
-    # set to the latest version as of the installation time. Can also
-    # be left as-is.
-    stateVersion = "25.05";
+    # set to the latest version as of the installation time.
+    system.stateVersion = "25.05";
 
     # Add extra packages to the system
-    extraPackages = [ ];
+    environment.systemPackages = [ ];
 
-    # Enable secure boot support.
-    # NOTE: Requires setting up lanzaboote, read the link below for help.
-    # ref: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
-    # core.lanzaboote.enable = true;
+    # Disk layout of the standard btrfs/LUKS layout (see `nixos.btrfs-standard-layout`).
+    # profile.disk = {
+    #   rootUUID = "...";
+    #   luksUUID = "...";
+    #   bootUUID = "...";
+    # };
 
-    # Enable docker service
-    core.docker.enable = true;
-    # NOTE: enable in case the filesystem in use is
-    # anything other than ext4.
-    # core.docker.storageDriver = "btrfs";
-
-    # Enable desktop environment, and configure GNOME.
-    desktop.enable = true;
-    desktop.gnome.enable = true;
-
-    # Enable steam and proton libraries
-    gaming.proton.enable = true;
-    gaming.steam.enable = true;
-
-    # Enable bluetooth
-    hardware.bluetooth.enable = true;
-
-    # Enable Yubikey support
-    hardware.yubico.enable = true;
-
-    # Enable GPU support.
-    # NOTE: you will be required to set up the bus IDs
-    # if the system has an Nvidia GPU.
-    hardware.graphics = {
-      amd.enable = true;
-      nvidia = {
-        enable = true;
-        busIDs = {
-          amd = "PCI:101:0:0";
-          nvidia = "PCI:1:0:0";
-        };
-      };
-    };
-
-    # Enable firewall and NetworkManager
-    networking.firewall.enable = true;
-    networking.networkManager.enable = true;
-
-    # Switch the NetworkManager backend to iwd.
-    # NOTE: this is suggested and will only work if the system
-    # has an intel network card.
-    # networking.iwd.enable = true;
-
-    # Enable systemd-resolved service
-    networking.resolved.enable = true;
-
-    # User configuration.
-    # NOTE: change the username and the description for the user.
-    user.enable = true;
-    user.username = "user";
-    user.description = "User McUserface";
-    user.extraGroups = [ "video" ];
-    # NOTE: The following module needs an entry in secrets.nix and data.nix
-    # The secrets are configured using agenix. Check out the readme for more information.
-    user.userPasswordAgeModule = userdata.secrets.machines.${hostname}.password;
-    user.rootPasswordAgeModule = userdata.secrets.machines.${hostname}.root-password;
+    # NOTE: the user password hashes are read from
+    # `secrets/machines/<hostname>/{password,root-password}.age`, which need
+    # entries in `secrets/secrets.nix`. They are created with agenix, check
+    # the readme for more information.
   };
 }

@@ -1,42 +1,24 @@
 {
 
   outputs =
-    { self, flake-parts, ... }@inputs:
+    { flake-parts, nixpkgs, ... }@inputs:
+    let
+      inherit (nixpkgs) lib;
+
+      # Every .nix file under ./modules is a flake-parts module, except for files
+      # and directories prefixed with `_`, which are imported explicitly.
+      modulesDir = ./modules;
+      loadModules =
+        dir:
+        lib.filesystem.listFilesRecursive dir
+        |> builtins.filter (
+          path:
+          lib.hasSuffix ".nix" path
+          && !lib.any (lib.hasPrefix "_") (lib.path.subpath.components (lib.path.removePrefix dir path))
+        );
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
-
-      imports = [
-        ./hosts
-        ./modules
-        ./overlays
-        ./packages
-        ./templates
-        inputs.treefmt-nix.flakeModule
-      ];
-
-      perSystem =
-        { pkgs, system, ... }:
-        {
-          devShells = {
-            default = pkgs.mkShell {
-              packages = [
-                pkgs.nh
-                inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
-              ];
-            };
-
-            sops = pkgs.mkShell {
-              packages = [
-                pkgs.sops
-                pkgs.age
-                pkgs.ssh-to-age
-              ];
-            };
-          };
-
-          treefmt = import "${self}/treefmt.nix";
-          # formatter = (inputs.treefmt-nix.lib.evalModule pkgs "${self}/treefmt.nix").config.build.wrapper;
-        };
+      imports = loadModules modulesDir;
     };
 
   inputs = {
@@ -61,9 +43,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-    ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs.follows = "nixpkgs";
-
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -75,17 +54,11 @@
     maych-in.url = "https://git.deku.moe/thunderbottom/website/archive/91534157f408d996f498b6bdf07bff77a0a82a45.tar.gz";
     maych-in.inputs.nixpkgs.follows = "nixpkgs";
 
-    nil.url = "github:oxalica/nil";
-    nil.inputs.nixpkgs.follows = "nixpkgs";
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     nixos-mailserver.inputs.nixpkgs.follows = "nixpkgs";
-
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
@@ -98,7 +71,6 @@
 
     wezterm.url = "github:wez/wezterm?dir=nix";
     wezterm.inputs.nixpkgs.follows = "nixpkgs";
-    wezterm.inputs.rust-overlay.follows = "rust-overlay";
 
     # NOTE: enable this and switch ref for nightly builds
     # zed.url = "github:zed-industries/zed?ref=v0.190.6";
