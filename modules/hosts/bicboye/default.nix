@@ -42,7 +42,7 @@
         nixos.postgresql-backup
         nixos.technitium
         ./_hardware.nix
-        inputs.nixos-hardware.nixosModules.common-cpu-intel
+        inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
       ];
 
       # Custom btrfs scrub for /storage (root filesystem scrub from server profile)
