@@ -1,0 +1,27 @@
+name: Update flake.lock
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: native
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.FLAKE_UPDATE_TOKEN }}
+      - name: Update flake inputs
+        run: nix flake update
+      - name: Evaluate
+        run: nix flake check --no-build
+      - name: Commit and push
+        run: |
+          if git diff --quiet flake.lock; then
+            echo "flake.lock is already up to date"
+            exit 0
+          fi
+          git -c user.name=ci-bot -c user.email=ci-bot@deku.moe \
+            commit -m "chore: update flake.lock" flake.lock
+          git push origin HEAD:main

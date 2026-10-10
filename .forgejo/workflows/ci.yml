@@ -3,51 +3,48 @@ on:
   push:
     branches: [main]
   pull_request:
-  schedule:
-    - cron: "0 3 * * 1"
-  workflow_dispatch:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: native
-    env:
-      BUMP: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Update flake inputs
-        if: env.BUMP == 'true'
-        run: nix flake update
-      - name: Format check
-        run: nix fmt -- --ci
       - name: Flake check
         run: nix flake check --no-build
-      - name: Commit and push flake.lock
-        if: env.BUMP == 'true'
-        run: |
-          if git diff --quiet flake.lock; then
-            echo "flake.lock is already up to date"
-            exit 0
-          fi
-          git config user.name "forgejo-actions"
-          git config user.email "forgejo-actions@noreply.deku.moe"
-          git commit -m "chore: update flake.lock" flake.lock
-          git push origin HEAD:main
   build:
-    if: github.event_name != 'pull_request'
     needs: check
     runs-on: native
-    strategy:
-      fail-fast: false
-      matrix:
-        host: [bicboye, donkpad, smolboye, zippyrus]
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-      # The out-link is a GC root, which keeps the build in the cache until the
-      # next push replaces it.
-      - name: Build ${{ matrix.host }}
+      - name: Build checks
+        env:
+          EVENT: ${{ github.event_name }}
         run: |
-          mkdir -p /var/lib/gitea-runner/gcroots
-          nix build ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
-            --no-update-lock-file \
-            --out-link "/var/lib/gitea-runner/gcroots/${{ matrix.host }}"
+          set -- --flake ".#checks.x86_64-linux" --skip-cached --no-nom \
+            --eval-workers 2 --eval-max-memory-size 8192
+          if [ "$EVENT" = push ]; then
+            mkdir -p /var/lib/gitea-runner/gcroots
+            set -- "$@" --out-link /var/lib/gitea-runner/gcroots/result
+          fi
+          nix run nixpkgs#nix-fast-build -- "$@"
+  notify:
+    if: ${{ failure() && github.event_name == 'push' }}
+    needs: [check, build]
+    runs-on: native
+    timeout-minutes: 5
+    steps:
+      - name: Notify failure
+        env:
+          NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_number }}
+        run: |
+          curl -fsS -H "Authorization: Bearer $NTFY_TOKEN" \
+            -H "Title: CI failed: $REPO" -H "Priority: high" -H "Tags: x" \
+            -d "$SHA: $RUN_URL" \
+            "https://ntfy.deku.moe/nix-ci"
