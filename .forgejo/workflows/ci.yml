@@ -12,6 +12,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Formatting and static analysis
+        run: nix fmt -- --ci
       - name: Flake check
         run: nix flake check --no-build
   build:

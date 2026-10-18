@@ -16,12 +16,39 @@ jobs:
         run: nix flake update
       - name: Evaluate
         run: nix flake check --no-build
-      - name: Commit and push
+      - name: Create or update pull request
+        env:
+          TOKEN: ${{ secrets.FLAKE_UPDATE_TOKEN }}
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
         run: |
+          set -euo pipefail
           if git diff --quiet flake.lock; then
             echo "flake.lock is already up to date"
             exit 0
           fi
+
+          branch=automation/flake-update
           git -c user.name=ci-bot -c user.email=ci-bot@deku.moe \
             commit -m "chore: update flake.lock" flake.lock
-          git push origin HEAD:main
+          git push --force origin "HEAD:refs/heads/$branch"
+
+          api="$SERVER_URL/api/v1/repos/$REPOSITORY"
+          owner="${REPOSITORY%%/*}"
+          existing=$(curl -fsS \
+            -H "Authorization: token $TOKEN" \
+            "$api/pulls?state=open&head=$owner%3A$branch&base=main" | jq 'length')
+          if [ "$existing" -eq 0 ]; then
+            payload=$(jq -n \
+              --arg title "chore: update flake.lock" \
+              --arg head "$branch" \
+              --arg base main \
+              --arg body "Automated flake input update. CI evaluates the updated lock file before opening this pull request." \
+              '{title: $title, head: $head, base: $base, body: $body}')
+            curl -fsS -X POST "$api/pulls" \
+              -H "Authorization: token $TOKEN" \
+              -H 'Content-Type: application/json' \
+              --data "$payload"
+          else
+            echo "An open flake update pull request already exists; its branch was refreshed."
+          fi
