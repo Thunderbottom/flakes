@@ -4,6 +4,7 @@
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     {
@@ -22,6 +23,39 @@
           services.jellyfin = {
             enable = true;
             openFirewall = true;
+            package = pkgs.jellyfin.override {
+              jellyfin-web = pkgs.jellyfin-web.overrideAttrs (old: {
+                postInstall =
+                  (old.postInstall or "")
+                  + (
+                    let
+                      abyss = pkgs.fetchFromGitHub {
+                        owner = "AumGupta";
+                        repo = "abyss-jellyfin";
+                        tag = "v1.2.3";
+                        hash = "sha256-tzXgVk1HKiBi5BAibD8LjJ/qTBEEGZjDEpV1LIOyeVg=";
+                      };
+                    in
+                    # bash
+                    ''
+                      webDir="$out/share/jellyfin-web"
+
+                      mkdir -p "$webDir/ui"
+                      cp ${abyss}/scripts/spotlight/spotlight.html "$webDir/ui/"
+                      cp ${abyss}/scripts/spotlight/spotlight.css  "$webDir/ui/"
+                      cp ${abyss}/scripts/spotlight/home-html.chunk.js "$webDir/ui/"
+
+                      target=$(find "$webDir" -maxdepth 1 -name 'home-html.*.chunk.js')
+                      if [ -n "$target" ]; then
+                        cp ${abyss}/scripts/spotlight/home-html.chunk.js "$target"
+                      else
+                        echo "ERROR: home-html chunk not found in $webDir" >&2
+                        exit 1
+                      fi
+                    ''
+                  );
+              });
+            };
           };
 
           users.groups.media = {
