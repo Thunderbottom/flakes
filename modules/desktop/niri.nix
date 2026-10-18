@@ -42,6 +42,32 @@
           enable_builtin_templates = true;
           builtin_ids = [ "niri" ];
         };
+        # Lock, blank the screen, then suspend, each preceded by a short fade
+        settings.idle = {
+          behavior_order = [
+            "lock"
+            "screen-off"
+            "suspend"
+          ];
+          pre_action_fade_seconds = 3.0;
+          behavior = {
+            lock = {
+              timeout = 300;
+              action = "lock";
+              enabled = true;
+            };
+            screen-off = {
+              timeout = 330;
+              action = "screen_off";
+              enabled = true;
+            };
+            suspend = {
+              timeout = 900;
+              action = "lock_and_suspend";
+              enabled = true;
+            };
+          };
+        };
       };
 
       # niri refuses to load a config whose include is missing, so make sure the
@@ -107,9 +133,38 @@
             clip-to-geometry true
         }
 
+        // Noctalia's settings window floats instead of tiling
+        window-rule {
+            match app-id="dev.noctalia.Noctalia"
+            open-floating true
+            default-column-width { fixed 1080; }
+            default-window-height { fixed 920; }
+        }
+
         // Smaller workspaces in the overview
         overview {
             zoom 0.5
+        }
+
+        // Show Noctalia's blurred, tinted wallpaper copy behind the overview
+        layer-rule {
+            match namespace="^noctalia-backdrop"
+            place-within-backdrop true
+        }
+
+        // Blur behind Noctalia's surfaces
+        layer-rule {
+            match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+            background-effect {
+                xray false
+            }
+        }
+
+        blur {
+            passes 2
+            offset 3.0
+            noise 0.03
+            saturation 1.0
         }
 
         animations {
