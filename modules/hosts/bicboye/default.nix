@@ -39,7 +39,6 @@
         nixos.ntfy-sh
         nixos.paperless
         nixos.postgresql-backup
-        nixos.technitium
         ./_hardware.nix
       ];
 
