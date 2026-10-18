@@ -7,13 +7,6 @@ _: {
 
   boot = {
     loader.systemd-boot.configurationLimit = 3;
-    initrd = {
-      # Override the standard LUKS config with additional options for zippyrus
-      luks.devices."cryptroot".crypttabExtraOpts = [
-        "no-read-workqueue"
-        "no-write-workqueue"
-      ];
-    };
     kernelParams = [
       "nowatchdog"
       "amdgpu.sg_display=0"

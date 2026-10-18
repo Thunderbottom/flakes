@@ -36,7 +36,10 @@
         DefaultTimeoutStopSec = "10s";
       };
 
-      environment.systemPackages = [ pkgs.obsidian ];
+      environment.systemPackages = with pkgs; [
+        obsidian
+        pi-coding-agent
+      ];
 
       hardware.nvidia.prime = {
         amdgpuBusId = "PCI:101:0:0";

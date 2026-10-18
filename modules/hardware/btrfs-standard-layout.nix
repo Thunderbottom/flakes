@@ -24,12 +24,11 @@
           inherit device;
           fsType = "btrfs";
           options = [
-            "compress-force=zstd:3" # Level 3: good compression/performance balance
+            "compress=zstd:3" # Use Btrfs compression heuristics for incompressible data
             "noatime" # Don't update access times
             "nodiratime" # Don't update directory access times
             "ssd" # SSD optimizations
             "space_cache=v2" # Free space cache v2
-            "commit=120" # Commit interval: 120 seconds
             "discard=async" # Async TRIM for SSD
             "subvol=${subvol}"
           ]

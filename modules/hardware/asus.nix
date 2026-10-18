@@ -17,10 +17,6 @@
         services = {
           asusd.enable = true;
           cardwired.enable = true;
-          scx = {
-            enable = true;
-            scheduler = "scx_lavd";
-          };
         };
 
         services.udev.extraRules = ''
