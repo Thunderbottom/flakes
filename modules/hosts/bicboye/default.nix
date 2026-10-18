@@ -86,38 +86,11 @@
 
       hardware.graphics.extraPackages = [ pkgs.intel-compute-runtime ];
 
-      services.fail2ban.ignoreIP = [ "192.168.69.0/16" ];
+      services.fail2ban.ignoreIP = [ "192.168.1.0/16" ];
 
       services.cloudflare-dyndns.domains = [
         "maych.in"
         "bicboye.deku.moe"
-      ];
-
-      services.vmagent.prometheusConfig.scrape_configs = [
-        {
-          job_name = "unpoller";
-          static_configs = [
-            {
-              targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.unpoller.port}" ];
-            }
-          ];
-        }
-        {
-          job_name = "router";
-          static_configs = [
-            {
-              targets = [ "192.168.69.1:9100" ];
-            }
-          ];
-          relabel_configs = [
-            {
-              source_labels = [ "__address__" ];
-              target_label = "instance";
-              regex = "([^:]+)(:[0-9]+)?";
-              replacement = "openwrt";
-            }
-          ];
-        }
       ];
 
       services.nginx.virtualHosts = {
@@ -127,19 +100,7 @@
           forceSSL = true;
           root = pkgs.maych-in;
           locations = {
-            "^~ /_astro/" = {
-              extraConfig = ''
-                add_header Cache-Control "public, max-age=31536000, immutable" always;
-              ''
-              + securityHeaders;
-            };
-            "^~ /fonts/" = {
-              extraConfig = ''
-                add_header Cache-Control "public, max-age=31536000, immutable" always;
-              ''
-              + securityHeaders;
-            };
-            "^~ /icons/" = {
+            "~ ^/(?:_astro|fonts|icons)/" = {
               extraConfig = ''
                 add_header Cache-Control "public, max-age=31536000, immutable" always;
               ''
