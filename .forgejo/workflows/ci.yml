@@ -29,7 +29,6 @@ jobs:
           set -- --flake ".#checks.x86_64-linux" --skip-cached --no-nom \
             --eval-workers 2 --eval-max-memory-size 8192
           if [ "$EVENT" = push ]; then
-            mkdir -p /var/lib/gitea-runner/gcroots
             set -- "$@" --out-link /var/lib/gitea-runner/gcroots/result
           fi
           nix run nixpkgs#nix-fast-build -- "$@"
