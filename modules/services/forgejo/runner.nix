@@ -48,7 +48,7 @@
             settings = {
               log.level = "info";
 
-              connections.default.uuid = "5a2642c2-8f7c-45ac-b86f-92c7ad218920";
+              server.connections.default.uuid = "5a2642c2-8f7c-45ac-b86f-92c7ad218920";
               cache = {
                 enabled = true;
                 dir = "/var/cache/forgejo-runner/actions";
