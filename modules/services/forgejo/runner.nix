@@ -21,13 +21,10 @@
           file = config.profile.secrets.services.forgejo.actions-runner.token.file;
         };
 
-        services.gitea-actions-runner = {
-          package = pkgs.forgejo-runner;
+        services.forgejo-runner = {
           instances.default = {
             enable = true;
-            name = config.networking.hostName;
             url = "https://${cfg.domain}";
-            tokenFile = config.age.secrets.forgejo-runner.path;
 
             labels = [
               "ubuntu-latest:docker://node:22-bookworm"
@@ -46,9 +43,12 @@
               config.nix.package
             ];
 
+            secrets.server.connections.default.token_url = config.age.secrets.forgejo-runner.path;
+
             settings = {
               log.level = "info";
 
+              connections.default.uuid = "5a2642c2-8f7c-45ac-b86f-92c7ad218920";
               cache = {
                 enabled = true;
                 dir = "/var/cache/forgejo-runner/actions";
@@ -69,8 +69,6 @@
             };
           };
         };
-
-        systemd.services.gitea-runner-default.serviceConfig.CacheDirectory = "forgejo-runner";
       };
     };
 }
