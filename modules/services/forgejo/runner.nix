@@ -17,6 +17,12 @@
       ];
 
       config = {
+        # Clean links and per-execution directories without following store links.
+        # The workflow creates the directory inside the runner's managed state.
+        systemd.tmpfiles.rules = [
+          "e /var/lib/forgejo-runner/default/gcroots - - - mM:30d"
+        ];
+
         age.secrets.forgejo-runner = {
           file = config.profile.secrets.services.forgejo.actions-runner.token.file;
         };
@@ -24,12 +30,6 @@
         services.forgejo-runner = {
           instances.default = {
             enable = true;
-            url = "https://${cfg.domain}";
-
-            labels = [
-              "ubuntu-latest:docker://node:22-bookworm"
-              "native:host"
-            ];
 
             hostPackages = with pkgs; [
               bash
@@ -48,16 +48,23 @@
             settings = {
               log.level = "info";
 
-              server.connections.default.uuid = "5a2642c2-8f7c-45ac-b86f-92c7ad218920";
+              server.connections.default = {
+                url = "https://${cfg.domain}";
+                uuid = "5a2642c2-8f7c-45ac-b86f-92c7ad218920";
+              };
               cache = {
                 enabled = true;
                 dir = "/var/cache/forgejo-runner/actions";
               };
 
               runner = {
+                labels = [
+                  "ubuntu-latest:docker://node:22-bookworm"
+                  "native:host"
+                ];
                 capacity = 2;
-                envs = { };
-                timeout = "1h";
+                envs.CI_GCROOTS = "/var/lib/forgejo-runner/default/gcroots";
+                timeout = "3h";
               };
 
               container = {

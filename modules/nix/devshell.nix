@@ -4,6 +4,16 @@
     { pkgs, ... }:
     {
       devShells = {
+        ci = pkgs.mkShellNoCC {
+          packages = with pkgs; [
+            curl
+            gitMinimal
+            jq
+            nix-fast-build
+            shellcheck
+          ];
+        };
+
         default = pkgs.mkShell {
           packages = [
             pkgs.nh
