@@ -93,6 +93,21 @@ $ nix run github:ryantm/agenix#agenix -- -e services/service-name/password.age
 
 - That is all. Every `.age` file under `secrets/` shows up as `config.profile.secrets.<path>.file`, so the example above becomes `config.profile.secrets.services.service-name.password.file`.
 
+## CI
+
+Forgejo runs formatting, evaluation, and offline script tests before building the flake checks with `nix-fast-build`. CI tools come from `devShells.x86_64-linux.ci`, pinned by `flake.lock`. Checkout is pinned separately to an explicit action revision.
+
+```shell
+nix develop .#ci --command bash scripts/test-ci.sh
+nix develop .#ci --command shellcheck scripts/ci-*.sh scripts/test-ci.sh
+```
+
+Push builds retain locally built outputs using per-run/per-attempt GC roots under `/var/lib/forgejo-runner/default/gcroots`. The runner supplies this path as `CI_GCROOTS`; systemd tmpfiles expires links and directories after 30 days. Cache hits skipped by `--skip-cached` are not refreshed as local roots. Deploy the runner configuration on `bicboye` before using the updated workflow. Legacy roots under `/var/lib/gitea-runner` are not migrated or removed automatically.
+
+The weekly/manual update workflow validates the new lock file before publishing `automation/flake-update`. Runs are serialized, unchanged branch content is reused, pushes use an explicit lease, and an existing PR is reused. If publication succeeds but PR creation fails, rerunning recovers without rewriting identical content. `FLAKE_UPDATE_TOKEN` needs repository push and PR-creation access; `NTFY_TOKEN` sends trusted CI and update failures to ntfy.
+
+The `native` runner executes repository code directly on the persistent host and has Docker access. Only run trusted code on it; external PRs require explicit trust review or a separate isolated runner. Read-only checkout credentials are not host isolation.
+
 ## Usage
 
 ### NixOS Installation

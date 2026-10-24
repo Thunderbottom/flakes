@@ -3,49 +3,60 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
   check:
     runs-on: native
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: https://data.forgejo.org/actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Formatting and static analysis
-        run: nix fmt -- --ci
+        run: |
+          set -euo pipefail
+          nix fmt -- --ci
+      - name: CI script checks
+        run: |
+          set -euo pipefail
+          nix develop .#ci --command bash -c 'shellcheck scripts/ci-*.sh scripts/test-ci.sh && bash scripts/test-ci.sh'
       - name: Flake check
-        run: nix flake check --no-build
+        run: |
+          set -euo pipefail
+          nix flake check --no-build
   build:
     needs: check
     runs-on: native
     timeout-minutes: 120
     steps:
-      - uses: actions/checkout@v4
+      - uses: https://data.forgejo.org/actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Build checks
         env:
           EVENT: ${{ github.event_name }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          set -- --flake ".#checks.x86_64-linux" --skip-cached --no-nom \
-            --eval-workers 2 --eval-max-memory-size 8192
-          if [ "$EVENT" = push ]; then
-            set -- "$@" --out-link /var/lib/gitea-runner/gcroots/result
-          fi
-          nix run nixpkgs#nix-fast-build -- "$@"
+          set -euo pipefail
+          nix develop .#ci --command bash scripts/ci-build.sh
   notify:
-    if: ${{ failure() && github.event_name == 'push' }}
+    if: ${{ failure() && !cancelled() && github.event_name == 'push' }}
     needs: [check, build]
     runs-on: native
     timeout-minutes: 5
     steps:
+      - uses: https://data.forgejo.org/actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Notify failure
         env:
           NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
+          WORKFLOW: ${{ github.workflow }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_number }}
-        run: |
-          curl -fsS -H "Authorization: Bearer $NTFY_TOKEN" \
-            -H "Title: CI failed: $REPO" -H "Priority: high" -H "Tags: x" \
-            -d "$SHA: $RUN_URL" \
-            "https://ntfy.deku.moe/nix-ci"
+        run: bash scripts/ci-notify.sh
