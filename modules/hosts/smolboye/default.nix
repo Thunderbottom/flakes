@@ -19,7 +19,6 @@
       ];
 
       boot = {
-        initrd.systemd.enable = false;
         initrd.availableKernelModules = [
           "xhci_pci"
           "ahci"

@@ -11,8 +11,6 @@
           {
             consoleLogLevel = 0;
 
-            initrd.verbose = false;
-
             # Use tmpfs for /tmp, and clean only when not using tmpfs.
             tmp.useTmpfs = lib.mkDefault true;
             tmp.tmpfsSize = "95%";

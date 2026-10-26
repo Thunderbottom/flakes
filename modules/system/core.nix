@@ -32,7 +32,6 @@
         };
 
         boot = {
-          initrd.systemd.enable = lib.mkDefault true;
           kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
           kernelParams = [
             "nmi_watchdog=0"

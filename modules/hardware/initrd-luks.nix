@@ -14,7 +14,7 @@
         # to trigger the unlock prompt.
         boot.initrd = {
           # Systemd networkd DHCP config (required when systemd is in initrd)
-          systemd.network = lib.mkIf config.boot.initrd.systemd.enable {
+          systemd.network = {
             networks."10-initrd-wan" = {
               matchConfig.Name = "enp2s0";
               networkConfig.DHCP = "yes";
@@ -34,8 +34,6 @@
           network = {
             enable = true;
             flushBeforeStage2 = true;
-            # udhcpc only needed for scripted initrd (not systemd)
-            udhcpc.enable = lib.mkIf (!config.boot.initrd.systemd.enable) true;
             ssh = {
               enable = true;
               port = 22;
@@ -44,8 +42,6 @@
           };
         };
 
-        # Use DHCP kernel parameter only for scripted initrd (systemd ignores it)
-        boot.kernelParams = lib.mkIf (!config.boot.initrd.systemd.enable) [ "ip=dhcp" ];
       };
     };
 }
