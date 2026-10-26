@@ -26,7 +26,9 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     autofirma-nix.url = "github:nix-community/autofirma-nix/develop";
-    autofirma-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # TODO: Keep AutoFirma on the previously working nixpkgs revision while the
+    # current nixpkgs update is being validated.
+    autofirma-nix.inputs.nixpkgs.url = "github:NixOS/nixpkgs/7d5589bbf421c7b6f4185371abe3c465b1b557e9";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
