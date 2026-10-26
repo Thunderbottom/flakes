@@ -38,8 +38,9 @@
           systemd-boot.enable = false;
           grub = {
             enable = true;
-            device = lib.mkForce "nodev";
-            efiInstallAsRemovable = true;
+            efiSupport = lib.mkForce false;
+            device = lib.mkForce "/dev/sda";
+            efiInstallAsRemovable = lib.mkForce false;
             configurationLimit = 2;
           };
         };
