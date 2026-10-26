@@ -15,7 +15,7 @@
             theme = "Ayu";
             bold-is-bright = true;
             cursor-style = "bar";
-            font-family = "JetBrainsMono Nerd Font";
+            font-family = "Nordwand Mono";
             window-padding-x = 2;
             window-padding-y = 2;
             working-directory = "home";

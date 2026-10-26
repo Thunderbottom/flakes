@@ -64,6 +64,7 @@
             nerd-fonts.symbols-only
             nerd-fonts.sauce-code-pro
             nerd-fonts.ubuntu-mono
+            nordwand-mono
             noto-fonts
             noto-fonts-cjk-sans
             noto-fonts-color-emoji
