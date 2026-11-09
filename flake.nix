@@ -65,6 +65,9 @@
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
+    ssh2rce.url = "https://git.deku.moe/thunderbottom/ssh2rce/archive/main.tar.gz";
+    ssh2rce.inputs.nixpkgs.follows = "nixpkgs";
+
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
