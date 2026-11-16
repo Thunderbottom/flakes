@@ -78,6 +78,8 @@
 
       xdg.configFile."niri/config.kdl".text = ''
         spawn-at-startup "noctalia"
+        // Any external display goes above the laptop, including after hotplug.
+        spawn-at-startup "${pkgs.python3}/bin/python3" "${./niri/outputs.py}"
         prefer-no-csd
 
         debug {
